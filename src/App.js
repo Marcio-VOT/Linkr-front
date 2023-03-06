@@ -1,7 +1,6 @@
 import React from "react";
-import GlobalStyleComponent from "./GlobalStyle";
+import GlobalStyleComponent from "./styles/GlobalStyle";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useContext } from "react";
 
 export default () => {
   return (
