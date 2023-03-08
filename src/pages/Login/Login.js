@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { ContainerForm, ContainerInputForm } from "../../styles/FormStyle"
+import FormLogin from "../../comps/FormLogin"
+
 
 export default function Login(){
     return(
@@ -9,16 +9,7 @@ export default function Login(){
                 <h1>Linkr</h1>
                 <p>save, share and discover the best links on the web</p>
             </ContainerLogo>
-            <ContainerForm>
-                <ContainerInputForm>
-                    <input type="text" placeholder="e-mail" />
-                </ContainerInputForm>
-                <ContainerInputForm>
-                    <input type="password" placeholder="password" />
-                </ContainerInputForm>
-                <button>Log In</button>
-                <Link to="/signup">First time? Create an account!</Link>
-            </ContainerForm>
+            <FormLogin />
         </ContainerLogin>
     )
 }

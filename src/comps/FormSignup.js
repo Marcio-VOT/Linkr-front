@@ -22,6 +22,10 @@ export default function FormSignup(){
                     break;
                 case 422:
                     alert("informe todos os dados necessários.")
+                    values.email=""
+                    values.password=""
+                    values.username=""
+                    values.pictureUrl=""
                 default:
                     break;
             }
