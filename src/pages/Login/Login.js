@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { ContainerForm, ContainerInputForm } from "../../styles/FormStyle"
+import FormLogin from "../../comps/FormLogin"
+
 
 export default function Login(){
     return(
@@ -9,16 +9,7 @@ export default function Login(){
                 <h1>Linkr</h1>
                 <p>save, share and discover the best links on the web</p>
             </ContainerLogo>
-            <ContainerForm>
-                <ContainerInputForm>
-                    <input type="text" placeholder="e-mail" />
-                </ContainerInputForm>
-                <ContainerInputForm>
-                    <input type="text" placeholder="password" />
-                </ContainerInputForm>
-                <button>Log In</button>
-                <Link to="/signup">First time? Create an account!</Link>
-            </ContainerForm>
+            <FormLogin />
         </ContainerLogin>
     )
 }
@@ -41,7 +32,7 @@ const ContainerLogo = styled.div`
     padding-left: 144px;
     margin-top: -100px;
     h1 {
-        font-family: Passion One, "sans-serif";
+        font-family: 'Passion One', sans-serif;
         font-size: 106px;
         font-weight: 700;
         line-height: 116px;
@@ -52,7 +43,7 @@ const ContainerLogo = styled.div`
     p {
         width: 100%;
         max-width: 442px;
-        font-family: Oswald, "sans-serif";
+        font-family: 'Oswald', sans-serif;
         font-weight: 700;
         font-size: 43px;
         line-height: 64px;

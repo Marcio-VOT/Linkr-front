@@ -1,10 +1,14 @@
+
+import React from "react";
 import { Link } from "react-router-dom";
+import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import styled, { StyledComponent } from "styled-components";
 import PostForm from "../../comps/PostForm.js";
 
 export default function HomePage(){
     return(
         <HomePageContainer>
+            <NavBar />
             <TimeLineContent>
                 <h1>timeline</h1>
                 <PostForm />
