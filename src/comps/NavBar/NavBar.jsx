@@ -1,14 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
-import { StyledNav } from "./navStyles";
+import { StyledNav, StyledLogo } from "./navStyles";
 import { searchApi } from "../../services/search";
+import { NavUser } from "../NavUser/NavUser";
 
 export const NavBar = () => {
   const [search, setSearch] = useState("");
+  const [log, setLog] = useState(true);
+
   useEffect(() => {}, []);
   return (
     <StyledNav search={search}>
+      <StyledLogo>linkr</StyledLogo>
       <DebounceInput
         minLength={3}
         debounceTimeout={300}
@@ -26,6 +30,7 @@ export const NavBar = () => {
         type="text"
         placeholder="Search for people"
       />
+      <NavUser log={log} setLog={setLog} />
     </StyledNav>
   );
 };
