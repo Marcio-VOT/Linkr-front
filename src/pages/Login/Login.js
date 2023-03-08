@@ -14,7 +14,7 @@ export default function Login(){
                     <input type="text" placeholder="e-mail" />
                 </ContainerInputForm>
                 <ContainerInputForm>
-                    <input type="text" placeholder="password" />
+                    <input type="password" placeholder="password" />
                 </ContainerInputForm>
                 <button>Log In</button>
                 <Link to="/signup">First time? Create an account!</Link>
@@ -41,7 +41,7 @@ const ContainerLogo = styled.div`
     padding-left: 144px;
     margin-top: -100px;
     h1 {
-        font-family: Passion One, "sans-serif";
+        font-family: 'Passion One', sans-serif;
         font-size: 106px;
         font-weight: 700;
         line-height: 116px;
@@ -52,7 +52,7 @@ const ContainerLogo = styled.div`
     p {
         width: 100%;
         max-width: 442px;
-        font-family: Oswald, "sans-serif";
+        font-family: 'Oswald', sans-serif;
         font-weight: 700;
         font-size: 43px;
         line-height: 64px;
