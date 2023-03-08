@@ -12,6 +12,7 @@ export const StyledNav = styled.div`
     outline: none;
   }
   input {
+    position: relative;
     width: 40%;
     margin: auto;
     height: 45px;
@@ -32,4 +33,8 @@ export const StyledNav = styled.div`
     background-position: calc(100% - 14px);
     background-size: 21px;
   }
+`;
+export const StyledUsers = styled.div`
+  display: table-column;
+  position: absolute;
 `;
