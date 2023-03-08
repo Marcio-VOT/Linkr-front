@@ -1,6 +1,6 @@
 import { Formik, Field } from "formik"
 import * as Yup from "yup"
-import { api } from "../services/apiAuth"
+import { signIn } from "../services/apiAuth"
 import { Link, useNavigate } from "react-router-dom"
 import { ContainerForm, ContainerInputForm } from "../styles/FormStyle"
 
@@ -9,10 +9,10 @@ export default function FormLogin() {
 
     async function submitLogin(values){
         try {
-            const result = await api.post("/signin", {email: values.email, password: values.password})
+            const result = await signIn({email: values.email, password: values.password})
             localStorage.setItem("token", result.data.token)
             localStorage.setItem("avatar", result.data.avatar)
-            navigate("/timeline")
+            navigate("/home")
         } catch (error) {
             switch (error.response.status) {
                 case 401:

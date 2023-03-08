@@ -1,7 +1,10 @@
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_API_URL;
 
-const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
-});
+export function singUp(body) {
+  return axios.post(`${BASE_URL}/signup`, body);
+}
 
-export { api };
+export function signIn(body) {
+  return axios.post(`${BASE_URL}/signin`, body);
+}
