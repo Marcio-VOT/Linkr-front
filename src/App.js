@@ -12,7 +12,7 @@ export default () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/timeline" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );
