@@ -1,7 +1,7 @@
 import axios from "axios";
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-export function singUp(body, config) {
+export function singUp(body) {
   return axios.post(`${BASE_URL}/signup`, body);
 }
 
