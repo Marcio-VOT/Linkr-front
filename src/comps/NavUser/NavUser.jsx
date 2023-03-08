@@ -16,7 +16,6 @@ export const NavUser = ({ log, setLog }) => {
         alt="arrow"
         onClick={() => {
           setLog((log) => !log);
-          console.log(log);
         }}
       />
       <StyledProfilePicture src={arrow} alt="arrow" />

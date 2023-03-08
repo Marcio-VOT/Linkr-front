@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledArrow = styled.img`
   width: 22px;
   height: 13px;
-  transition: transform 0.8s;
+  transition: transform 0.1s;
 
   -webkit-transform: scaleY(${(props) => (props.log ? "1" : "-1")});
   transform: scaleY(${({ log }) => (log ? "1" : "-1")});

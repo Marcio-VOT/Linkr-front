@@ -8,9 +8,7 @@ import {
 export const LogOutButton = () => {
   return (
     <ContainerLogOutButton>
-      <Fade top>
-        <StyledLogOutButton>Logout</StyledLogOutButton>
-      </Fade>
+      <StyledLogOutButton>Logout</StyledLogOutButton>
     </ContainerLogOutButton>
   );
 };

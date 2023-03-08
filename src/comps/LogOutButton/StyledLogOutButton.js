@@ -12,12 +12,12 @@ export const StyledLogOutButton = styled.button`
   line-height: 20px;
   letter-spacing: 0.05em;
   padding-right: 30px;
-
+  border: none;
   color: #ffffff;
 `;
 
 export const ContainerLogOutButton = styled.div`
   position: absolute;
   top: 100%;
-  z-index: -1;
+  z-index: -999;
 `;
