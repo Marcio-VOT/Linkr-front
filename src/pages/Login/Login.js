@@ -13,8 +13,9 @@ export default function Login(){
                 try {
                     const token = localStorage.getItem("token")
                     const result = await validToken({token})
-                    console.log(result)
-                    navigate("/timeline")  
+                    if(result.status === 200){
+                        navigate("/timeline")
+                    }
                 } catch (error) {
                     console.log(error)
                 }
