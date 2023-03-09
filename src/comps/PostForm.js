@@ -1,6 +1,49 @@
-import styled, { StyledComponent } from "styled-components";
+import styled from "styled-components";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function PostForm(){
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODMzODU1OCwiZXhwIjoxNjc4MzQ5MzU4fQ.WDrR_ZWVMCVzoueJwFprrpPg12YTfnmtrIuVMmsuZmI";
+    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    function registerPost(event) {
+        event.preventDefault();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const URL = 'http://localhost:5000/posts';
+        const promise = axios.post(URL, postData, config);
+
+        promise.then(() => {
+            setIsSubmitting(false);
+            setPostData({ externalLink: "", description: "" });
+        })
+
+        promise.catch(() => {
+            alert("There was an error publishing your link.");
+            setIsSubmitting(false);
+        })
+    }
+
+    const [postData, setPostData] = useState({
+        externalLink: "",
+        description: ""
+    });
+
+    const {externalLink, description} = postData; 
+
+    function handleForm(e) {
+        setPostData({
+            ...postData,
+            [e.target.name]: e.target.value,
+        })
+    }
     return(
         <PostFormContainer>
             <FormContent>
@@ -8,29 +51,37 @@ export default function PostForm(){
                     <img src="https://static.wikia.nocookie.net/meme/images/7/72/Irineu.png/revision/latest?cb=20170223020835&path-prefix=pt-br"/>
                     <p>What are you going to share today?</p>
                 </CustomerData>
-                <form data-test="publish-box">
+                <form onSubmit={registerPost} data-test="publish-box">
                     <input
                         className="link-input"
                         type="url"
                         id='url'
                         placeholder=' http://...'
                         required
-                        name='url'
+                        name='externalLink'
                         data-test='link'
+                        onChange={handleForm}
+                        value={externalLink}
+                        disabled={isSubmitting}
                     />
-                    <input
-                        className="description-input"
+                    <textarea
+                        className="description-textarea"
                         type="text"
                         id='description'
                         placeholder=' Awesome article about #javascript'
-                        required
                         name='description'
                         data-test='description'
+                        rows="4" 
+                        cols="50"
+                        onChange={handleForm}
+                        value={description}
+                        disabled={isSubmitting}
                     />
 
                     <button 
                         type='submit' 
-                        data-test='publish-btn'>Publish</button>
+                        data-test='publish-btn'
+                        disabled={isSubmitting}>{isSubmitting ? "Publishing..." : "Publish"}</button>
                 </form>
             </FormContent>
         </PostFormContainer>
@@ -45,6 +96,7 @@ const PostFormContainer = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
+    margin-bottom: 16px;
 `
 
 const FormContent = styled.div`
@@ -58,7 +110,13 @@ const FormContent = styled.div`
         flex-direction: column;
         align-items: flex-end;
 
-        input{
+        button:focus,
+        textarea:focus,
+        input:focus {
+        outline: none;
+        }
+
+        input, textarea{
             width: 100%;
             background: #EFEFEF;
             border-radius: 5px;
@@ -70,7 +128,7 @@ const FormContent = styled.div`
             height: 30px;
         }
 
-        .description-input{
+        .description-textarea{
             height: 66px;
         }
 

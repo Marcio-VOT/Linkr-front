@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import styled from "styled-components";
 import PostForm from "../../comps/PostForm.js";
+import PostsContainer from "../../comps/Posts/PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
 
 export default function HomePage(){
@@ -28,7 +29,7 @@ export default function HomePage(){
             <TimeLineContent>
                 <h1>timeline</h1>
                 <PostForm />
-                <h1>there are no posts yet</h1>
+                <PostsContainer />
             </TimeLineContent>
         </HomePageContainer>
     )
@@ -38,7 +39,7 @@ const HomePageContainer = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     background-color: #333333;
 
