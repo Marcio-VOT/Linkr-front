@@ -15,6 +15,9 @@ export const StyledNav = styled.div`
   input:focus {
     outline: none;
   }
+  a {
+    text-decoration: none;
+  }
 `;
 export const StyledUsers = styled.div`
   display: table-column;
@@ -31,8 +34,9 @@ export const StyledLogo = styled.div`
   font-weight: 700;
   font-size: 49px;
   line-height: 54px;
-
   letter-spacing: 0.05em;
-
   color: #ffffff;
+  a {
+    text-decoration: none;
+  }
 `;
