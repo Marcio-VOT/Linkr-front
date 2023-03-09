@@ -1,6 +1,50 @@
-import styled, { StyledComponent } from "styled-components";
+import styled from "styled-components";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function PostForm(){
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY3ODMyNjg1NywiZXhwIjoxNjc4MzM3NjU3fQ.9am1sNRkfJFrIyoyDYlxGCZDrn8owr_FAiBR1oS2Cy0";
+    const navigate = useNavigate();
+
+    function registerPost(event) {
+        event.preventDefault();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const URL = 'http://localhost:5000/posts';
+        const promise = axios.post(URL, postData, config);
+
+        promise.then(() => {
+            alert("Post cadastrado com sucesso");
+            navigate("/timeline");
+        })
+
+        promise.catch(() => {
+            alert("Não foi possível registrar o seu post.");
+            navigate("/timeline");
+        })
+
+        setPostData()
+    }
+
+    const [postData, setPostData] = useState({
+        externalLink: "",
+        description: ""
+    });
+
+    const {externalLink, description} = postData; 
+
+    function handleForm(e) {
+        setPostData({
+            ...postData,
+            [e.target.name]: e.target.value,
+        })
+    }
     return(
         <PostFormContainer>
             <FormContent>
@@ -8,24 +52,29 @@ export default function PostForm(){
                     <img src="https://static.wikia.nocookie.net/meme/images/7/72/Irineu.png/revision/latest?cb=20170223020835&path-prefix=pt-br"/>
                     <p>What are you going to share today?</p>
                 </CustomerData>
-                <form data-test="publish-box">
+                <form onSubmit={registerPost} data-test="publish-box">
                     <input
                         className="link-input"
                         type="url"
                         id='url'
                         placeholder=' http://...'
                         required
-                        name='url'
+                        name='externalLink'
                         data-test='link'
+                        onChange={handleForm}
+                        value={externalLink}
                     />
-                    <input
-                        className="description-input"
+                    <textarea
+                        className="description-textarea"
                         type="text"
                         id='description'
                         placeholder=' Awesome article about #javascript'
-                        required
                         name='description'
                         data-test='description'
+                        rows="4" 
+                        cols="50"
+                        onChange={handleForm}
+                        value={description}
                     />
 
                     <button 
@@ -58,7 +107,13 @@ const FormContent = styled.div`
         flex-direction: column;
         align-items: flex-end;
 
-        input{
+        button:focus,
+        textarea:focus,
+        input:focus {
+        outline: none;
+        }
+
+        input, textarea{
             width: 100%;
             background: #EFEFEF;
             border-radius: 5px;
@@ -70,7 +125,7 @@ const FormContent = styled.div`
             height: 30px;
         }
 
-        .description-input{
+        .description-textarea{
             height: 66px;
         }
 
