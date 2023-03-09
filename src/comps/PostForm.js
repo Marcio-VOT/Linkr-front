@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 export default function PostForm(){
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY3ODMyNjg1NywiZXhwIjoxNjc4MzM3NjU3fQ.9am1sNRkfJFrIyoyDYlxGCZDrn8owr_FAiBR1oS2Cy0";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODMzODU1OCwiZXhwIjoxNjc4MzQ5MzU4fQ.WDrR_ZWVMCVzoueJwFprrpPg12YTfnmtrIuVMmsuZmI";
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     function registerPost(event) {
         event.preventDefault();
@@ -20,16 +21,14 @@ export default function PostForm(){
         const promise = axios.post(URL, postData, config);
 
         promise.then(() => {
-            alert("Post cadastrado com sucesso");
-            navigate("/timeline");
+            setIsSubmitting(false);
+            setPostData({ externalLink: "", description: "" });
         })
 
         promise.catch(() => {
-            alert("Não foi possível registrar o seu post.");
-            navigate("/timeline");
+            alert("There was an error publishing your link.");
+            setIsSubmitting(false);
         })
-
-        setPostData()
     }
 
     const [postData, setPostData] = useState({
@@ -63,6 +62,7 @@ export default function PostForm(){
                         data-test='link'
                         onChange={handleForm}
                         value={externalLink}
+                        disabled={isSubmitting}
                     />
                     <textarea
                         className="description-textarea"
@@ -75,11 +75,13 @@ export default function PostForm(){
                         cols="50"
                         onChange={handleForm}
                         value={description}
+                        disabled={isSubmitting}
                     />
 
                     <button 
                         type='submit' 
-                        data-test='publish-btn'>Publish</button>
+                        data-test='publish-btn'
+                        disabled={isSubmitting}>{isSubmitting ? "Publishing..." : "Publish"}</button>
                 </form>
             </FormContent>
         </PostFormContainer>

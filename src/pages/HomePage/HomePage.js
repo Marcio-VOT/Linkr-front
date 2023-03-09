@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import styled, { StyledComponent } from "styled-components";
 import PostForm from "../../comps/PostForm.js";
+import PostsContainer from "../../comps/Posts/PostsContainer.js";
 
 export default function HomePage(){
     return(
@@ -12,7 +13,7 @@ export default function HomePage(){
             <TimeLineContent>
                 <h1>timeline</h1>
                 <PostForm />
-                <h1>there are no posts yet</h1>
+                <PostsContainer />
             </TimeLineContent>
         </HomePageContainer>
     )
