@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ContainerForm = styled.form`
-    height: 100vh;
+    width: 100%;
     background-color: #333333;
     flex: 1;
     display: flex;
@@ -11,6 +11,11 @@ export const ContainerForm = styled.form`
     padding-left: 23px;
     padding-right: 23px;
     gap: 13px;
+    @media (max-width: 800px) {
+        justify-content: flex-start;
+        padding-top: 40px;
+        padding-bottom: 91px;
+    }
     a {
         font-family: 'Lato', sans-serif;
         font-weight: 400;
@@ -19,7 +24,7 @@ export const ContainerForm = styled.form`
         color: #FFFFFF;
     }
     button {
-        width: 100vh;
+        width: 100%;
         max-width: 429px;
         min-width: 350px;
         height: 65px;
@@ -35,8 +40,13 @@ export const ContainerForm = styled.form`
     }
 `
 export const ContainerInputForm = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     input {
-        width: 100vw;
+        width: 100%;
         max-width: 429px;
         min-width: 350px;
         height: 65px;
