@@ -1,6 +1,7 @@
 import React from "react";
 import arrow from "../../assets/images/arrow.png";
 import { LogOutButton } from "../LogOutButton/LogOutButton";
+import { Overlay } from "../Overlay/Overlay";
 import {
   StyledArrow,
   StyledProfilePicture,
@@ -8,18 +9,22 @@ import {
 } from "./StyledNavUser";
 
 export const NavUser = ({ log, setLog }) => {
+
   return (
-    <StyledNavUser>
-      <StyledArrow
-        log={log}
-        src={arrow}
-        alt="arrow"
-        onClick={() => {
-          setLog((log) => !log);
-        }}
-      />
-      <StyledProfilePicture src={arrow} alt="arrow" />
+    <>
+      <StyledNavUser onClick={() => {
+        setLog((log) => !log);
+      }}
+      >
+        <StyledArrow
+          log={log}
+          src={arrow}
+          alt="arrow"
+        />
+        <StyledProfilePicture src={localStorage.getItem("avatar")} alt="arrow" />
+      </StyledNavUser>
       {!log && <LogOutButton />}
-    </StyledNavUser>
+      {!log && <Overlay log={log} setLog={setLog}/>}
+    </>
   );
 };

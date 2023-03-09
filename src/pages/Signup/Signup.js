@@ -1,7 +1,28 @@
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import FormSignup from "../../comps/FormSignup"
+import FormSignup from "../../comps/FormSignup/FormSignup"
+import { validToken } from "../../services/apiAuth"
 
 export default function Signup() {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        async function validateToken(){
+            try {
+                const token = localStorage.getItem("token")
+                const result = await validToken({token})
+                console.log(result)
+                navigate("/timeline")  
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
+        validateToken()
+    }, [])
+
+
     return (
         <ContainerLogin>
             <ContainerLogo>

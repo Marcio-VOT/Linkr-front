@@ -21,4 +21,5 @@ export const StyledNavUser = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 17px;
+  z-index: 10;
 `;
