@@ -5,6 +5,7 @@ import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import styled from "styled-components";
 import PostForm from "../../comps/PostForm.js";
 import { validToken } from "../../services/apiAuth.js";
+import { LikeButton } from "../../comps/Like/Like.js";
 
 export default function HomePage(){
     const navigate = useNavigate()
@@ -27,6 +28,7 @@ export default function HomePage(){
             <NavBar />
             <TimeLineContent>
                 <h1>timeline</h1>
+                <LikeButton />
                 <PostForm />
                 <h1>there are no posts yet</h1>
             </TimeLineContent>
