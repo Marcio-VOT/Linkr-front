@@ -3,7 +3,7 @@ import styled from "styled-components";
 // import urlMetadata from "url-metadata";
 
 export default function Post(props) {
-  const { description, external_link, name, profile_picture } = props;
+  const { id, description, external_link, name, profile_picture } = props;
   const [metadata, setMetadata] = useState(null);
 
 //   useEffect(() => {
