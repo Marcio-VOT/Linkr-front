@@ -1,8 +1,8 @@
 import { Formik, Field } from "formik"
 import * as Yup from "yup"
-import { signIn } from "../services/apiAuth"
+import { signIn } from "../../services/apiAuth"
 import { Link, useNavigate } from "react-router-dom"
-import { ContainerForm, ContainerInputForm } from "../styles/FormStyle"
+import { ContainerForm, ContainerInputForm } from "../../styles/FormStyle"
 
 export default function FormLogin() {
     const navigate = useNavigate()
