@@ -1,12 +1,28 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
-import styled, { StyledComponent } from "styled-components";
+import styled from "styled-components";
 import PostForm from "../../comps/PostForm.js";
 import PostsContainer from "../../comps/Posts/PostsContainer.js";
+import { validToken } from "../../services/apiAuth.js";
 
 export default function HomePage(){
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        async function validateToken(){
+            try {
+                const token = localStorage.getItem("token")
+                await validToken({token})
+            } catch (error) {
+                navigate("/")
+            }
+        }
+        
+        validateToken()
+    }, [])
+    
     return(
         <HomePageContainer>
             <NavBar />

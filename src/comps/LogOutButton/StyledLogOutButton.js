@@ -19,5 +19,6 @@ export const StyledLogOutButton = styled.button`
 export const ContainerLogOutButton = styled.div`
   position: absolute;
   top: 100%;
-  z-index: -999;
+  z-index: 10;
+  right: 0px;
 `;
