@@ -46,7 +46,7 @@ export default function PostsContainer(){
 
     return(
         <PostsList>
-            ${buildPostsList()}
+            {buildPostsList()}
         </PostsList>
     )
 }

@@ -23,7 +23,7 @@ const HomePageContainer = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     background-color: #333333;
 
