@@ -76,7 +76,6 @@ export default function HomePage() {
         <NavBar />
         <TimeLineContent>
           <h1>timeline</h1>
-          <LikeButton />
           <div>
           <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost}/>
           <TrendingsContainer>

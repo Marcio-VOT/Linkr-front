@@ -4,7 +4,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import {LikeButton} from "../Like/Like.js"
 import Trendings from "../Hashtags/index.js";
+
 export default function Post(props) {
   const token = localStorage.getItem("token");
   const { id, description, external_link, name, profile_picture, user_id } =props;
@@ -54,7 +56,9 @@ export default function Post(props) {
     }
   };
   const navigate = useNavigate();
+
   
+
   return (
     <PostContainer>
       <div data-test="post">
@@ -79,6 +83,10 @@ export default function Post(props) {
             >
               {name}
             </p>
+
+            
+            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
+
             {editing ? (
               <textarea
                 data-test="edit-description"
@@ -91,6 +99,7 @@ export default function Post(props) {
             <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
               navigate(`/hashtag/${tag.replace('#', '')}`)
             }}>
+
               <p className="user-description" data-test="description">
                 {description}
               </p>
@@ -98,6 +107,9 @@ export default function Post(props) {
             )}
           </div>
         </CustomerData>
+
+        
+        <LikeButton idPost={id} idUser={user_id}/>
         <a href={external_link} target="_blank" data-test="link">
           {metadata?.title || "aqui vai o link"}
         </a>
