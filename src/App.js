@@ -6,7 +6,7 @@ import Login from "./pages/Login/Login";
 import HomePage from "./pages/HomePage/HomePage";
 import { LikeButton } from "./comps/Like/Like";
 import UserPosts from "./pages/UserPosts/UserPosts";
-import Hashtag from "./pages/hashtag";
+import Hashtag from "./pages/hashtag/index.js";
 
 export default () => {
   return (
