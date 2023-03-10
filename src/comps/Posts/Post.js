@@ -31,8 +31,8 @@ export default function Post(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    const URL = `http://localhost:5000/posts/${id}`;
+    
+    const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
     axios
       .put(URL, description, config)
       .then((res) => {
@@ -58,6 +58,17 @@ export default function Post(props) {
   return (
     <PostContainer>
       <div data-test="post">
+      <ButtonsContainer>
+          {editing ? (
+            <>
+              <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
+              <button data-test="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+            </>
+          ) : (
+            <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
+          )}
+          <button data-test="delete-btn"><BsFillTrashFill/></button>
+        </ButtonsContainer>
         <CustomerData>
           <img src={profile_picture} />
           <div>
@@ -68,6 +79,15 @@ export default function Post(props) {
             >
               {name}
             </p>
+            {editing ? (
+              <textarea
+                data-test="edit-description"
+                ref={editTextRef}
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+                onKeyDown={handleEditKeyDown}
+              />
+            ) : (
             <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
               navigate(`/hashtag/${tag.replace('#', '')}`)
             }}>
@@ -75,6 +95,7 @@ export default function Post(props) {
                 {description}
               </p>
             </ReactTagify>
+            )}
           </div>
         </CustomerData>
         <a href={external_link} target="_blank" data-test="link">
@@ -90,11 +111,6 @@ const tagStyle = {
   cursor: "pointer",
 };
 
-const Container = styled.div` 
-  display: flex;
-  gap: 15px;
-`
-
 const PostContainer = styled.div`
   display: flex;
   width: 100%;
@@ -106,34 +122,31 @@ const PostContainer = styled.div`
 `;
 
 const CustomerData = styled.div`
-  display: flex;
-  align-items: center;
-
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .user-name {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 23px;
-    color: #ffffff;
-  }
-
-  .user-description {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 20px;
-    color: #b7b7b7;
-  }
+    display: flex;
+    align-items: center;
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 26.5px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+    .user-name{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        color: #FFFFFF;
+    }
+    .user-description{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 20px;
+        color: #B7B7B7;
+    }
 `;
 
 const ButtonsContainer = styled.div`

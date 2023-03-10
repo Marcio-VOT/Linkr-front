@@ -14,7 +14,7 @@ export default function PostsContainer(){
             }
         }
 
-        const URL = `http://localhost:5000/posts`
+        const URL = `${process.env.REACT_APP_API_URL}/posts`
         const promise = axios.get(URL, config);
 
         promise.then((res) => {
