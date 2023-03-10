@@ -5,16 +5,15 @@ import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import {LikeButton} from "../Like/Like.js"
+import Trendings from "../Hashtags/index.js";
 
 export default function Post(props) {
   const token = localStorage.getItem("token");
-  const { id, description, external_link, name, profile_picture, user_id } =
-    props;
+  const { id, description, external_link, name, profile_picture, user_id } =props;
   const [metadata, setMetadata] = useState(null);
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
   const editTextRef = useRef(null);
-
   const handleEditClick = () => {
     setEditing(true);
   };
@@ -34,8 +33,8 @@ export default function Post(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    const URL = `http://localhost:5000/posts/${id}`;
+    
+    const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
     axios
       .put(URL, description, config)
       .then((res) => {
@@ -57,10 +56,23 @@ export default function Post(props) {
     }
   };
   const navigate = useNavigate();
-  const style = { color: "blue", fontSize: "1.5em" }
+
+  
+
   return (
     <PostContainer>
       <div data-test="post">
+      <ButtonsContainer>
+          {editing ? (
+            <>
+              <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
+              <button data-test="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+            </>
+          ) : (
+            <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
+          )}
+          <button data-test="delete-btn"><BsFillTrashFill/></button>
+        </ButtonsContainer>
         <CustomerData>
           <img src={profile_picture} />
           <div>
@@ -71,12 +83,28 @@ export default function Post(props) {
             >
               {name}
             </p>
+
             
             <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
+
+            {editing ? (
+              <textarea
+                data-test="edit-description"
+                ref={editTextRef}
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+                onKeyDown={handleEditKeyDown}
+              />
+            ) : (
+            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
+              navigate(`/hashtag/${tag.replace('#', '')}`)
+            }}>
+
               <p className="user-description" data-test="description">
                 {description}
               </p>
             </ReactTagify>
+            )}
           </div>
         </CustomerData>
 
@@ -106,34 +134,31 @@ const PostContainer = styled.div`
 `;
 
 const CustomerData = styled.div`
-  display: flex;
-  align-items: center;
-
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .user-name {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 23px;
-    color: #ffffff;
-  }
-
-  .user-description {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 20px;
-    color: #b7b7b7;
-  }
+    display: flex;
+    align-items: center;
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 26.5px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+    .user-name{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        color: #FFFFFF;
+    }
+    .user-description{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 20px;
+        color: #B7B7B7;
+    }
 `;
 
 const ButtonsContainer = styled.div`

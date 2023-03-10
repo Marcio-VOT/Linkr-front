@@ -8,6 +8,25 @@ export const SearchInput = ({ search, setSearch }) => {
   const [userList, setUserList] = useState([]);
   return (
     <StyledSearchInput>
+      {userList[0] && (
+        <StyledSearchList>
+          {userList.map((u) => {
+            return (
+              <Link to={`/user/${u.id}`} key={u.id} data-test="user-search">
+                <div
+                  onClick={() => {
+                    setSearch("");
+                    setUserList([]);
+                  }}
+                >
+                  <img src={u.profile_picture} alt={u.name} />
+                  <h1>{u.name} </h1>
+                </div>
+              </Link>
+            );
+          })}
+        </StyledSearchList>
+      )}
       <DebounceInput
         data-test="search"
         value={search}
@@ -29,25 +48,6 @@ export const SearchInput = ({ search, setSearch }) => {
         type="text"
         placeholder="Search for people"
       />
-      {userList[0] && (
-        <StyledSearchList>
-          {userList.map((u) => {
-            return (
-              <Link to={`/user/${u.id}`} key={u.id} data-test="user-search">
-                <div
-                  onClick={() => {
-                    setSearch("");
-                    setUserList([]);
-                  }}
-                >
-                  <img src={u.profile_picture} alt={u.name} />
-                  <h1>{u.name} </h1>
-                </div>
-              </Link>
-            );
-          })}
-        </StyledSearchList>
-      )}
     </StyledSearchInput>
   );
 };

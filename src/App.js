@@ -6,6 +6,7 @@ import Login from "./pages/Login/Login";
 import HomePage from "./pages/HomePage/HomePage";
 import { LikeButton } from "./comps/Like/Like";
 import UserPosts from "./pages/UserPosts/UserPosts";
+import Hashtag from "./pages/hashtag";
 
 export default () => {
   return (
@@ -17,6 +18,7 @@ export default () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/timeline" element={<HomePage />} />
         <Route path="/user/:id" element={<UserPosts />} />
+        <Route path="/hashtag/:hashtag" element={<Hashtag />} />
       </Routes>
     </BrowserRouter>
   );

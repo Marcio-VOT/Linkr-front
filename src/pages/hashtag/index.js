@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import axios from "axios";
 import styled from "styled-components";
-import PostForm from "../../comps/PostForm.js";
-import PostsContainer from "../../comps/Posts/PostsContainer.js";
+import PostsContainer from "./PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
-import { LikeButton } from "../../comps/Like/Like.js";
-import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
 
-export default function HomePage() {
+export default function Hashtag() {
+  const {hashtag} = useParams()
   const [updatePost, setUpdatePost] = useState(false)
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -35,11 +33,10 @@ export default function HomePage() {
       },
     };
     const BASE_URL = process.env.REACT_APP_API_URL
-    const URL = `${BASE_URL}/posts`;
+    const URL = `${BASE_URL}/posts`
     const promise = axios.get(URL, config);
 
         promise.then((res) => {
-            console.log(res.data)
             const { data } = res;
             setHashtagsList([...data.hashtags])
         });
@@ -67,17 +64,12 @@ export default function HomePage() {
 
   return (
     <>
-      {window.innerWidth <= 600 && (
-        <SearchContainer>
-          <SearchInput search={search} setSearch={setSearch} />
-        </SearchContainer>
-      )}
       <HomePageContainer>
         <NavBar />
         <TimeLineContent>
-          <h1>timeline</h1>
-          <div>
-          <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost}/>
+          <h1># {hashtag}</h1>
+          <span>
+          <PostsContainer hashtag={hashtag} updatePost={updatePost}/>
           <TrendingsContainer>
             <Title>
               <h1>trending</h1>
@@ -88,8 +80,7 @@ export default function HomePage() {
               </div>
             </Container>
           </TrendingsContainer>
-          </div>
-          <PostsContainer updatePost={updatePost}/>
+          </span>
         </TimeLineContent>
       </HomePageContainer>
     </>
@@ -113,28 +104,13 @@ const HomePageContainer = styled.div`
     color: #ffffff;
   }
 `;
-const SearchContainer = styled.div`
-  width: 100%;
-  padding-top: 82px;
-  background-color: #333333;
-  position: relative;
-  z-index: 0;
-  button:focus,
-  textarea:focus,
-  input:focus {
-    outline: none;
-  }
-  input {
-    position: absolute;
-    z-index: 1;
-  }
-`;
 
 const TimeLineContent = styled.div`
   margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
   width: 50%;
-  div {
+  span {
     display: flex;
+    gap: 10px;
   }
 
 `;
