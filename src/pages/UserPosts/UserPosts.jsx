@@ -34,7 +34,7 @@ export default function UserPosts() {
     async function getUserPosts() {
       try {
         const { data } = await searchUserPosts(id);
-        data[0] && setPosts(data);
+        data[0] ? setPosts(data) : setPosts([]);
         console.log(data);
       } catch (error) {
         alert(error.response.data);
