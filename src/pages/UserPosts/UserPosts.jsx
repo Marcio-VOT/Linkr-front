@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import { validToken } from "../../services/apiAuth.js";
-import { TimeLineContent, HomePageContainer } from "./StyledUserPosts.js";
-import { searchUserPosts } from "../../services/search.js";
+import {
+  TimeLineContent,
+  HomePageContainer,
+  SearchContainer,
+} from "./StyledUserPosts.js";
+import { searchUserData, searchUserPosts } from "../../services/search.js";
+import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
+import PostsContainer from "../../comps/Posts/PostsContainer.js";
 
 export default function UserPosts() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const [name, setName] = useState("");
+  const [img, setImg] = useState("");
+
   let { id } = useParams();
 
   const [posts, setPosts] = useState([]);
@@ -29,18 +39,38 @@ export default function UserPosts() {
         alert(error.response.data);
       }
     }
+    async function getUserData() {
+      try {
+        const { data } = await searchUserData(id);
+        setName(data[0].name);
+        setImg(data[0].picture);
+      } catch (error) {
+        alert(error.response.data);
+      }
+    }
 
     validateToken();
+    getUserData();
     getUserPosts();
   }, []);
 
   return (
-    <HomePageContainer>
-      <NavBar />
-      <TimeLineContent>
-        <h1>timeline</h1>
-        <h1>there are no posts yet</h1>
-      </TimeLineContent>
-    </HomePageContainer>
+    <>
+      {window.innerWidth <= 600 && (
+        <SearchContainer>
+          <SearchInput search={search} setSearch={setSearch} />
+        </SearchContainer>
+      )}
+      <HomePageContainer>
+        <NavBar />
+        <TimeLineContent>
+          <div>
+            <img src={img} alt="profile picture" />
+            <h1>{name ? `${name}'s posts` : "timeline"}</h1>
+          </div>
+          <PostsContainer />
+        </TimeLineContent>
+      </HomePageContainer>
+    </>
   );
 }

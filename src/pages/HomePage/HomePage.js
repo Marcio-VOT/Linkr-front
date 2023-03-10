@@ -80,6 +80,6 @@ const SearchContainer = styled.div`
 `;
 
 const TimeLineContent = styled.div`
-  margin-top: ${window.innerWidth <= 600 ? "19px" : "120px"};
+  margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
   width: 50%;
 `;

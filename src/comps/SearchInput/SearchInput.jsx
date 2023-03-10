@@ -39,7 +39,7 @@ export const SearchInput = ({ search, setSearch }) => {
                     setUserList([]);
                   }}
                 >
-                  <img src={u.profile_picture} alt={u.nmae} />
+                  <img src={u.profile_picture} alt={u.name} />
                   <h1>{u.name} </h1>
                 </div>
               </Link>

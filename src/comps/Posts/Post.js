@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 import axios from "axios";
-import { BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
+import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export default function Post(props) {
   const token = localStorage.getItem("token");
@@ -25,15 +26,16 @@ export default function Post(props) {
     const description = {
       description: `${editedText}`,
     };
-  
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-  
+
     const URL = `http://localhost:5000/posts/${id}`;
-    axios.put(URL, description, config)
+    axios
+      .put(URL, description, config)
       .then((res) => {
         alert(res.data);
       })
@@ -42,7 +44,7 @@ export default function Post(props) {
         alert(err.message);
       });
 
-      setEditing(false);
+    setEditing(false);
   };
 
   const handleEditKeyDown = (event) => {
@@ -52,88 +54,91 @@ export default function Post(props) {
       handleSaveEdit();
     }
   };
+  const navigate = useNavigate();
 
   return (
     <PostContainer>
-    <div data-test="post">
-      <CustomerData>
-        <img src={profile_picture} />
-        <div>
-          <p className="user-name" data-test="username">{name}</p>
-          <ReactTagify 
-            tagStyle={tagStyle}
-            tagClicked={(tag)=> alert(tag)}>
-            <p className="user-description" data-test="description">{description}</p>
-          </ReactTagify>
-        </div>
-      </CustomerData>
-      <a href={external_link} target="_blank" data-test="link">
-        {metadata?.title || "aqui vai o link"}
-      </a>
-    </div>
-  </PostContainer>
+      <div data-test="post">
+        <CustomerData>
+          <img src={profile_picture} />
+          <div>
+            <p className="user-name" data-test="username">
+              {name}
+            </p>
+            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
+              <p className="user-description" data-test="description">
+                {description}
+              </p>
+            </ReactTagify>
+          </div>
+        </CustomerData>
+        <a href={external_link} target="_blank" data-test="link">
+          {metadata?.title || "aqui vai o link"}
+        </a>
+      </div>
+    </PostContainer>
   );
 }
 
 const tagStyle = {
-  fontWeight: 'bold',
-  cursor: 'pointer'
+  fontWeight: "bold",
+  cursor: "pointer",
 };
 
 const PostContainer = styled.div`
-    display: flex;
-    width: 100%;
-    padding: 20px;
-    background: #171717;
-    border-radius: 16px;
-    margin-bottom: 16px;
-    position: relative;
-`
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  background: #171717;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  position: relative;
+`;
 
 const CustomerData = styled.div`
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    img{
-        width: 50px;
-        height: 50px;
-        border-radius: 26.5px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-    }
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 26.5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 
-    .user-name{
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19px;
-        line-height: 23px;
-        color: #FFFFFF;
-    }
+  .user-name {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 23px;
+    color: #ffffff;
+  }
 
-    .user-description{
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 17px;
-        line-height: 20px;
-        color: #B7B7B7;
-    }
-`
+  .user-description {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    color: #b7b7b7;
+  }
+`;
 
 const ButtonsContainer = styled.div`
   position: absolute;
   right: 0px;
   top: 10px;
 
-  button{
+  button {
     margin-right: 10px;
     cursor: pointer;
     color: white;
     background: none;
     border: none;
   }
-`
+`;
 
 function ModalContent() {
   return (

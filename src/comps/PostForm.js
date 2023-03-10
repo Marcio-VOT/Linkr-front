@@ -18,7 +18,7 @@ export default function PostForm() {
       },
     };
 
-    const URL = `http://localhost:5000/posts`;
+    const URL = `https://linkr-api-c24e.onrender.com/posts`;
     const promise = axios.post(URL, postData, config);
 
     promise.then(() => {
