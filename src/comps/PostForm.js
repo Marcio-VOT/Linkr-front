@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function PostForm() {
-  const token = localStorage.getItem("token")
-  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function registerPost(event) {
@@ -19,9 +18,8 @@ export default function PostForm() {
       },
     };
 
-    const URL = "http://localhost:5000/posts";
-    const promise = axios.post(URL, {externalLink: postData.externalLink, 
-      description: postData.description, hashtags}, config);
+    const URL = `http://localhost:5000/posts`;
+    const promise = axios.post(URL, postData, config);
 
     promise.then(() => {
       setIsSubmitting(false);
@@ -51,7 +49,7 @@ export default function PostForm() {
     <PostFormContainer>
       <FormContent>
         <CustomerData>
-          <img src="https://static.wikia.nocookie.net/meme/images/7/72/Irineu.png/revision/latest?cb=20170223020835&path-prefix=pt-br" />
+          <img src={localStorage.getItem("avatar")} />
           <p>What are you going to share today?</p>
         </CustomerData>
         <form onSubmit={registerPost} data-test="publish-box">

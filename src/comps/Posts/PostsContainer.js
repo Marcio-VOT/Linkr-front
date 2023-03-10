@@ -15,20 +15,19 @@ export default function PostsContainer(){
             }
         }
 
-        const URL = "http://localhost:5000/posts"
+        const URL = `http://localhost:5000/posts`
         const promise = axios.get(URL, config);
 
         promise.then((res) => {
             const { data } = res;
             setPostsList([...data.posts]);
-            setHashtags([...data.hashtags]);
         });
 
         promise.catch((err) => {
             alert("An error occured while trying to fetch the posts, please refresh the page");
         });
     }, []);
-    console.log(hashtags)
+    
     function buildPostsList(){
         if(postsList.length > 0){
             return postsList.map(post => {

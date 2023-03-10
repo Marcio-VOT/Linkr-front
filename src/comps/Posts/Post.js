@@ -1,21 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
-// import urlMetadata from "url-metadata";
+import axios from "axios";
+import { BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
 
 export default function Post(props) {
+  const token = localStorage.getItem("token");
   const { id, description, external_link, name, profile_picture } = props;
   const [metadata, setMetadata] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [editedText, setEditedText] = useState(description);
+  const editTextRef = useRef(null);
 
-//   useEffect(() => {
-//     urlMetadata(external_link)
-//       .then((metadata) => {
-//         setMetadata(metadata);
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   }, []);
+  const handleEditClick = () => {
+    setEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditing(false);
+    setEditedText(description);
+  };
+
+  const handleSaveEdit = () => {
+    const description = {
+      description: `${editedText}`,
+    };
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  
+    const URL = `http://localhost:5000/posts/${id}`;
+    axios.put(URL, description, config)
+      .then((res) => {
+        alert(res.data);
+      })
+      .catch((err) => {
+        console.error("Erro ao atualizar post:", err.message);
+        alert(err.message);
+      });
+
+      setEditing(false);
+  };
+
+  const handleEditKeyDown = (event) => {
+    if (event.key === "Escape") {
+      handleCancelEdit();
+    } else if (event.key === "Enter") {
+      handleSaveEdit();
+    }
+  };
 
   return (
     <PostContainer>
@@ -51,6 +87,7 @@ const PostContainer = styled.div`
     background: #171717;
     border-radius: 16px;
     margin-bottom: 16px;
+    position: relative;
 `
 
 const CustomerData = styled.div`
@@ -83,3 +120,26 @@ const CustomerData = styled.div`
         color: #B7B7B7;
     }
 `
+
+const ButtonsContainer = styled.div`
+  position: absolute;
+  right: 0px;
+  top: 10px;
+
+  button{
+    margin-right: 10px;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+  }
+`
+
+function ModalContent() {
+  return (
+    <div>
+      <h2>Conteúdo do modal</h2>
+      <p>Texto explicativo</p>
+    </div>
+  );
+}

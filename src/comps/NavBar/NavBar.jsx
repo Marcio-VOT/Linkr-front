@@ -14,7 +14,9 @@ export const NavBar = () => {
       <Link to={"/timeline"}>
         <StyledLogo>linkr</StyledLogo>
       </Link>
-      <SearchInput search={search} setSearch={setSearch} />
+      {window.innerWidth > 600 && (
+        <SearchInput search={search} setSearch={setSearch} />
+      )}
       <NavUser log={log} setLog={setLog} />
     </StyledNav>
   );
