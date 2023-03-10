@@ -4,8 +4,9 @@ import Post from "./Post";
 import styled from "styled-components";
 
 export default function PostsContainer(){
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODMzODU1OCwiZXhwIjoxNjc4MzQ5MzU4fQ.WDrR_ZWVMCVzoueJwFprrpPg12YTfnmtrIuVMmsuZmI";
+    const token = localStorage.getItem("token");
     const [postsList, setPostsList] = useState([]);
+    const BASE_URL = "http://localhost:5000";
 
     useEffect(() => {
         const config = {
@@ -14,12 +15,12 @@ export default function PostsContainer(){
             }
         }
 
-        const URL = "http://localhost:5000/posts"
+        const URL = `${BASE_URL}/posts`
         const promise = axios.get(URL, config);
 
         promise.then((res) => {
             const { data } = res;
-            setPostsList([...data]);
+            setPostsList([...data.posts]);
         });
 
         promise.catch((err) => {
