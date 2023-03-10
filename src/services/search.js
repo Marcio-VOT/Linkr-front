@@ -8,3 +8,6 @@ export function searchApi(search) {
 export function searchUserPosts(id) {
   return axios.get(`${BASE_URL}/posts/${id}`);
 }
+export function searchUserData(id) {
+  return axios.get(`${BASE_URL}/data/${id}`);
+}

@@ -9,6 +9,6 @@ export function signIn(body) {
   return axios.post(`${BASE_URL}/signin`, body);
 }
 
-export function validToken(body){
+export function validToken(body) {
   return axios.get(`${BASE_URL}/validtoken/${body.token}`);
 }

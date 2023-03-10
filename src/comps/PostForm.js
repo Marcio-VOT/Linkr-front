@@ -8,6 +8,8 @@ export default function PostForm({updatePost, setUpdatePost}) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   function registerPost(event) {
     event.preventDefault();
+    const hashtags = [...postData.description.matchAll(/#[A-Za-z0-9]*/g)].map(e => e[0])
+    console.log(hashtags)
 
     const config = {
       headers: {
@@ -15,7 +17,7 @@ export default function PostForm({updatePost, setUpdatePost}) {
       },
     };
 
-    const URL = `http://localhost:5000/posts`;
+    const URL = `https://linkr-api-c24e.onrender.com/posts`;
     const promise = axios.post(URL, postData, config);
     setIsSubmitting(true)
     promise.then((result) => {
