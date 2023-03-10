@@ -13,7 +13,7 @@ export default function PostsContainer({ updatePost }) {
         Authorization: `Bearer ${token}`,
       },
     };
-
+    const BASE_URL = 'http://localhost:5000'
     const URL = `${BASE_URL}/posts`;
     const promise = axios.get(URL, config);
 
