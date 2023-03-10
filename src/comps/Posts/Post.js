@@ -7,14 +7,11 @@ import { useNavigate } from "react-router-dom";
 import Trendings from "../Hashtags/index.js";
 export default function Post(props) {
   const token = localStorage.getItem("token");
-  const { id, description, external_link, name, profile_picture, user_id } =
-    props;
-  const { id, description, external_link, name, profile_picture } = props;
+  const { id, description, external_link, name, profile_picture, user_id } =props;
   const [metadata, setMetadata] = useState(null);
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
   const editTextRef = useRef(null);
-  const token = localStorage.getItem("token");
   const handleEditClick = () => {
     setEditing(true);
   };
