@@ -31,8 +31,8 @@ export default function Post(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    const URL = `http://localhost:5000/posts/${id}`;
+    
+    const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
     axios
       .put(URL, description, config)
       .then((res) => {
@@ -72,7 +72,13 @@ export default function Post(props) {
         <CustomerData>
           <img src={profile_picture} />
           <div>
-            <p className="user-name" data-test="username">{name}</p>
+            <p
+              className="user-name"
+              data-test="username"
+              onClick={() => navigate(`/user/${user_id}`)}
+            >
+              {name}
+            </p>
             {editing ? (
               <textarea
                 data-test="edit-description"
@@ -82,11 +88,13 @@ export default function Post(props) {
                 onKeyDown={handleEditKeyDown}
               />
             ) : (
-              <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
-                <p className="user-description" data-test="description">
-                  {description}
-                </p>
-              </ReactTagify>
+            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
+              navigate(`/hashtag/${tag.replace('#', '')}`)
+            }}>
+              <p className="user-description" data-test="description">
+                {description}
+              </p>
+            </ReactTagify>
             )}
           </div>
         </CustomerData>
@@ -103,15 +111,6 @@ const tagStyle = {
   cursor: "pointer",
 };
 
-const Container = styled.div` 
-  display: flex;
-  gap: 15px;
-`
-
-const TrendingsContainer = styled.div`
-
-`
-
 const PostContainer = styled.div`
   display: flex;
   width: 100%;
@@ -123,34 +122,31 @@ const PostContainer = styled.div`
 `;
 
 const CustomerData = styled.div`
-  display: flex;
-  align-items: center;
-
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .user-name {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 23px;
-    color: #ffffff;
-  }
-
-  .user-description {
-    font-family: "Lato";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 20px;
-    color: #b7b7b7;
-  }
+    display: flex;
+    align-items: center;
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 26.5px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+    .user-name{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        color: #FFFFFF;
+    }
+    .user-description{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 20px;
+        color: #B7B7B7;
+    }
 `;
 
 const ButtonsContainer = styled.div`
