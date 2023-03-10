@@ -17,8 +17,8 @@ export default function PostForm({updatePost, setUpdatePost}) {
       },
     };
 
-    const URL = `https://linkr-api-c24e.onrender.com/posts`;
-    const promise = axios.post(URL, postData, config);
+    const URL = process.env.REACT_APP_API_URL;
+    const promise = axios.post(`${URL}/posts`, postData, config);
     setIsSubmitting(true)
     promise.then((result) => {
       console.log(result.data)

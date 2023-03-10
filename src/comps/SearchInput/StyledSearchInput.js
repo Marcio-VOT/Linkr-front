@@ -34,7 +34,7 @@ export const StyledSearchList = styled.div`
     text-decoration: none;
   }
   position: absolute;
-  z-index: 0;
+  z-index: -1;
   top: 0;
   width: 100%;
   padding-top: 59px;
