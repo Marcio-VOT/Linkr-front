@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import {LikeButton} from "../Like/Like.js"
 
 export default function Post(props) {
   const token = localStorage.getItem("token");
@@ -56,7 +57,7 @@ export default function Post(props) {
     }
   };
   const navigate = useNavigate();
-
+  const style = { color: "blue", fontSize: "1.5em" }
   return (
     <PostContainer>
       <div data-test="post">
@@ -70,6 +71,7 @@ export default function Post(props) {
             >
               {name}
             </p>
+            
             <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
               <p className="user-description" data-test="description">
                 {description}
@@ -77,6 +79,9 @@ export default function Post(props) {
             </ReactTagify>
           </div>
         </CustomerData>
+
+        
+        <LikeButton idPost={id} idUser={user_id}/>
         <a href={external_link} target="_blank" data-test="link">
           {metadata?.title || "aqui vai o link"}
         </a>

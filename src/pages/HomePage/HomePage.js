@@ -37,7 +37,7 @@ export default function HomePage() {
         <NavBar />
         <TimeLineContent>
           <h1>timeline</h1>
-          <LikeButton />
+          
           <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost}/>
           <PostsContainer updatePost={updatePost}/>
         </TimeLineContent>
