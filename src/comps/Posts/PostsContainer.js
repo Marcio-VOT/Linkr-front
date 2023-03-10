@@ -5,11 +5,11 @@ import styled from "styled-components";
 import Trendings from "../Hashtags";
 
 export default function PostsContainer({updatePost}){
-    const token = localStorage.getItem("token");
     const [postsList, setPostsList] = useState([]);
 
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
