@@ -4,13 +4,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function PostForm() {
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODMzODU1OCwiZXhwIjoxNjc4MzQ5MzU4fQ.WDrR_ZWVMCVzoueJwFprrpPg12YTfnmtrIuVMmsuZmI";
+  const token = localStorage.getItem("token")
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function registerPost(event) {
     event.preventDefault();
+    const hashtags = [...postData.description.matchAll(/#[A-Za-z0-9]*/g)].map(e => e[0])
+    console.log(hashtags)
 
     const config = {
       headers: {
@@ -19,7 +20,8 @@ export default function PostForm() {
     };
 
     const URL = "http://localhost:5000/posts";
-    const promise = axios.post(URL, postData, config);
+    const promise = axios.post(URL, {externalLink: postData.externalLink, 
+      description: postData.description, hashtags}, config);
 
     promise.then(() => {
       setIsSubmitting(false);

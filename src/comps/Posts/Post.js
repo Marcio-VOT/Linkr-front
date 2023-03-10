@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 // import urlMetadata from "url-metadata";
 
@@ -23,7 +24,11 @@ export default function Post(props) {
         <img src={profile_picture} />
         <div>
           <p className="user-name" data-test="username">{name}</p>
-          <p className="user-description" data-test="description">{description}</p>
+          <ReactTagify 
+            tagStyle={tagStyle}
+            tagClicked={(tag)=> alert(tag)}>
+            <p className="user-description" data-test="description">{description}</p>
+          </ReactTagify>
         </div>
       </CustomerData>
       <a href={external_link} target="_blank" data-test="link">
@@ -33,6 +38,11 @@ export default function Post(props) {
   </PostContainer>
   );
 }
+
+const tagStyle = {
+  fontWeight: 'bold',
+  cursor: 'pointer'
+};
 
 const PostContainer = styled.div`
     display: flex;
