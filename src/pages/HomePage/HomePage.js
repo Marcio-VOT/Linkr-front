@@ -9,6 +9,7 @@ import { LikeButton } from "../../comps/Like/Like.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 
 export default function HomePage() {
+  const [updatePost, setUpdatePost] = useState(false)
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
@@ -37,8 +38,8 @@ export default function HomePage() {
         <TimeLineContent>
           <h1>timeline</h1>
           <LikeButton />
-          <PostForm />
-          <PostsContainer />
+          <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost}/>
+          <PostsContainer updatePost={updatePost}/>
         </TimeLineContent>
       </HomePageContainer>
     </>

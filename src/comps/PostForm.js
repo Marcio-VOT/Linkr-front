@@ -3,10 +3,9 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function PostForm() {
+export default function PostForm({updatePost, setUpdatePost}) {
   const token = localStorage.getItem("token");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   function registerPost(event) {
     event.preventDefault();
     const hashtags = [...postData.description.matchAll(/#[A-Za-z0-9]*/g)].map(e => e[0])
@@ -20,15 +19,17 @@ export default function PostForm() {
 
     const URL = `https://linkr-api-c24e.onrender.com/posts`;
     const promise = axios.post(URL, postData, config);
-
-    promise.then(() => {
-      setIsSubmitting(false);
+    setIsSubmitting(true)
+    promise.then((result) => {
+      console.log(result.data)
+      setUpdatePost(!updatePost)
       setPostData({ externalLink: "", description: "" });
+      setIsSubmitting(false)
     });
 
     promise.catch(() => {
       alert("There was an error publishing your link.");
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     });
   }
 
