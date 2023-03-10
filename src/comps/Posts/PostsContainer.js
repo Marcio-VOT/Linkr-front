@@ -31,11 +31,19 @@ export default function PostsContainer({updatePost}){
   function buildPostsList() {
     if (postsList.length > 0) {
       return postsList.map((post) => {
-        const { id, description, external_link, name, profile_picture } = post;
+        const {
+          id,
+          description,
+          external_link,
+          name,
+          profile_picture,
+          user_id,
+        } = post;
         return (
           <Post
             key={id}
             id={id}
+            user_id={user_id}
             description={description}
             external_link={external_link}
             name={name}

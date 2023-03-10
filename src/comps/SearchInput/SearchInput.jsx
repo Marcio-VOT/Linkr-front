@@ -9,6 +9,7 @@ export const SearchInput = ({ search, setSearch }) => {
   return (
     <StyledSearchInput>
       <DebounceInput
+        data-test="search"
         value={search}
         debounceTimeout={300}
         onChange={(e) => {
@@ -32,7 +33,7 @@ export const SearchInput = ({ search, setSearch }) => {
         <StyledSearchList>
           {userList.map((u) => {
             return (
-              <Link to={`/user/${u.id}`}>
+              <Link to={`/user/${u.id}`} key={u.id} data-test="user-search">
                 <div
                   onClick={() => {
                     setSearch("");

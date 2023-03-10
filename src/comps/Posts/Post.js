@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Post(props) {
   const token = localStorage.getItem("token");
-  const { id, description, external_link, name, profile_picture } = props;
+  const { id, description, external_link, name, profile_picture, user_id } =
+    props;
   const [metadata, setMetadata] = useState(null);
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
@@ -65,7 +66,7 @@ export default function Post(props) {
             <p
               className="user-name"
               data-test="username"
-              onClick={() => navigate(`/user/${id}`)}
+              onClick={() => navigate(`/user/${user_id}`)}
             >
               {name}
             </p>
