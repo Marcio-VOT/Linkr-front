@@ -3,10 +3,9 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function PostForm() {
+export default function PostForm({updatePost, setUpdatePost}) {
   const token = localStorage.getItem("token");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   function registerPost(event) {
     event.preventDefault();
 
@@ -18,15 +17,17 @@ export default function PostForm() {
 
     const URL = `http://localhost:5000/posts`;
     const promise = axios.post(URL, postData, config);
-
-    promise.then(() => {
-      setIsSubmitting(false);
+    setIsSubmitting(true)
+    promise.then((result) => {
+      console.log(result.data)
+      setUpdatePost(!updatePost)
       setPostData({ externalLink: "", description: "" });
+      setIsSubmitting(false)
     });
 
     promise.catch(() => {
       alert("There was an error publishing your link.");
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     });
   }
 

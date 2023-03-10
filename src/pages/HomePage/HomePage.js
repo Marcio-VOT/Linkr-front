@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import styled from "styled-components";
@@ -8,6 +8,7 @@ import { validToken } from "../../services/apiAuth.js";
 import { LikeButton } from "../../comps/Like/Like.js";
 
 export default function HomePage() {
+  const [updatePost, setUpdatePost] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,8 +30,8 @@ export default function HomePage() {
       <TimeLineContent>
         <h1>timeline</h1>
                 <LikeButton />
-        <PostForm />
-        <PostsContainer />
+        <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost}/>
+        <PostsContainer updatePost={updatePost} />
       </TimeLineContent>
     </HomePageContainer>
   );

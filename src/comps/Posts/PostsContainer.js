@@ -3,7 +3,7 @@ import axios from "axios";
 import Post from "./Post";
 import styled from "styled-components";
 
-export default function PostsContainer(){
+export default function PostsContainer({updatePost}){
     const token = localStorage.getItem("token");
     const [postsList, setPostsList] = useState([]);
 
@@ -18,6 +18,7 @@ export default function PostsContainer(){
         const promise = axios.get(URL, config);
 
         promise.then((res) => {
+            console.log(res.data)
             const { data } = res;
             setPostsList([...data.posts]);
         });
@@ -25,7 +26,7 @@ export default function PostsContainer(){
         promise.catch((err) => {
             alert("An error occured while trying to fetch the posts, please refresh the page");
         });
-    }, [postsList]);
+    }, [updatePost]);
 
     function buildPostsList(){
         if(postsList.length > 0){
