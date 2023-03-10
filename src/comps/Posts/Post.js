@@ -68,7 +68,9 @@ export default function Post(props) {
             >
               {name}
             </p>
-            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
+            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
+              navigate(`/hashtag/${tag.replace('#', '')}`)
+            }}>
               <p className="user-description" data-test="description">
                 {description}
               </p>
@@ -91,10 +93,6 @@ const tagStyle = {
 const Container = styled.div` 
   display: flex;
   gap: 15px;
-`
-
-const TrendingsContainer = styled.div`
-
 `
 
 const PostContainer = styled.div`
