@@ -3,10 +3,11 @@ import axios from "axios";
 import Post from "./Post";
 import styled from "styled-components";
 
-export default function PostsContainer(){
-    const token = localStorage.getItem("token")
-    const [postsList, setPostsList] = useState([]);
-    const [hashtags, setHashtags] = useState([]);
+export default function PostsContainer() {
+  const token = localStorage.getItem("token");
+  const [postsList, setPostsList] = useState([]);
+  const [hashtags, setHashtags] = useState([]);
+  const BASE_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const config = {
@@ -49,27 +50,6 @@ export default function PostsContainer(){
       return <p>there are no posts yet!</p>;
     }
   }
-        promise.catch((err) => {
-            alert("An error occured while trying to fetch the posts, please refresh the page");
-        });
-    }, []);
-    
-    function buildPostsList(){
-        if(postsList.length > 0){
-            return postsList.map(post => {
-                const { id, description, external_link, name, profile_picture } = post;
-                return <Post 
-                            key={id} 
-                            id={id} 
-                            description={description} 
-                            external_link={external_link} 
-                            name={name}
-                            profile_picture={profile_picture}/>
-            })
-        } else {
-            return <p>there are no posts yet!</p>
-        }
-    }
 
   return <PostsList>{buildPostsList()}</PostsList>;
 }
