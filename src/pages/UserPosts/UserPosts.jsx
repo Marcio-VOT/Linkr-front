@@ -10,6 +10,7 @@ import {
 import { searchUserData, searchUserPosts } from "../../services/search.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import PostsContainer from "../../comps/Posts/PostsContainer.js";
+import UserPostList from "../../comps/UserPostsList/UserPostsList.jsx";
 
 export default function UserPosts() {
   const navigate = useNavigate();
@@ -32,9 +33,9 @@ export default function UserPosts() {
     }
     async function getUserPosts() {
       try {
-        console.log(id);
         const { data } = await searchUserPosts(id);
-        data[0] && setPosts((data) => data);
+        data[0] ? setPosts(data) : setPosts([]);
+        console.log(data);
       } catch (error) {
         alert(error.response.data);
       }
@@ -52,7 +53,7 @@ export default function UserPosts() {
     validateToken();
     getUserData();
     getUserPosts();
-  }, []);
+  }, [useParams().id]);
 
   return (
     <>
@@ -68,7 +69,11 @@ export default function UserPosts() {
             <img src={img} alt="profile picture" />
             <h1>{name ? `${name}'s posts` : "timeline"}</h1>
           </div>
-          <PostsContainer />
+          {posts ? (
+            <UserPostList posts={posts} name={name} img={img} />
+          ) : (
+            <UserPostList posts={posts} name={name} img={img} />
+          )}
         </TimeLineContent>
       </HomePageContainer>
     </>

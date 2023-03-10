@@ -6,6 +6,9 @@ import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Trendings from "../Hashtags/index.js";
 export default function Post(props) {
+  const token = localStorage.getItem("token");
+  const { id, description, external_link, name, profile_picture, user_id } =
+    props;
   const { id, description, external_link, name, profile_picture } = props;
   const [metadata, setMetadata] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -56,32 +59,30 @@ export default function Post(props) {
   const navigate = useNavigate();
   
   return (
-    <Container>    
-      <PostContainer>
-        <div data-test="post">
-          <CustomerData>
-            <img src={profile_picture} />
-            <div>
-              <p
-                className="user-name"
-                data-test="username"
-                onClick={() => navigate(`/user/${id}`)}
-              >
-                {name}
+    <PostContainer>
+      <div data-test="post">
+        <CustomerData>
+          <img src={profile_picture} />
+          <div>
+            <p
+              className="user-name"
+              data-test="username"
+              onClick={() => navigate(`/user/${user_id}`)}
+            >
+              {name}
+            </p>
+            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
+              <p className="user-description" data-test="description">
+                {description}
               </p>
-              <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
-                <p className="user-description" data-test="description">
-                  {description}
-                </p>
-              </ReactTagify>
-            </div>
-          </CustomerData>
-          <a href={external_link} target="_blank" data-test="link">
-            {metadata?.title || "aqui vai o link"}
-          </a>
-        </div>
-      </PostContainer>
-    </Container>
+            </ReactTagify>
+          </div>
+        </CustomerData>
+        <a href={external_link} target="_blank" data-test="link">
+          {metadata?.title || "aqui vai o link"}
+        </a>
+      </div>
+    </PostContainer>
   );
 }
 
