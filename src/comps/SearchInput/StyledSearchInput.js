@@ -2,11 +2,11 @@ import styled from "styled-components";
 import searchImage from "../../assets/images/search.png";
 
 export const StyledSearchInput = styled.div`
-  width: 40%;
+  width: ${window.innerWidth <= 600 ? "95%" : "40%"};
   position: relative;
+  margin: auto;
 
   input {
-    z-index: 2;
     width: 100%;
     margin: auto;
     height: 45px;
@@ -34,8 +34,8 @@ export const StyledSearchList = styled.div`
     text-decoration: none;
   }
   position: absolute;
+  z-index: 0;
   top: 0;
-  z-index: -1;
   width: 100%;
   padding-top: 59px;
   background: #e7e7e7;
