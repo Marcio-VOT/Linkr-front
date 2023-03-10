@@ -4,16 +4,14 @@ import styled from "styled-components";
 import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-
+import Trendings from "../Hashtags/index.js";
 export default function Post(props) {
   const token = localStorage.getItem("token");
-  const { id, description, external_link, name, profile_picture, user_id } =
-    props;
+  const { id, description, external_link, name, profile_picture, user_id } =props;
   const [metadata, setMetadata] = useState(null);
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
   const editTextRef = useRef(null);
-
   const handleEditClick = () => {
     setEditing(true);
   };
@@ -56,7 +54,7 @@ export default function Post(props) {
     }
   };
   const navigate = useNavigate();
-
+  
   return (
     <PostContainer>
       <div data-test="post">
@@ -89,6 +87,15 @@ const tagStyle = {
   fontWeight: "bold",
   cursor: "pointer",
 };
+
+const Container = styled.div` 
+  display: flex;
+  gap: 15px;
+`
+
+const TrendingsContainer = styled.div`
+
+`
 
 const PostContainer = styled.div`
   display: flex;
