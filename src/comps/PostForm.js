@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 export default function PostForm() {
   const token = localStorage.getItem("token");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const BASE_URL = "http://localhost:5000";
 
   function registerPost(event) {
     event.preventDefault();
@@ -17,7 +16,7 @@ export default function PostForm() {
       },
     };
 
-    const URL = `${BASE_URL}/posts`;
+    const URL = `http://localhost:5000/posts`;
     const promise = axios.post(URL, postData, config);
 
     promise.then(() => {

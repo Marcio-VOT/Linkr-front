@@ -5,7 +5,6 @@ import { BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
 
 export default function Post(props) {
   const token = localStorage.getItem("token");
-  const BASE_URL = "http://localhost:5000";
   const { id, description, external_link, name, profile_picture } = props;
   const [metadata, setMetadata] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -32,7 +31,7 @@ export default function Post(props) {
       },
     };
   
-    const URL = `${BASE_URL}/posts/${id}`;
+    const URL = `http://localhost:5000/posts/${id}`;
     axios.put(URL, description, config)
       .then((res) => {
         alert(res.data);
@@ -65,7 +64,7 @@ export default function Post(props) {
           ) : (
             <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
           )}
-          <button data-test="delete-btn"><BsFillTrashFill /></button>
+          <button data-test="delete-btn"><BsFillTrashFill/></button>
         </ButtonsContainer>
         <CustomerData>
           <img src={profile_picture} />
@@ -147,3 +146,12 @@ const ButtonsContainer = styled.div`
     border: none;
   }
 `
+
+function ModalContent() {
+  return (
+    <div>
+      <h2>Conteúdo do modal</h2>
+      <p>Texto explicativo</p>
+    </div>
+  );
+}

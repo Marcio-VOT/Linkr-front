@@ -6,7 +6,6 @@ import styled from "styled-components";
 export default function PostsContainer(){
     const token = localStorage.getItem("token");
     const [postsList, setPostsList] = useState([]);
-    const BASE_URL = "http://localhost:5000";
 
     useEffect(() => {
         const config = {
@@ -15,7 +14,7 @@ export default function PostsContainer(){
             }
         }
 
-        const URL = `${BASE_URL}/posts`
+        const URL = `http://localhost:5000/posts`
         const promise = axios.get(URL, config);
 
         promise.then((res) => {
