@@ -4,15 +4,14 @@ import styled from "styled-components";
 import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-
+import Trendings from "../Hashtags/index.js";
 export default function Post(props) {
-  const token = localStorage.getItem("token");
   const { id, description, external_link, name, profile_picture } = props;
   const [metadata, setMetadata] = useState(null);
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
   const editTextRef = useRef(null);
-
+  const token = localStorage.getItem("token");
   const handleEditClick = () => {
     setEditing(true);
   };
@@ -55,32 +54,34 @@ export default function Post(props) {
     }
   };
   const navigate = useNavigate();
-
+  
   return (
-    <PostContainer>
-      <div data-test="post">
-        <CustomerData>
-          <img src={profile_picture} />
-          <div>
-            <p
-              className="user-name"
-              data-test="username"
-              onClick={() => navigate(`/user/${id}`)}
-            >
-              {name}
-            </p>
-            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
-              <p className="user-description" data-test="description">
-                {description}
+    <Container>    
+      <PostContainer>
+        <div data-test="post">
+          <CustomerData>
+            <img src={profile_picture} />
+            <div>
+              <p
+                className="user-name"
+                data-test="username"
+                onClick={() => navigate(`/user/${id}`)}
+              >
+                {name}
               </p>
-            </ReactTagify>
-          </div>
-        </CustomerData>
-        <a href={external_link} target="_blank" data-test="link">
-          {metadata?.title || "aqui vai o link"}
-        </a>
-      </div>
-    </PostContainer>
+              <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
+                <p className="user-description" data-test="description">
+                  {description}
+                </p>
+              </ReactTagify>
+            </div>
+          </CustomerData>
+          <a href={external_link} target="_blank" data-test="link">
+            {metadata?.title || "aqui vai o link"}
+          </a>
+        </div>
+      </PostContainer>
+    </Container>
   );
 }
 
@@ -88,6 +89,15 @@ const tagStyle = {
   fontWeight: "bold",
   cursor: "pointer",
 };
+
+const Container = styled.div` 
+  display: flex;
+  gap: 15px;
+`
+
+const TrendingsContainer = styled.div`
+
+`
 
 const PostContainer = styled.div`
   display: flex;

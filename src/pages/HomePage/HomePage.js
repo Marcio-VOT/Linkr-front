@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
+import axios from "axios";
 import styled from "styled-components";
 import PostForm from "../../comps/PostForm.js";
 import PostsContainer from "../../comps/Posts/PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
 import { LikeButton } from "../../comps/Like/Like.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
+import Trendings from "../../comps/Hashtags/index.js";
 
 export default function HomePage() {
   const [updatePost, setUpdatePost] = useState(false)
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-
+  const [hashtagsList, setHashtagsList] = useState([]);
+  const token = localStorage.getItem("token");
   useEffect(() => {
     async function validateToken() {
       try {
-        const token = localStorage.getItem("token");
         await validToken({ token });
       } catch (error) {
         navigate("/");
@@ -25,6 +27,43 @@ export default function HomePage() {
 
     validateToken();
   }, []);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const BASE_URL = process.env.REACT_APP_API_URL
+    const URL = `${BASE_URL}/posts`;
+    const promise = axios.get(URL, config);
+
+        promise.then((res) => {
+            console.log(res.data)
+            const { data } = res;
+            setHashtagsList([...data.hashtags])
+        });
+
+        promise.catch((err) => {
+            alert("An error occured while trying to fetch the posts, please refresh the page");
+        });
+    }, []);
+
+    function buildTrendings() {
+      if (hashtagsList.length > 0) {
+        return hashtagsList.map((hashtag) => {
+          return (
+            <Trendings
+              key={hashtag.id}
+              hashtag = {hashtag.hashtag}
+            />
+          );
+        });
+      } else {
+        return <p>there are no trendings yet!</p>;
+      }
+    }
+
 
   return (
     <>
@@ -38,7 +77,19 @@ export default function HomePage() {
         <TimeLineContent>
           <h1>timeline</h1>
           <LikeButton />
+          <div>
           <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost}/>
+          <TrendingsContainer>
+            <Title>
+              <h1>trending</h1>
+            </Title>
+            <Container>
+              <div>
+                {buildTrendings()}
+              </div>
+            </Container>
+          </TrendingsContainer>
+          </div>
           <PostsContainer updatePost={updatePost}/>
         </TimeLineContent>
       </HomePageContainer>
@@ -83,4 +134,42 @@ const SearchContainer = styled.div`
 const TimeLineContent = styled.div`
   margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
   width: 50%;
+  div {
+    display: flex;
+  }
+
 `;
+
+const TrendingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 160px;
+`
+
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  height : 61px;
+  width: 301px;
+  background-color: #171717;
+  border-start-start-radius: 25px;
+  border-start-end-radius: 25px;
+  border-bottom: solid 1px #484848;
+  h1 {
+    margin-left:16px;
+  }
+`
+
+const Container = styled.div`
+  background-color: #171717;
+  border-end-start-radius: 25px;
+  border-end-end-radius: 25px;
+
+  
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+  }
+`

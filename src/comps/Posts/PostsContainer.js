@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Post from "./Post";
 import styled from "styled-components";
+import Trendings from "../Hashtags";
 
 export default function PostsContainer({updatePost}){
     const token = localStorage.getItem("token");
     const [postsList, setPostsList] = useState([]);
+
 
   useEffect(() => {
     const config = {
@@ -13,7 +15,7 @@ export default function PostsContainer({updatePost}){
         Authorization: `Bearer ${token}`,
       },
     };
-
+    const BASE_URL = process.env.REACT_APP_API_URL
     const URL = `${BASE_URL}/posts`;
     const promise = axios.get(URL, config);
 
@@ -40,7 +42,6 @@ export default function PostsContainer({updatePost}){
             external_link={external_link}
             name={name}
             profile_picture={profile_picture}
-            setBoole={setBoole}
           />
         );
       });
@@ -49,10 +50,15 @@ export default function PostsContainer({updatePost}){
     }
   }
 
-  return <PostsList>{buildPostsList()}</PostsList>;
+  
+
+  return <PostsList>
+      {buildPostsList()}
+    </PostsList>;
 }
 
 const PostsList = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
