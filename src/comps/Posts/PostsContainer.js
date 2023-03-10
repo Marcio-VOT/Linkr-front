@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Post from "./Post";
 import styled from "styled-components";
-
-export default function PostsContainer({updatePost}){
-    const token = localStorage.getItem("token");
-    const [postsList, setPostsList] = useState([]);
+import { BASE_URL } from "../../constants/constants";
+export default function PostsContainer({ updatePost }) {
+  const token = localStorage.getItem("token");
+  const [postsList, setPostsList] = useState([]);
 
   useEffect(() => {
     const config = {
@@ -17,16 +17,18 @@ export default function PostsContainer({updatePost}){
     const URL = `${BASE_URL}/posts`;
     const promise = axios.get(URL, config);
 
-        promise.then((res) => {
-            console.log(res.data)
-            const { data } = res;
-            setPostsList([...data.posts]);
-        });
+    promise.then((res) => {
+      console.log(res.data);
+      const { data } = res;
+      setPostsList([...data.posts]);
+    });
 
-        promise.catch((err) => {
-            alert("An error occured while trying to fetch the posts, please refresh the page");
-        });
-    }, [updatePost]);
+    promise.catch((err) => {
+      alert(
+        "An error occured while trying to fetch the posts, please refresh the page"
+      );
+    });
+  }, [updatePost]);
 
   function buildPostsList() {
     if (postsList.length > 0) {
@@ -48,7 +50,6 @@ export default function PostsContainer({updatePost}){
             external_link={external_link}
             name={name}
             profile_picture={profile_picture}
-            setBoole={setBoole}
           />
         );
       });
