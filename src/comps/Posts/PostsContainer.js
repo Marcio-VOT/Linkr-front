@@ -13,7 +13,7 @@ export default function PostsContainer({updatePost}){
         Authorization: `Bearer ${token}`,
       },
     };
-
+    const BASE_URL = 'http://localhost:5000'
     const URL = `${BASE_URL}/posts`;
     const promise = axios.get(URL, config);
 
@@ -40,7 +40,6 @@ export default function PostsContainer({updatePost}){
             external_link={external_link}
             name={name}
             profile_picture={profile_picture}
-            setBoole={setBoole}
           />
         );
       });
