@@ -58,21 +58,36 @@ export default function Post(props) {
   return (
     <PostContainer>
       <div data-test="post">
+      <ButtonsContainer>
+          {editing ? (
+            <>
+              <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
+              <button data-test="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+            </>
+          ) : (
+            <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
+          )}
+          <button data-test="delete-btn"><BsFillTrashFill/></button>
+        </ButtonsContainer>
         <CustomerData>
           <img src={profile_picture} />
           <div>
-            <p
-              className="user-name"
-              data-test="username"
-              onClick={() => navigate(`/user/${user_id}`)}
-            >
-              {name}
-            </p>
-            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
-              <p className="user-description" data-test="description">
-                {description}
-              </p>
-            </ReactTagify>
+            <p className="user-name" data-test="username">{name}</p>
+            {editing ? (
+              <textarea
+                data-test="edit-description"
+                ref={editTextRef}
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+                onKeyDown={handleEditKeyDown}
+              />
+            ) : (
+              <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>
+                <p className="user-description" data-test="description">
+                  {description}
+                </p>
+              </ReactTagify>
+            )}
           </div>
         </CustomerData>
         <a href={external_link} target="_blank" data-test="link">
