@@ -62,7 +62,11 @@ export default function Post(props) {
         <CustomerData>
           <img src={profile_picture} />
           <div>
-            <p className="user-name" data-test="username">
+            <p
+              className="user-name"
+              data-test="username"
+              onClick={() => navigate(`/user/${id}`)}
+            >
               {name}
             </p>
             <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => alert(tag)}>

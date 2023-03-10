@@ -8,6 +8,7 @@ export default function PostsContainer() {
   const [postsList, setPostsList] = useState([]);
   const [hashtags, setHashtags] = useState([]);
   const BASE_URL = process.env.REACT_APP_API_URL;
+  const [boole, setBoole] = useState(false);
 
   useEffect(() => {
     const config = {
@@ -29,7 +30,7 @@ export default function PostsContainer() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
-  }, []);
+  }, [boole]);
 
   function buildPostsList() {
     if (postsList.length > 0) {
@@ -43,6 +44,7 @@ export default function PostsContainer() {
             external_link={external_link}
             name={name}
             profile_picture={profile_picture}
+            setBoole={setBoole}
           />
         );
       });
