@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
@@ -54,43 +55,30 @@ export default function Post(props) {
 
   return (
     <PostContainer>
-      <div data-test="post">
-        <ButtonsContainer>
-          {editing ? (
-            <>
-              <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
-              <button data-test="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
-            </>
-          ) : (
-            <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
-          )}
-          <button data-test="delete-btn"><BsFillTrashFill/></button>
-        </ButtonsContainer>
-        <CustomerData>
-          <img src={profile_picture} />
-          <div>
-            <p className="user-name" data-test="username">{name}</p>
-            {editing ? (
-              <textarea
-                data-test="edit-description"
-                ref={editTextRef}
-                value={editedText}
-                onChange={(e) => setEditedText(e.target.value)}
-                onKeyDown={handleEditKeyDown}
-              />
-            ) : (
-              <p className="user-description" data-test="description">{description}</p>
-            )}
-          </div>
-        </CustomerData>
-        <a href={external_link} target="_blank" data-test="link">
-          {metadata?.title || "aqui vai o link"}
-        </a>
-      </div>
-    </PostContainer>
+    <div data-test="post">
+      <CustomerData>
+        <img src={profile_picture} />
+        <div>
+          <p className="user-name" data-test="username">{name}</p>
+          <ReactTagify 
+            tagStyle={tagStyle}
+            tagClicked={(tag)=> alert(tag)}>
+            <p className="user-description" data-test="description">{description}</p>
+          </ReactTagify>
+        </div>
+      </CustomerData>
+      <a href={external_link} target="_blank" data-test="link">
+        {metadata?.title || "aqui vai o link"}
+      </a>
+    </div>
+  </PostContainer>
   );
 }
 
+const tagStyle = {
+  fontWeight: 'bold',
+  cursor: 'pointer'
+};
 
 const PostContainer = styled.div`
     display: flex;

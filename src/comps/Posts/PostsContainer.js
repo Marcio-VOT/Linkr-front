@@ -4,8 +4,9 @@ import Post from "./Post";
 import styled from "styled-components";
 
 export default function PostsContainer(){
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token")
     const [postsList, setPostsList] = useState([]);
+    const [hashtags, setHashtags] = useState([]);
 
     useEffect(() => {
         const config = {
@@ -25,8 +26,8 @@ export default function PostsContainer(){
         promise.catch((err) => {
             alert("An error occured while trying to fetch the posts, please refresh the page");
         });
-    }, [postsList]);
-
+    }, []);
+    
     function buildPostsList(){
         if(postsList.length > 0){
             return postsList.map(post => {

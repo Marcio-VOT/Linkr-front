@@ -9,6 +9,8 @@ export default function PostForm() {
 
   function registerPost(event) {
     event.preventDefault();
+    const hashtags = [...postData.description.matchAll(/#[A-Za-z0-9]*/g)].map(e => e[0])
+    console.log(hashtags)
 
     const config = {
       headers: {
