@@ -3,9 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import axios from "axios";
 import styled from "styled-components";
-import PostsContainer from "../../comps/Posts/PostsContainer.js";
+import PostsContainer from "./PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
-import { LikeButton } from "../../comps/Like/Like.js";
 import Trendings from "../../comps/Hashtags/index.js";
 
 export default function Hashtag() {
@@ -38,7 +37,6 @@ export default function Hashtag() {
     const promise = axios.get(URL, config);
 
         promise.then((res) => {
-            console.log(res.data)
             const { data } = res;
             setHashtagsList([...data.hashtags])
         });
@@ -71,7 +69,7 @@ export default function Hashtag() {
         <TimeLineContent>
           <h1># {hashtag}</h1>
           <span>
-          <PostsContainer updatePost={updatePost}/>
+          <PostsContainer hashtag={hashtag} updatePost={updatePost}/>
           <TrendingsContainer>
             <Title>
               <h1>trending</h1>
