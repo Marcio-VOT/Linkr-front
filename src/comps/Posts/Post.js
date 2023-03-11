@@ -1,17 +1,23 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+import LinkPreview from "../LinkPreview/LinkPreview";
 import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import Trendings from "../Hashtags/index.js";
+import { LikeButton } from "../Like/Like";
+
 export default function Post(props) {
+
   const token = localStorage.getItem("token");
-  const { id, description, external_link, name, profile_picture, user_id } =props;
-  const [metadata, setMetadata] = useState(null);
+  const { id, description, external_link, name, profile_picture, user_id } = props;
+
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
+  const navigate = useNavigate();
+
   const editTextRef = useRef(null);
+
   const handleEditClick = () => {
     setEditing(true);
   };
@@ -31,7 +37,7 @@ export default function Post(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-    
+
     const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
     axios
       .put(URL, description, config)
@@ -53,24 +59,27 @@ export default function Post(props) {
       handleSaveEdit();
     }
   };
-  const navigate = useNavigate();
-  
+
+
   return (
-    <PostContainer>
-      <div data-test="post">
+    <PostContainer data-test="post">
       <ButtonsContainer>
-          {editing ? (
-            <>
-              <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
-              <button data-test="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
-            </>
-          ) : (
-            <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
-          )}
-          <button data-test="delete-btn"><BsFillTrashFill/></button>
-        </ButtonsContainer>
-        <CustomerData>
+        {editing ? (
+          <>
+            <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
+            <button data-test="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+          </>
+        ) : (
+          <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
+        )}
+        <button data-test="delete-btn"><BsFillTrashFill /></button>
+      </ButtonsContainer>
+      <CustomerData>
+        <ImageLike>
           <img src={profile_picture} />
+          <LikeButton />
+        </ImageLike>
+        <Container>
           <div>
             <p
               className="user-name"
@@ -88,20 +97,18 @@ export default function Post(props) {
                 onKeyDown={handleEditKeyDown}
               />
             ) : (
-            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
-              navigate(`/hashtag/${tag.replace('#', '')}`)
-            }}>
-              <p className="user-description" data-test="description">
-                {description}
-              </p>
-            </ReactTagify>
+              <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
+                navigate(`/hashtag/${tag.replace('#', '')}`)
+              }}>
+                <p className="user-description" data-test="description">
+                  {description}
+                </p>
+              </ReactTagify>
             )}
           </div>
-        </CustomerData>
-        <a href={external_link} target="_blank" data-test="link">
-          {metadata?.title || "aqui vai o link"}
-        </a>
-      </div>
+          <LinkPreview url={external_link} />
+        </Container>
+      </CustomerData>
     </PostContainer>
   );
 }
@@ -111,9 +118,23 @@ const tagStyle = {
   cursor: "pointer",
 };
 
+const ImageLike = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+`
+
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
 const PostContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 100vw;
+  max-width: 611px;
   padding: 20px;
   background: #171717;
   border-radius: 16px;
@@ -122,8 +143,10 @@ const PostContainer = styled.div`
 `;
 
 const CustomerData = styled.div`
+    width: 100%;
     display: flex;
-    align-items: center;
+    gap: 18px;
+
     img{
         width: 50px;
         height: 50px;
