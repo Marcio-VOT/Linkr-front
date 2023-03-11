@@ -6,7 +6,6 @@ import styled from "styled-components";
 import PostForm from "../../comps/PostForm.js";
 import PostsContainer from "../../comps/Posts/PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
-import { LikeButton } from "../../comps/Like/Like.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
 
