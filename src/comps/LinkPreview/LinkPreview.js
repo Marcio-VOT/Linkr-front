@@ -62,6 +62,7 @@ const ImageArea = styled.div`
     background-image: url(${props => props.url});
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #ffffff;
 `
 
 const LinkData = styled.div`
@@ -69,16 +70,17 @@ const LinkData = styled.div`
     width: 70%;
     flex-direction: column;
     padding: 20px;
-    border-top: 1px solid #ffffff;
-    border-bottom: 1px solid #ffffff;
-    border-left: 1px solid #ffffff;
+    border-top: 1px solid #4D4D4D;
+    border-bottom: 1px solid #4D4D4D;
+    border-left: 1px solid #4D4D4D;
     border-bottom-left-radius: 11px;
     border-top-left-radius: 11px;
 
     p {
         text-overflow: ellipsis;
-        color: #ffffff;
+        color: #9B9595;
         font-size: 11px;
+        font-family: "Lato", sans-serif;
     }
 
     p:last-child {
@@ -90,5 +92,6 @@ const LinkData = styled.div`
         font-size: 16px;
         line-height: 19px;
         margin-bottom: 5px;
+        font-family: "Lato", sans-serif;
     }
 `
