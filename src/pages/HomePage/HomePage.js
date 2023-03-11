@@ -124,7 +124,7 @@ const SearchContainer = styled.div`
 
 const TimeLineContent = styled.div`
   display: flex;
-  gap: 40px;
+  gap: 25px;
   margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
 `;
 
@@ -145,7 +145,6 @@ const Feed = styled.div`
 const TrendingsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 160px;
 `
 
 const Title = styled.div`
