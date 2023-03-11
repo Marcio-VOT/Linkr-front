@@ -29,6 +29,7 @@ export default function LinkPreview({url}){
         )
     }
     return(
+        <LinkDirect href={url} target='_blank'>
         <ContainerLinkData>
             <LinkData>
             <h2>{metadata.meta.title}</h2>
@@ -37,6 +38,7 @@ export default function LinkPreview({url}){
             </LinkData>
             <ImageArea url={metadata.og.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE1BFq0h-RvrEBWCMPudD2QMYcG2BDJVDYNw&usqp=CAU"}></ImageArea>
         </ContainerLinkData>
+        </LinkDirect>
     )
 }
 
@@ -48,6 +50,10 @@ const ContainerLinkData = styled.div`
     max-width: 550px;
     background-color: #171717;
 `
+const LinkDirect = styled.a`
+    text-decoration: none;
+`
+
 const ImageArea = styled.div`
     height: 100%;
     width: 30%;
