@@ -25,9 +25,7 @@ export default function HomePage() {
     }
 
     validateToken();
-  }, []);
 
-  useEffect(() => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
