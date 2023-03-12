@@ -30,9 +30,10 @@ export default function Post(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-  
-    const URL = `http://localhost:5000/posts/${id}`;
-    axios.put(URL, description, config)
+    
+    const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
+    axios
+      .put(URL, description, config)
       .then((res) => {
         alert(res.data);
       })
@@ -55,7 +56,7 @@ export default function Post(props) {
   return (
     <PostContainer>
       <div data-test="post">
-        <ButtonsContainer>
+      <ButtonsContainer>
           {editing ? (
             <>
               <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
@@ -69,7 +70,13 @@ export default function Post(props) {
         <CustomerData>
           <img src={profile_picture} />
           <div>
-            <p className="user-name" data-test="username">{name}</p>
+            <p
+              className="user-name"
+              data-test="username"
+              onClick={() => navigate(`/user/${user_id}`)}
+            >
+              {name}
+            </p>
             {editing ? (
               <textarea
                 data-test="edit-description"
@@ -79,7 +86,13 @@ export default function Post(props) {
                 onKeyDown={handleEditKeyDown}
               />
             ) : (
-              <p className="user-description" data-test="description">{description}</p>
+            <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
+              navigate(`/hashtag/${tag.replace('#', '')}`)
+            }}>
+              <p className="user-description" data-test="description">
+                {description}
+              </p>
+            </ReactTagify>
             )}
           </div>
         </CustomerData>
@@ -91,6 +104,10 @@ export default function Post(props) {
   );
 }
 
+const tagStyle = {
+  fontWeight: "bold",
+  cursor: "pointer",
+};
 
 const PostContainer = styled.div`
     display: flex;
@@ -105,7 +122,6 @@ const PostContainer = styled.div`
 const CustomerData = styled.div`
     display: flex;
     align-items: center;
-
     img{
         width: 50px;
         height: 50px;
@@ -113,7 +129,6 @@ const CustomerData = styled.div`
         margin-right: 10px;
         margin-bottom: 10px;
     }
-
     .user-name{
         font-family: 'Lato';
         font-style: normal;
@@ -122,7 +137,6 @@ const CustomerData = styled.div`
         line-height: 23px;
         color: #FFFFFF;
     }
-
     .user-description{
         font-family: 'Lato';
         font-style: normal;
@@ -131,7 +145,7 @@ const CustomerData = styled.div`
         line-height: 20px;
         color: #B7B7B7;
     }
-`
+`;
 
 const ButtonsContainer = styled.div`
   position: absolute;

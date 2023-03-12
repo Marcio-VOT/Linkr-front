@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Post from "./Post";
+import Post from "../../comps/Posts/Post";
 import styled from "styled-components";
 
-export default function PostsContainer(){
+
+export default function PostsContainer(props){
+    const {hashtag} = props
+    console.log(hashtag)
     const token = localStorage.getItem("token");
     const [postsList, setPostsList] = useState([]);
 
@@ -14,12 +17,13 @@ export default function PostsContainer(){
             }
         }
 
-        const URL = `${process.env.REACT_APP_API_URL}/posts`
+        const URL = `${process.env.REACT_APP_API_URL}/hashtag/${hashtag}`
         const promise = axios.get(URL, config);
 
         promise.then((res) => {
             const { data } = res;
-            setPostsList([...data.posts]);
+            console.log(data)
+            setPostsList([...data.hashtags]);
         });
 
         promise.catch((err) => {
