@@ -36,7 +36,6 @@ export default function HomePage() {
     const promise = axios.get(URL, config);
 
     promise.then((res) => {
-      console.log(res.data)
       const { data } = res;
       setHashtagsList([...data.hashtags])
     });

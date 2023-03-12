@@ -8,7 +8,6 @@ export default function PostForm({updatePost, setUpdatePost}) {
   function registerPost(event) {
     event.preventDefault();
     const hashtags = [...postData.description.matchAll(/#[A-Za-z0-9]*/g)].map(e => e[0])
-    console.log(hashtags)
 
     const config = {
       headers: {
@@ -22,7 +21,6 @@ export default function PostForm({updatePost, setUpdatePost}) {
     const promise = axios.post(`${URL}/posts`, body, config);
     setIsSubmitting(true)
     promise.then((result) => {
-      console.log(result.data)
       setUpdatePost(!updatePost)
       setPostData({ externalLink: "", description: "" });
       setIsSubmitting(false)
