@@ -6,6 +6,24 @@ import axios from "axios";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { LikeButton } from "../Like/Like";
+import Modal from "react-modal";
+
+const customStyles = {
+
+  overlay: {
+    zIndex: 11
+  },
+
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
 
 export default function Post(props) {
 
@@ -31,7 +49,7 @@ export default function Post(props) {
     const description = {
       description: `${editedText}`,
     };
-
+  
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -43,13 +61,14 @@ export default function Post(props) {
       .put(URL, description, config)
       .then((res) => {
         alert(res.data);
+        window.location.reload();
       })
       .catch((err) => {
         console.error("Erro ao atualizar post:", err.message);
-        alert(err.message);
+        alert("only the creator of the post can update the post description.");
       });
 
-    setEditing(false);
+      setEditing(false);
   };
 
   const handleEditKeyDown = (event) => {
@@ -60,19 +79,49 @@ export default function Post(props) {
     }
   };
 
+  //Delete 
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const handleDeleteClick = () => {
+    setModalIsOpen(true);
+  };
+  
+  const handleDeleteConfirm = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  
+    const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
+    axios
+      .delete(URL, config)
+      .then((res) => {
+        alert(res.data);
+        setModalIsOpen(false);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error("Erro ao excluir post:", err.message);
+        alert("Only the creator of the post can delete it.");
+        setModalIsOpen(false);
+      });
+  };
+  
+  
 
   return (
     <PostContainer data-test="post">
       <ButtonsContainer>
         {editing ? (
           <>
-            <button data-test="save-btn" onClick={handleSaveEdit}>Save</button>
-            <button data-test="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+            <button data-test="edit-btn" onClick={handleCancelEdit}><BsFillPencilFill /></button>
           </>
         ) : (
           <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
         )}
-        <button data-test="delete-btn"><BsFillTrashFill /></button>
+       <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
       </ButtonsContainer>
       <CustomerData>
         <ImageLike>
@@ -109,6 +158,20 @@ export default function Post(props) {
           <LinkPreview url={external_link} />
         </Container>
       </CustomerData>
+      <StyledModal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Confirmar deleção"
+        style={customStyles}
+      >
+        <div className="modal-content">
+          <h2>Tem certeza que deseja deletar esse post?</h2>
+          <div>
+            <button data-test="confirm" className="btn-cancel" onClick={() => setModalIsOpen(false)}>No, go back</button>
+            <button data-test="cancel" className="btn-confirm" onClick={handleDeleteConfirm}>Yes, delete it</button>
+          </div>
+        </div>
+      </StyledModal>
     </PostContainer>
   );
 }
@@ -177,20 +240,65 @@ const ButtonsContainer = styled.div`
   right: 0px;
   top: 10px;
 
-  button {
+  button{
     margin-right: 10px;
     cursor: pointer;
     color: white;
     background: none;
     border: none;
   }
-`;
+`
+const StyledModal = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
 
-function ModalContent() {
-  return (
-    <div>
-      <h2>Conteúdo do modal</h2>
-      <p>Texto explicativo</p>
-    </div>
-  );
-}
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 597px;
+    height: 262px;
+    background: #333333;
+    border-radius: 50px;
+
+  h2 {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 41px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+  }
+
+  button {
+    margin-right: 10px;
+    border: none;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .btn-confirm{
+    width: 134px;
+    height: 37px;
+    background: #1877F2;
+    border-radius: 5px;
+    color: white;
+  }
+
+  .btn-cancel{
+    width: 134px;
+    height: 37px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    color: #1877F2;
+  }
+  }
+`;
