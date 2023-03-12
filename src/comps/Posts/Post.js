@@ -61,6 +61,7 @@ export default function Post(props) {
       .put(URL, description, config)
       .then((res) => {
         alert(res.data);
+        window.location.reload();
       })
       .catch((err) => {
         console.error("Erro ao atualizar post:", err.message);
@@ -99,6 +100,7 @@ export default function Post(props) {
       .then((res) => {
         alert(res.data);
         setModalIsOpen(false);
+        window.location.reload();
       })
       .catch((err) => {
         console.error("Erro ao excluir post:", err.message);
