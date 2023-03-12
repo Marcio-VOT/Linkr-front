@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function PostForm({updatePost, setUpdatePost}) {
   const token = localStorage.getItem("token");
@@ -17,8 +16,10 @@ export default function PostForm({updatePost, setUpdatePost}) {
       },
     };
 
+    const body = {...postData, hashtags}
+
     const URL = process.env.REACT_APP_API_URL;
-    const promise = axios.post(`${URL}/posts`, postData, config);
+    const promise = axios.post(`${URL}/posts`, body, config);
     setIsSubmitting(true)
     promise.then((result) => {
       console.log(result.data)
