@@ -28,7 +28,7 @@ export const TimeLineContent = styled.div`
     background-color: #151515;
     margin-right: 18px;
   }
-  div {
+  & > div {
     display: flex;
     align-items: center;
   }
