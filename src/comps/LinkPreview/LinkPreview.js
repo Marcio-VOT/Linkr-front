@@ -68,6 +68,7 @@ const ImageArea = styled.div`
 const LinkData = styled.div`
     display: flex;
     width: 70%;
+    height: 100%;
     flex-direction: column;
     padding: 20px;
     border-top: 1px solid #4D4D4D;
