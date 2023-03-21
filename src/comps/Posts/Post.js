@@ -49,7 +49,7 @@ export default function Post(props) {
     const description = {
       description: `${editedText}`,
     };
-  
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -68,7 +68,7 @@ export default function Post(props) {
         alert("only the creator of the post can update the post description.");
       });
 
-      setEditing(false);
+    setEditing(false);
   };
 
   const handleEditKeyDown = (event) => {
@@ -86,14 +86,14 @@ export default function Post(props) {
   const handleDeleteClick = () => {
     setModalIsOpen(true);
   };
-  
+
   const handleDeleteConfirm = () => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-  
+
     const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
     axios
       .delete(URL, config)
@@ -108,8 +108,8 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-  
-  
+
+console.log("userID"+user_id)
 
   return (
     <PostContainer data-test="post">
@@ -121,12 +121,13 @@ export default function Post(props) {
         ) : (
           <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
         )}
-       <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
+        <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
       </ButtonsContainer>
       <CustomerData>
         <ImageLike>
           <img src={profile_picture} />
-          <LikeButton />
+          
+          <LikeButton idPost={id} idUser={user_id}/>
         </ImageLike>
         <Container>
           <div>
