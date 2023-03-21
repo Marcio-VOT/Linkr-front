@@ -185,6 +185,8 @@ const tagStyle = {
 const ImageLike = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   width: 40px;
 `
 
@@ -193,6 +195,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
 `
 
 const PostContainer = styled.div`
