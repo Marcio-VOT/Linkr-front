@@ -4,7 +4,8 @@ export const HomePageContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   background-color: #333333;
 
   h1 {
