@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { LikeButton } from "../Like/Like";
 import Modal from "react-modal";
 
-const userId = localStorage.getItem("userid");
-console.log("o id no storage =e: ", userId)
 const customStyles = {
 
   overlay: {
@@ -30,6 +28,7 @@ const customStyles = {
 export default function Post(props) {
 
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userid");
   const { id, description, external_link, name, profile_picture, user_id } = props;
 
   const [editing, setEditing] = useState(false);
