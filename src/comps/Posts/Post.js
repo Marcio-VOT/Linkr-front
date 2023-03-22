@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { LikeButton } from "../Like/Like";
 import Modal from "react-modal";
 
+const userId = localStorage.getItem("userid");
+
 const customStyles = {
 
   overlay: {
@@ -108,26 +110,18 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-
-console.log("userID"+user_id)
-
+  console.log(user_id, userId)
   return (
     <PostContainer data-test="post">
-      <ButtonsContainer>
-        {editing ? (
-          <>
-            <button data-test="edit-btn" onClick={handleCancelEdit}><BsFillPencilFill /></button>
-          </>
-        ) : (
-          <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
-        )}
+      {Number(userId) === user_id ? <ButtonsContainer>
+        <button data-test="edit-btn" onClick={editing ? handleCancelEdit : handleEditClick}><BsFillPencilFill /></button>
         <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
-      </ButtonsContainer>
+      </ButtonsContainer> : ""
+      }
       <CustomerData>
         <ImageLike>
           <img src={profile_picture} />
-          
-          <LikeButton idPost={id} idUser={user_id}/>
+          <LikeButton idPost={id} idUser={user_id} />
         </ImageLike>
         <Container>
           <div>

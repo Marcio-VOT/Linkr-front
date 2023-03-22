@@ -11,6 +11,7 @@ export const LogOutButton = () => {
   function logout(){
     localStorage.removeItem("token")
     localStorage.removeItem("avatar")
+    localStorage.removeItem("userid")
     navigate("/")
   }
   return (
