@@ -205,8 +205,10 @@ const PostContainer = styled.div`
   padding: 20px;
   background: #171717;
   border-radius: 16px;
-  margin-bottom: 16px;
   position: relative;
+  @media (max-width: 600px){
+    border-radius: 0;
+  }
 `;
 
 const CustomerData = styled.div`

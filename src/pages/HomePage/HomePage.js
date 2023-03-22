@@ -119,6 +119,11 @@ const TimeLineContent = styled.div`
   display: flex;
   gap: 25px;
   margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
+  @media (max-width: 600px){
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 0;
+  }
 `;
 
 const Feed = styled.div`
@@ -132,6 +137,11 @@ const Feed = styled.div`
     line-height: 64px;
     color: #ffffff;
     margin-bottom: 43px;
+    @media (max-width: 600px){
+      margin-bottom: 19px;
+      margin-top: 49px;
+      padding-left: 17px;
+    }
   }
 `
 
@@ -158,6 +168,10 @@ const Title = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #ffffff;
+  }
+  @media (max-width: 600px){
+    width: 100%;
+    margin-top: 0;
   }
 `
 

@@ -97,6 +97,9 @@ const PostFormContainer = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   margin-bottom: 16px;
+  @media (max-width: 600px){
+    border-radius: 0;
+  }
 `;
 
 const FormContent = styled.div`

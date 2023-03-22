@@ -76,7 +76,9 @@ const LinkData = styled.div`
     border-left: 1px solid #4D4D4D;
     border-bottom-left-radius: 11px;
     border-top-left-radius: 11px;
-
+    @media (max-width: 600px){
+        padding: 4px;
+    }
     p {
         text-overflow: ellipsis;
         color: #9B9595;
@@ -86,6 +88,9 @@ const LinkData = styled.div`
 
     p:last-child {
         margin-top: 13px;
+        @media (max-width: 600px) {
+            margin-top: 4px;
+        }
     }
 
     h2 {
