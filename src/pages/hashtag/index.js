@@ -54,7 +54,7 @@ export default function Hashtag() {
             updatePost={updatePost}
             setUpdatePost={setUpdatePost}
             key={hashtag.id}
-            hashtag={hashtag.hashtag}
+            hashtag={hashtag.hashtags}
           />
         );
       });

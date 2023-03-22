@@ -3,7 +3,6 @@ import Post from "../Posts/Post";
 import styled from "styled-components";
 
 export default function UserPostList({ posts, name, img }) {
-  const [hashtags, setHashtags] = useState([]);
 
   function buildPostsList() {
     if (posts.length > 0) {
