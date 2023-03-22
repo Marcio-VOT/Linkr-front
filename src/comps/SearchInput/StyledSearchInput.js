@@ -8,7 +8,6 @@ export const StyledSearchInput = styled.div`
 
   input {
     width: 100%;
-    margin: auto;
     height: 45px;
     background: #ffffff;
     border-radius: 8px;
@@ -21,7 +20,6 @@ export const StyledSearchInput = styled.div`
     line-height: 23px;
     color: #c6c6c6;
     padding-left: 14px;
-    padding-right: 50px;
     background-image: URL(${searchImage});
     background-repeat: no-repeat;
     background-position: calc(100% - 14px);

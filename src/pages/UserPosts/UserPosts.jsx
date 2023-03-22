@@ -6,6 +6,7 @@ import {
   TimeLineContent,
   HomePageContainer,
   SearchContainer,
+  Container
 } from "./StyledUserPosts.js";
 import { searchUserData, searchUserPosts } from "../../services/search.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
@@ -57,18 +58,17 @@ export default function UserPosts() {
 
   return (
     <>
-      {window.innerWidth <= 600 && (
+      <NavBar />
         <SearchContainer>
           <SearchInput search={search} setSearch={setSearch} />
         </SearchContainer>
-      )}
       <HomePageContainer>
-        <NavBar />
+        <Container>
+          <img src={img} alt="profile picture" />
+          <h1>{name ? `${name}'s posts` : "timeline"}</h1>
+        </Container>
         <TimeLineContent>
-          <div>
-            <img src={img} alt="profile picture" />
-            <h1>{name ? `${name}'s posts` : "timeline"}</h1>
-          </div>
+
           {posts ? (
             <UserPostList posts={posts} name={name} img={img} />
           ) : (

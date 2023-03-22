@@ -61,4 +61,5 @@ export default function PostsContainer(props){
 const PostsList=styled.div`
     display: flex;
     flex-direction: column;
+    gap: 16px;
 `

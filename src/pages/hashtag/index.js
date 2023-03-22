@@ -77,9 +77,7 @@ export default function Hashtag() {
                 <h1>trending</h1>
               </Title>
               <Container>
-                <div>
                   {buildTrendings()}
-                </div>
               </Container>
             </TrendingsContainer>
           </ContainerTimeLineContent>
@@ -104,6 +102,11 @@ const HomePageContainer = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #ffffff;
+    @media (max-width: 600px){
+      margin-bottom: 19px;
+      margin-top: 27px;
+      padding-left: 16px;
+    }
   }
 `;
 
@@ -116,12 +119,20 @@ const ContainerTimeLineContent = styled.div`
   width: 100%;
   display: flex;
   gap: 25px;
+  @media(max-width: 600px){
+    flex-direction: column;
+    gap: 25px;
+  }
 `
 
 const TrendingsContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 301px;
+  @media (max-width: 600px){
+    max-width: none;
+    width: 100%;
+  }
 `
 
 const Title = styled.div`
@@ -134,7 +145,11 @@ const Title = styled.div`
   border-start-end-radius: 25px;
   border-bottom: solid 1px #484848;
   h1 {
-    margin-left:16px;
+    padding-left:16px;
+  }
+  @media (max-width: 600px){
+    width: 100%;
+    border-radius: 0;
   }
 `
 
@@ -143,4 +158,8 @@ const Container = styled.div`
   border-end-start-radius: 25px;
   border-end-end-radius: 25px;
   padding: 10px;
+  @media(max-width: 600px){
+    width: 100%;
+    border-radius: 0;
+  }
 `

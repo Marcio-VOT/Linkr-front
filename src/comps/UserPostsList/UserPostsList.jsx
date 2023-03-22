@@ -31,4 +31,5 @@ export default function UserPostList({ posts, name, img }) {
 const PostsList = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 16px;
 `;
