@@ -8,4 +8,5 @@ export const Container = styled.div`
   font-size: 19px;
   line-height: 23px;
   letter-spacing: 0.05em;
+  cursor: pointer;
 `

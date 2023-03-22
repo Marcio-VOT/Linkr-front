@@ -12,6 +12,7 @@ export default function FormLogin() {
             const result = await signIn({email: values.email, password: values.password})
             localStorage.setItem("token", result.data.token)
             localStorage.setItem("avatar", result.data.avatar)
+            localStorage.setItem("userid", result.data.userId)
             navigate("/timeline")
         } catch (error) {
             switch (error.response.status) {

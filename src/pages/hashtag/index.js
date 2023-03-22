@@ -8,7 +8,7 @@ import { validToken } from "../../services/apiAuth.js";
 import Trendings from "../../comps/Hashtags/index.js";
 
 export default function Hashtag() {
-  const {hashtag} = useParams()
+  const { hashtag } = useParams()
   const [updatePost, setUpdatePost] = useState(false)
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -33,33 +33,35 @@ export default function Hashtag() {
       },
     };
     const BASE_URL = process.env.REACT_APP_API_URL
-    const URL = `${BASE_URL}/posts`
+    const URL = `${BASE_URL}/trendding`
     const promise = axios.get(URL, config);
 
-        promise.then((res) => {
-            const { data } = res;
-            setHashtagsList([...data.hashtags])
-        });
+    promise.then((res) => {
+      const { data } = res;
+      setHashtagsList([...data])
+    });
 
-        promise.catch((err) => {
-            alert("An error occured while trying to fetch the posts, please refresh the page");
-        });
-    }, []);
+    promise.catch((err) => {
+      alert("An error occured while trying to fetch the posts, please refresh the page");
+    });
+  }, []);
 
-    function buildTrendings() {
-      if (hashtagsList.length > 0) {
-        return hashtagsList.map((hashtag) => {
-          return (
-            <Trendings
-              key={hashtag.id}
-              hashtag = {hashtag.hashtag}
-            />
-          );
-        });
-      } else {
-        return <p>there are no trendings yet!</p>;
-      }
+  function buildTrendings() {
+    if (hashtagsList.length > 0) {
+      return hashtagsList.map((hashtag) => {
+        return (
+          <Trendings
+            updatePost={updatePost}
+            setUpdatePost={setUpdatePost}
+            key={hashtag.id}
+            hashtag={hashtag.hashtag}
+          />
+        );
+      });
+    } else {
+      return <p>there are no trendings yet!</p>;
     }
+  }
 
 
   return (
@@ -68,19 +70,17 @@ export default function Hashtag() {
         <NavBar />
         <TimeLineContent>
           <h1># {hashtag}</h1>
-          <span>
-          <PostsContainer hashtag={hashtag} updatePost={updatePost}/>
-          <TrendingsContainer>
-            <Title>
-              <h1>trending</h1>
-            </Title>
-            <Container>
-              <div>
-                {buildTrendings()}
-              </div>
-            </Container>
-          </TrendingsContainer>
-          </span>
+          <ContainerTimeLineContent>
+            <PostsContainer hashtag={hashtag} updatePost={updatePost} />
+            <TrendingsContainer>
+              <Title>
+                <h1>trending</h1>
+              </Title>
+              <Container>
+                  {buildTrendings()}
+              </Container>
+            </TrendingsContainer>
+          </ContainerTimeLineContent>
         </TimeLineContent>
       </HomePageContainer>
     </>
@@ -102,23 +102,37 @@ const HomePageContainer = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #ffffff;
+    @media (max-width: 600px){
+      margin-bottom: 19px;
+      margin-top: 27px;
+      padding-left: 16px;
+    }
   }
 `;
+
 
 const TimeLineContent = styled.div`
   margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
-  width: 50%;
-  span {
-    display: flex;
-    gap: 10px;
-  }
-
 `;
+
+const ContainerTimeLineContent = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 25px;
+  @media(max-width: 600px){
+    flex-direction: column;
+    gap: 25px;
+  }
+`
 
 const TrendingsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 160px;
+  max-width: 301px;
+  @media (max-width: 600px){
+    max-width: none;
+    width: 100%;
+  }
 `
 
 const Title = styled.div`
@@ -131,7 +145,11 @@ const Title = styled.div`
   border-start-end-radius: 25px;
   border-bottom: solid 1px #484848;
   h1 {
-    margin-left:16px;
+    padding-left:16px;
+  }
+  @media (max-width: 600px){
+    width: 100%;
+    border-radius: 0;
   }
 `
 
@@ -139,12 +157,9 @@ const Container = styled.div`
   background-color: #171717;
   border-end-start-radius: 25px;
   border-end-end-radius: 25px;
-
-  
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 10px;
+  padding: 10px;
+  @media(max-width: 600px){
+    width: 100%;
+    border-radius: 0;
   }
 `

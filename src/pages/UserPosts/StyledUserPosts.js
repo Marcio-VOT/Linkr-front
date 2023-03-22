@@ -1,13 +1,15 @@
 import styled from "styled-components";
 
 export const HomePageContainer = styled.div`
-  display: flex;
-  justify-content: center;
   width: 100%;
+  margin-top: 70px;
   min-height: 100vh;
-  height: auto;
   background-color: #333333;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 19px;
   h1 {
     font-family: "Oswald";
     font-style: normal;
@@ -16,36 +18,51 @@ export const HomePageContainer = styled.div`
     line-height: 64px;
     color: #ffffff;
   }
+  @media (max-width: 600px){
+    margin-top: -1px;
+  }
 `;
 
 export const TimeLineContent = styled.div`
-  margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
-  width: 50%;
-  img {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+`;
+
+export const Container = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 611px;
+    padding-left: 16px;
+    gap: 16px;
+    img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: #151515;
-    margin-right: 18px;
   }
-  div {
-    display: flex;
-    align-items: center;
-  }
-`;
+`
+
 export const SearchContainer = styled.div`
   width: 100%;
-  padding-top: 82px;
+  height: 80px;
   background-color: #333333;
-  position: relative;
-  z-index: 0;
+  display: flex;
+  align-items: center;
+  padding: 15px;
   button:focus,
   textarea:focus,
   input:focus {
     outline: none;
   }
-  input {
-    position: absolute;
-    z-index: 1;
+  display: none;
+  @media(max-width: 600px){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
   }
 `;

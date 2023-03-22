@@ -28,6 +28,7 @@ const customStyles = {
 export default function Post(props) {
 
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userid");
   const { id, description, external_link, name, profile_picture, user_id } = props;
 
   const [editing, setEditing] = useState(false);
@@ -108,26 +109,18 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-
-console.log("userID"+user_id)
-
+  console.log(user_id, userId)
   return (
     <PostContainer data-test="post">
-      <ButtonsContainer>
-        {editing ? (
-          <>
-            <button data-test="edit-btn" onClick={handleCancelEdit}><BsFillPencilFill /></button>
-          </>
-        ) : (
-          <button data-test="edit-btn" onClick={handleEditClick}><BsFillPencilFill /></button>
-        )}
+      {Number(userId) === user_id ? (<ButtonsContainer>
+        <button data-test="edit-btn" onClick={editing ? handleCancelEdit : handleEditClick}><BsFillPencilFill /></button>
         <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
-      </ButtonsContainer>
+      </ButtonsContainer>) : ""
+      }
       <CustomerData>
         <ImageLike>
           <img src={profile_picture} />
-          
-          <LikeButton idPost={id} idUser={user_id}/>
+          <LikeButton idPost={id} idUser={user_id} />
         </ImageLike>
         <Container>
           <div>
@@ -180,6 +173,7 @@ console.log("userID"+user_id)
 const tagStyle = {
   fontWeight: "bold",
   cursor: "pointer",
+  display: "inline"
 };
 
 const ImageLike = styled.div`
@@ -211,8 +205,10 @@ const PostContainer = styled.div`
   padding: 20px;
   background: #171717;
   border-radius: 16px;
-  margin-bottom: 16px;
   position: relative;
+  @media (max-width: 600px){
+    border-radius: 0;
+  }
 `;
 
 const CustomerData = styled.div`
@@ -234,6 +230,7 @@ const CustomerData = styled.div`
         font-size: 19px;
         line-height: 23px;
         color: #FFFFFF;
+        cursor: pointer;
     }
     .user-description{
         font-family: 'Lato';

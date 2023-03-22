@@ -23,25 +23,28 @@ export default function PostsContainer(props){
         promise.then((res) => {
             const { data } = res;
             console.log(data)
-            setPostsList([...data.hashtags]);
+            setPostsList([...data]);
         });
 
         promise.catch((err) => {
             alert("An error occured while trying to fetch the posts, please refresh the page");
         });
-    }, [postsList]);
+    }, [props.updatePost]);
 
     function buildPostsList(){
         if(postsList.length > 0){
             return postsList.map(post => {
-                const { id, description, external_link, name, profile_picture } = post;
+                const { id, description, external_link, name, profile_picture, user_id } = post;
                 return <Post 
                             key={id} 
                             id={id} 
                             description={description} 
                             external_link={external_link} 
                             name={name}
-                            profile_picture={profile_picture}/>
+                            profile_picture={profile_picture}
+                            user_id={user_id}
+                            />
+
             })
         } else {
             return <p>there are no posts yet!</p>
@@ -58,4 +61,5 @@ export default function PostsContainer(props){
 const PostsList=styled.div`
     display: flex;
     flex-direction: column;
+    gap: 16px;
 `
