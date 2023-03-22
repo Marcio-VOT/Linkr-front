@@ -51,7 +51,7 @@ export default function HomePage() {
         return (
           <Trendings
             key={hashtag.id}
-            hashtag={hashtag.hashtag}
+            hashtag={hashtag.hashtags}
           />
         );
       });
