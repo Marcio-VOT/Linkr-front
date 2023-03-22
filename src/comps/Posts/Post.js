@@ -9,7 +9,7 @@ import { LikeButton } from "../Like/Like";
 import Modal from "react-modal";
 
 const userId = localStorage.getItem("userid");
-
+console.log("o id no storage =e: ", userId)
 const customStyles = {
 
   overlay: {
@@ -113,10 +113,10 @@ export default function Post(props) {
   console.log(user_id, userId)
   return (
     <PostContainer data-test="post">
-      {Number(userId) === user_id ? <ButtonsContainer>
+      {Number(userId) === user_id ? (<ButtonsContainer>
         <button data-test="edit-btn" onClick={editing ? handleCancelEdit : handleEditClick}><BsFillPencilFill /></button>
         <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
-      </ButtonsContainer> : ""
+      </ButtonsContainer>) : ""
       }
       <CustomerData>
         <ImageLike>
