@@ -180,6 +180,7 @@ console.log("userID"+user_id)
 const tagStyle = {
   fontWeight: "bold",
   cursor: "pointer",
+  display: "inline"
 };
 
 const ImageLike = styled.div`
@@ -234,6 +235,7 @@ const CustomerData = styled.div`
         font-size: 19px;
         line-height: 23px;
         color: #FFFFFF;
+        cursor: pointer;
     }
     .user-description{
         font-family: 'Lato';

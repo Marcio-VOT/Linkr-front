@@ -32,18 +32,18 @@ export default function HomePage() {
       },
     };
     const BASE_URL = process.env.REACT_APP_API_URL
-    const URL = `${BASE_URL}/posts`;
+    const URL = `${BASE_URL}/trendding`;
     const promise = axios.get(URL, config);
 
     promise.then((res) => {
       const { data } = res;
-      setHashtagsList([...data.hashtags])
+      setHashtagsList([...data])
     });
 
     promise.catch((err) => {
       alert("An error occured while trying to fetch the posts, please refresh the page");
     });
-  }, []);
+  }, [updatePost]);
 
   function buildTrendings() {
     if (hashtagsList.length > 0) {
@@ -59,7 +59,6 @@ export default function HomePage() {
       return <p>there are no trendings yet!</p>;
     }
   }
-
 
   return (
     <>
@@ -81,9 +80,7 @@ export default function HomePage() {
               <h1>trending</h1>
             </Title>
             <Container>
-              <div>
                 {buildTrendings()}
-              </div>
             </Container>
           </TrendingsContainer>
         </TimeLineContent>
@@ -168,12 +165,5 @@ const Container = styled.div`
   background-color: #171717;
   border-end-start-radius: 25px;
   border-end-end-radius: 25px;
-
-  
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 10px;
-  }
+  padding: 10px;
 `

@@ -1,10 +1,18 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Container } from './style'
 
 function Trendings(props) {
-  const {hashtag} = props
+  const {hashtag, setUpdatePost, updatePost} = props
+  const navigate = useNavigate()
+
+  function handlePost(){
+    navigate(`/hashtag/${hashtag?.replace('#', '')}`)
+    setUpdatePost(!updatePost)
+  }
+
   return (
-    <Container>
+    <Container onClick={handlePost}>
       <span> {hashtag} </span>
     </Container>
   )

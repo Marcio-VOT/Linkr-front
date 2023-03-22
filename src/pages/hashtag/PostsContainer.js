@@ -29,7 +29,7 @@ export default function PostsContainer(props){
         promise.catch((err) => {
             alert("An error occured while trying to fetch the posts, please refresh the page");
         });
-    }, [postsList]);
+    }, [props.updatePost]);
 
     function buildPostsList(){
         if(postsList.length > 0){
