@@ -40,3 +40,21 @@ export const StyledLogo = styled.div`
     text-decoration: none;
   }
 `;
+export const SearchContainer = styled.div`
+  width: 100%;
+  padding-top: 82px;
+  padding-bottom: 45px;
+
+  background-color: #333333;
+  position: relative;
+  z-index: 0;
+  button:focus,
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
+  input {
+    position: absolute;
+    z-index: 1;
+  }
+`;
