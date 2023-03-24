@@ -51,7 +51,12 @@ export default function HomePage() {
   function buildTrendings() {
     if (hashtagsList.length > 0) {
       return hashtagsList.map((hashtag) => {
-        return <Trendings key={hashtag.id} hashtag={hashtag.hashtags} />;
+        return (
+          <Trendings
+            key={hashtag.hashtags}
+            hashtag={hashtag.hashtags}
+          />
+        );
       });
     } else {
       return <p>there are no trendings yet!</p>;
