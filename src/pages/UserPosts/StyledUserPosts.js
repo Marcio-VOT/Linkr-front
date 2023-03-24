@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HomePageContainer = styled.div`
   width: 100%;
-  margin-top: 70px;
+  padding-top: 125px;
   min-height: 100vh;
   background-color: #333333;
   display: flex;
@@ -18,8 +18,8 @@ export const HomePageContainer = styled.div`
     line-height: 64px;
     color: #ffffff;
   }
-  @media (max-width: 600px){
-    margin-top: -1px;
+  @media (max-width: 600px) {
+    padding-top: 19px;
   }
 `;
 
@@ -32,19 +32,19 @@ export const TimeLineContent = styled.div`
 `;
 
 export const Container = styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 611px;
-    padding-left: 16px;
-    gap: 16px;
-    img {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 611px;
+  padding-left: 16px;
+  gap: 16px;
+  img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: #151515;
   }
-`
+`;
 
 export const SearchContainer = styled.div`
   width: 100%;
@@ -59,7 +59,7 @@ export const SearchContainer = styled.div`
     outline: none;
   }
   display: none;
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     display: flex;
     align-items: center;
     justify-content: center;
