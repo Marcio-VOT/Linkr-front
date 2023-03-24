@@ -50,7 +50,7 @@ export default function HomePage() {
       return hashtagsList.map((hashtag) => {
         return (
           <Trendings
-            key={hashtag.id}
+            key={hashtag.hashtags}
             hashtag={hashtag.hashtags}
           />
         );
