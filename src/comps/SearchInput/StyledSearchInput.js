@@ -2,7 +2,7 @@ import styled from "styled-components";
 import searchImage from "../../assets/images/search.png";
 
 export const StyledSearchInput = styled.div`
-  width: ${window.innerWidth <= 600 ? "95%" : "40%"};
+  width: ${(props) => (props.WindowWidth <= 600 ? "95%" : "40%")};
   position: relative;
   margin: auto;
 

@@ -5,8 +5,7 @@ import { validToken } from "../../services/apiAuth.js";
 import {
   TimeLineContent,
   HomePageContainer,
-  SearchContainer,
-  Container
+  Container,
 } from "./StyledUserPosts.js";
 import { searchUserData, searchUserPosts } from "../../services/search.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
@@ -59,16 +58,12 @@ export default function UserPosts() {
   return (
     <>
       <NavBar />
-        <SearchContainer>
-          <SearchInput search={search} setSearch={setSearch} />
-        </SearchContainer>
       <HomePageContainer>
         <Container>
           <img src={img} alt="profile picture" />
           <h1>{name ? `${name}'s posts` : "timeline"}</h1>
         </Container>
         <TimeLineContent>
-
           {posts ? (
             <UserPostList posts={posts} name={name} img={img} />
           ) : (
