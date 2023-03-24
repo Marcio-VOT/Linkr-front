@@ -8,6 +8,7 @@ import PostsContainer from "../../comps/Posts/PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function HomePage() {
   const [updatePost, setUpdatePost] = useState(false);
