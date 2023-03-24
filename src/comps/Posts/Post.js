@@ -109,7 +109,7 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-  console.log(user_id, userId)
+  
   return (
     <PostContainer data-test="post">
       {Number(userId) === user_id ? (<ButtonsContainer>
@@ -120,7 +120,7 @@ export default function Post(props) {
       <CustomerData>
         <ImageLike>
           <img src={profile_picture} />
-          <LikeButton idPost={id} idUser={user_id} />
+          <LikeButton idPost={id} idUser={userId} />
         </ImageLike>
         <Container>
           <div>
