@@ -5,8 +5,11 @@ export function searchApi(search) {
   return axios.get(`${BASE_URL}/search/${search}`);
 }
 
-export function searchUserPosts(id) {
-  return axios.get(`${BASE_URL}/posts/${id}`);
+export function searchUserPosts({ id, offset, date, config }) {
+  return axios.get(
+    `${BASE_URL}/posts/${id}/?offset=${offset}&date=${date}`,
+    config
+  );
 }
 export function searchUserData(id) {
   return axios.get(`${BASE_URL}/data/${id}`);
