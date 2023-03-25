@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import axios from "axios";
@@ -17,6 +17,7 @@ export default function HomePage() {
   const [hashtagsList, setHashtagsList] = useState([]);
   const [WindowWidth, setWindowWidth] = useState(window.innerWidth);
   const token = localStorage.getItem("token");
+  const [updatePostList, setUpdatePostList] = useState(true);
   useEffect(() => {
     async function validateToken() {
       try {
@@ -35,6 +36,7 @@ export default function HomePage() {
     };
     const BASE_URL = process.env.REACT_APP_API_URL;
     const URL = `${BASE_URL}/trendding`;
+
     const promise = axios.get(URL, config);
 
     promise.then((res) => {
@@ -52,12 +54,7 @@ export default function HomePage() {
   function buildTrendings() {
     if (hashtagsList.length > 0) {
       return hashtagsList.map((hashtag) => {
-        return (
-          <Trendings
-            key={hashtag.hashtags}
-            hashtag={hashtag.hashtags}
-          />
-        );
+        return <Trendings key={hashtag.hashtags} hashtag={hashtag.hashtags} />;
       });
     } else {
       return <p>there are no trendings yet!</p>;
@@ -66,22 +63,41 @@ export default function HomePage() {
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
-      console.log(window.innerWidth);
     }
+    const element = ref.current;
+    element.addEventListener("scroll", handleScroll);
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      element.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+  const handleScroll = (e) => {
+    const scrollHeight = e.target.scrollHeight;
+    const currentHeight = Math.ceil(e.target.scrollTop + window.innerHeight);
+
+    if (currentHeight + 1 >= scrollHeight && updatePostList != undefined) {
+      console.log("entrou");
+      setUpdatePostList((updatePostList) => !updatePostList);
+    }
+  };
+
+  const ref = useRef(null);
 
   return (
     <>
       <NavBar />
-      <HomePageContainer>
+      <HomePageContainer ref={ref}>
         <TimeLineContent>
           <Feed>
             <h1>timeline</h1>
             <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost} />
-            <PostsContainer updatePost={updatePost} />
+            <PostsContainer
+              updatePost={updatePost}
+              setUpdatePostList={setUpdatePostList}
+              updatePostList={updatePostList}
+            />
           </Feed>
           <TrendingsContainer>
             <Title>
@@ -98,16 +114,19 @@ export default function HomePage() {
 const HomePageContainer = styled.div`
   justify-content: center;
   width: 100%;
-  min-height: 100vh;
-  height: auto;
+  height: 100vh;
   display: flex;
   background-color: #333333;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TimeLineContent = styled.div`
   display: flex;
   gap: 25px;
-  margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
+  margin-top: 120px;
   @media (max-width: 600px) {
     flex-direction: column;
     gap: 10px;
