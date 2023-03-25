@@ -9,6 +9,7 @@ import { validToken } from "../../services/apiAuth.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
 import InfiniteScroll from "react-infinite-scroller";
+import { searchPosts } from "../../services/search.js";
 
 export default function HomePage() {
   const [updatePost, setUpdatePost] = useState(false);
@@ -18,6 +19,13 @@ export default function HomePage() {
   const [WindowWidth, setWindowWidth] = useState(window.innerWidth);
   const token = localStorage.getItem("token");
   const [updatePostList, setUpdatePostList] = useState(true);
+  let date = new Date().toISOString();
+  let offset = 0;
+  const offsetUpdater = 4;
+  const [postsList, setPostsList] = useState([]);
+  let boole = false;
+  let firstLoad = true;
+
   useEffect(() => {
     async function validateToken() {
       try {
@@ -26,9 +34,7 @@ export default function HomePage() {
         navigate("/");
       }
     }
-
     validateToken();
-
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -49,8 +55,62 @@ export default function HomePage() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
+
+    setPostsList([]);
+    firstLoad = false;
+    date = new Date().toISOString();
+    offset = 0;
+    loadPosts(true);
   }, [updatePost]);
 
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+    if (!firstLoad) loadPosts();
+    else firstLoad = !firstLoad;
+    const element = ref.current;
+    element.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      element.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = (e) => {
+    const scrollHeight = e.target.scrollHeight;
+    const currentHeight = Math.ceil(e.target.scrollTop + window.innerHeight);
+
+    if (currentHeight + 1 >= scrollHeight && updatePostList != undefined) {
+      loadPosts(false);
+    }
+  };
+
+  function loadPosts(force) {
+    if (boole || force) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      searchPosts({ date, offset, config })
+        .then((res) => {
+          const { data } = res;
+          setPostsList((postsList) => [...postsList, ...data.posts]);
+          if (data.posts.length < offsetUpdater || force) {
+            boole = !boole;
+          }
+        })
+        .catch(() => {
+          alert(
+            "An error occured while trying to fetch the posts, please refresh the page"
+          );
+        });
+
+      offset += 4;
+    }
+  }
   function buildTrendings() {
     if (hashtagsList.length > 0) {
       return hashtagsList.map((hashtag) => {
@@ -60,28 +120,6 @@ export default function HomePage() {
       return <p>there are no trendings yet!</p>;
     }
   }
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
-    }
-    const element = ref.current;
-    element.addEventListener("scroll", handleScroll);
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      element.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  const handleScroll = (e) => {
-    const scrollHeight = e.target.scrollHeight;
-    const currentHeight = Math.ceil(e.target.scrollTop + window.innerHeight);
-
-    if (currentHeight + 1 >= scrollHeight && updatePostList != undefined) {
-      console.log("entrou");
-      setUpdatePostList((updatePostList) => !updatePostList);
-    }
-  };
 
   const ref = useRef(null);
 
@@ -94,6 +132,7 @@ export default function HomePage() {
             <h1>timeline</h1>
             <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost} />
             <PostsContainer
+              postsList={postsList}
               updatePost={updatePost}
               setUpdatePostList={setUpdatePostList}
               updatePostList={updatePostList}

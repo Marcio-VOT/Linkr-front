@@ -8,50 +8,20 @@ export default function PostsContainer({
   updatePost,
   setUpdatePostList,
   updatePostList,
+  postsList,
 }) {
   const token = localStorage.getItem("token");
-  const [postsList, setPostsList] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString());
-  const [offset, setOffset] = useState(0);
-  const offsetUpdater = 4;
-  let [boole, setBoole] = useState(true);
 
   useEffect(() => {
-    setBoole(true);
-    setPostsList([]);
-    setDate(new Date().toISOString());
-    setOffset((offset) => 0);
-    loadPosts();
+    // setBoole(true);
+    // setPostsList([]);
+    // setDate(new Date().toISOString());
+    // setOffset((offset) => 0);
   }, [updatePost]);
 
-  useEffect(() => {
-    loadPosts();
-  }, [updatePostList]);
-
-  function loadPosts() {
-    if (boole) {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      searchPosts({ date, offset, config })
-        .then((res) => {
-          const { data } = res;
-          setPostsList((postsList) => [...postsList, ...data.posts]);
-          if (data.posts.length < offsetUpdater) {
-            setBoole(false);
-          }
-        })
-        .catch(() => {
-          alert(
-            "An error occured while trying to fetch the posts, please refresh the page"
-          );
-        });
-
-      setOffset(offset + offsetUpdater);
-    }
-  }
+  // useEffect(() => {
+  //   loadPosts();
+  // }, [updatePostList]);
 
   return (
     <PostsList>
