@@ -28,9 +28,6 @@ export const StyledSearchInput = styled.div`
 `;
 
 export const StyledSearchList = styled.div`
-  a {
-    text-decoration: none;
-  }
   position: absolute;
   z-index: -1;
   top: 0;
@@ -39,25 +36,4 @@ export const StyledSearchList = styled.div`
   background: #e7e7e7;
   border-radius: 8px;
   display: column;
-  div {
-    display: flex;
-    align-items: center;
-    padding-left: 17px;
-    margin-bottom: 17px;
-    img {
-      width: 39px;
-      height: 39px;
-      border-radius: 50%;
-      background-color: #333333;
-    }
-    h1 {
-      font-family: "Lato";
-      font-style: normal;
-      font-weight: 400;
-      font-size: 19px;
-      line-height: 23px;
-      color: #515151;
-      margin-left: 12px;
-    }
-  }
 `;

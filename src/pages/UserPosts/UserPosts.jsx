@@ -6,11 +6,13 @@ import {
   TimeLineContent,
   HomePageContainer,
   Container,
+  ContainerHeader
 } from "./StyledUserPosts.js";
 import { searchUserData, searchUserPosts } from "../../services/search.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import PostsContainer from "../../comps/Posts/PostsContainer.js";
 import UserPostList from "../../comps/UserPostsList/UserPostsList.jsx";
+import FollowButton from "../../comps/FollowButton/FollowButton.js";
 
 export default function UserPosts() {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ export default function UserPosts() {
   const [img, setImg] = useState("");
 
   let { id } = useParams();
+  const followerId = localStorage.getItem("userid")
 
   const [posts, setPosts] = useState([]);
 
@@ -60,8 +63,11 @@ export default function UserPosts() {
       <NavBar />
       <HomePageContainer>
         <Container>
-          <img src={img} alt="profile picture" />
-          <h1>{name ? `${name}'s posts` : "timeline"}</h1>
+          <ContainerHeader>
+            <img src={img} alt="profile picture" />
+            <h1>{name ? `${name}'s posts` : "timeline"}</h1>
+          </ContainerHeader>
+          {followerId === id ? "" : <FollowButton />}
         </Container>
         <TimeLineContent>
           {posts ? (

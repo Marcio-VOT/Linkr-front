@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { StyledSearchInput, StyledSearchList } from "./StyledSearchInput";
 import { searchApi } from "../../services/search";
-import { Link } from "react-router-dom";
+import UserSearch from "../UserSearch/UserSearch";
 
 export const SearchInput = ({ search, setSearch, WindowWidth }) => {
   const [userList, setUserList] = useState([]);
@@ -10,21 +10,7 @@ export const SearchInput = ({ search, setSearch, WindowWidth }) => {
     <StyledSearchInput WindowWidth={WindowWidth}>
       {userList[0] && (
         <StyledSearchList>
-          {userList.map((u) => {
-            return (
-              <Link to={`/user/${u.id}`} key={u.id} data-test="user-search">
-                <div
-                  onClick={() => {
-                    setSearch("");
-                    setUserList([]);
-                  }}
-                >
-                  <img src={u.profile_picture} alt={u.name} />
-                  <h1>{u.name} </h1>
-                </div>
-              </Link>
-            );
-          })}
+          {userList.map((u) => <UserSearch id={u.id} key={u.id} name={u.name} profile_picture={u.profile_picture} setSearch={setSearch} setUserList={setUserList}/>)}
         </StyledSearchList>
       )}
       <DebounceInput
