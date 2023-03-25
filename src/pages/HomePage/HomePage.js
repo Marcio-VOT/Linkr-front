@@ -10,7 +10,7 @@ import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
 
 export default function HomePage() {
-  const [updatePost, setUpdatePost] = useState(false)
+  const [updatePost, setUpdatePost] = useState(false);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);

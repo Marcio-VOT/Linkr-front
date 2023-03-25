@@ -74,6 +74,7 @@ const CommentInputContainer = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
+    padding-top: 19px;
 
     button:focus,
     input:focus {

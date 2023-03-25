@@ -1,21 +1,71 @@
 import styled from "styled-components";
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function CommentContainer(props){
-    const { postId } = props;
+export default function CommentContainer(props) {
+  const { postId } = props;
+  const token = localStorage.getItem("token");
+  const [commentsList, setCommentsList] = useState([]);
 
-    return (
-        <CommentsList>
-            <div data-test="comment-box">
-                <Comment />
-                <CommentInput postId={postId} />
-            </div>      
-        </CommentsList>
-    );
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const URL = `${process.env.REACT_APP_API_URL}/comments/${postId}`;
+    const promise = axios.get(URL, config);
+
+    promise.then((res) => {
+      const { data } = res;
+      setCommentsList([...data]);
+    });
+
+    promise.catch((err) => {
+      alert(
+        "An error occured while trying to fetch the comments, please refresh the page"
+      );
+    });
+  }, [commentsList]);
+
+  function buildCommentsList() {
+    if (commentsList.length > 0) {
+      return commentsList.map((postComment, key) => {
+        const {
+          comment,
+          name,
+          profile_picture
+        } = postComment;
+        return (
+          <Comment
+            key={key}
+            name={name}
+            profile_picture={profile_picture}
+            comment={comment}
+          />
+        );
+      });
+    } else {
+      return <p>there are no comments yet!</p>;
+    }
+  }
+
+  return (
+    <CommentsList>
+      <div data-test="comment-box">
+        {buildCommentsList()}
+        <CommentInput postId={postId} />
+      </div>
+    </CommentsList>
+  );
 }
 
-const CommentsList= styled.div`
-    background-color: #1E1E1E;
-    padding: 25px;
-`
+const CommentsList = styled.div`
+  background-color: #1e1e1e;
+  padding: 25px;
+  margin-top: -40px;
+  border-radius: 16px;
+`;
