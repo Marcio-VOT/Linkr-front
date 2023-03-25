@@ -18,3 +18,14 @@ export function searchUserData(id) {
 export function searchPosts({ date, offset, config }) {
   return axios.get(`${BASE_URL}/posts/?offset=${offset}&date=${date}`, config);
 }
+
+export function postsFromHashtagId({ hashtag, date, offset, config }) {
+  return axios.get(
+    `${BASE_URL}/hashtag/${hashtag}/?offset=${offset}&date=${date}`,
+    config
+  );
+}
+
+export function trandingHashtags({ config }) {
+  return axios.get(`${BASE_URL}/trendding`, config);
+}
