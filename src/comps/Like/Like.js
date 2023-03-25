@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import { getLikes, getTwoUsers, youLike, removeLike, newLike } from '../../services/likeService'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
@@ -8,9 +8,6 @@ export function LikeButton(props) {
     const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [listLikes, setListLikes] = useState({})
-    const [mappedNames, setMappedNames] = useState('')
-    let youLike = false
-    console.log(props)
 
     useEffect(() => {
         async function handleLike() {
@@ -18,145 +15,106 @@ export function LikeButton(props) {
                 userId: props.idUser,
                 postId: props.idPost
             }
-            axios.post(process.env.REACT_APP_API_URL + '/youLike', body)
-                .then((res) => {
-                    if (res.data === false) {
-                        youLike = !res.data
-                    }
+            const { data: dataYouLike } = await youLike(body)
+            setIsLiked(dataYouLike.status)
 
-                
-                })
-            axios.post(process.env.REACT_APP_API_URL + '/getLikes', body)
-                .then((res) => {
-                    const newLikes = res.data
-                    setLikes(res.data)
-                    axios.post(process.env.REACT_APP_API_URL + '/twoUsers', body)
-                        .then((res) => {
+            const { data: dataGetLikes } = await getLikes({ postId: props.idPost })
+            setLikes(Number(dataGetLikes[0].count))
 
-                            const names = res.data
-                        
-                            if (youLike) {
+            const { data: dataTwoUsers } = await getTwoUsers({ postId: props.idPost })
 
-                                setIsLiked(true)
-                                if (names.length > 0) {
-                                    delete names[0].name
-                                    names[0].name = "You"
-                                }
-
-                            }
-                            if (newLikes === 2) {
-                                setMappedNames(names.map(u => u.name).join(', '))
-
-                                setListLikes(names.map(u => u.name).join(', '))
-                            } else if (newLikes === 1) {
-                                setMappedNames(names.map(u => u.name).join(', '))
-
-                                setListLikes(names.map(u => u.name).join(', '))
-                            } else if (newLikes === 0) {
-                                setListLikes('')
-                            } else {
-                                setMappedNames(names.map(u => u.name).join(', '))
-
-                                
-                                setListLikes(names.map(u => u.name).join(', ') + ' and other ' + (Number(newLikes) - 2) + ' people')
-                            }
-
-
-
-                        })
-                })
-
-
+            if(dataYouLike.status){
+                if(dataTwoUsers.length === 0){
+                    dataTwoUsers.push({name: "You"})
+                } else {
+                    if(dataTwoUsers.length === 1){
+                        dataTwoUsers.unshift({name: "You"}) 
+                    } else {
+                        dataTwoUsers[0].name = "You"
+                    }   
+                }
+            }
+            
+            switch (dataGetLikes[0].count) {
+                case '2':
+                    setListLikes(dataTwoUsers.map(u => u.name).join(', '))
+                    break;
+                case '1':
+                    setListLikes(dataTwoUsers.map(u => u.name).join(', '))
+                    break;
+                case '0':
+                    setListLikes('')
+                    break;
+                default:
+                    setListLikes(dataTwoUsers.map(u => u.name).join(', ') + ' and other ' + (Number(dataGetLikes[0].count) - 2) + ' people')
+                    break;
+            }
         }
         handleLike()
-
     }, [])
-    const handleLikeClick = () => {
+
+    const removeLikeButton = async () => {
         const body = {
             userId: props.idUser,
             postId: props.idPost
         }
-        if (isLiked) {
+        await removeLike(body)
+        setLikes(Number(likes) - 1);
+        setIsLiked(false)
+        const { data: dataTwoUsers } = await getTwoUsers({ postId: props.idPost })
 
-            axios.post(process.env.REACT_APP_API_URL + '/removeLike', body)
-                .then((res) => {
-                    console.log(res.data)
-                    setLikes(likes - 1);
-                    axios.post(process.env.REACT_APP_API_URL + '/twoUsers', body)
-                        .then((res) => {
-
-                            const names = res.data
-                            if (likes - 1 === 2) {
-
-                                setMappedNames(names.map(u => u.name).join(', '))
-
-                               
-                                setListLikes(names.map(u => u.name).join(', '))
-                            } else if (likes - 1 === 1) {
-
-                                setMappedNames(names.map(u => u.name).join(', '))
-                               
-                                setListLikes(names.map(u => u.name).join(', '))
-                            } else if (likes - 1 === 0) {
-                                setListLikes('')
-                               
-                            } else {
-                                setMappedNames(names.map(u => u.name).join(', '))
-
-                                console.log(likes + 'maisDeDois')
-                                setListLikes(names.map(u => u.name).join(', ') + ' and other ' + (Number(likes + 1) - 2) + ' people')
-                            }
-                        })
-                })
-        } else {
-            axios.post(process.env.REACT_APP_API_URL + '/newLike', body)
-                .then((res) => {
-                    console.log('newLike:' + res.data)
-                    setLikes(likes + 1);
-                    axios.post(process.env.REACT_APP_API_URL + '/twoUsers', body)
-                        .then((res) => {
-                            youLike = true
-                            const names = res.data
-                            if (youLike) {
-
-                                setIsLiked(true)
-
-                            }
-                            if (likes + 1 === 2) {
-
-                                if (names.length > 0) {
-                                    delete names[0].name
-                                    names[0].name = "You"
-                                }
-                                setMappedNames(names.map(u => u.name).join(', '))
-
-                                console.log(likes + 'dois')
-                                setListLikes(names.map(u => u.name).join(', '))
-                            } else if (likes + 1 === 1) {
-                                if (names.length > 0) {
-                                    delete names[0].name
-                                    names[0].name = "You"
-                                }
-
-                                setMappedNames(names.map(u => u.name).join(', '))
-                                console.log(likes + 'um')
-                                setListLikes('You')
-                            } else if (likes + 1 === 0) {
-                                setListLikes('')
-                                console.log(likes + 'zero')
-                            } else {
-                                delete names[0].name
-                                names[0].name = "You"
-                                setMappedNames(names.map(u => u.name).join(', '))
-
-                                console.log(likes + 'maisDeDois')
-                                setListLikes(names.map(u => u.name).join(', ') + ' and other ' + (Number(likes + 1) - 2) + ' people')
-                            }
-                        })
-                })
-
+        switch (Number(likes) - 1) {
+            case 2:
+                setListLikes(dataTwoUsers.map(u => u.name).join(', '))
+                break;
+            case 1:
+                setListLikes(dataTwoUsers.map(u => u.name).join(', '))
+                break;
+            case 0:
+                setListLikes('')
+                break;
+            default:
+                setListLikes(dataTwoUsers.map(u => u.name).join(', ') + ' and other ' + (Number(likes) + 1 - 2) + ' people')
+                break;
         }
-        setIsLiked(!isLiked);
+    }
+
+    const addLikeButton = async () => {
+        const body = {
+            userId: props.idUser,
+            postId: props.idPost
+        }
+        await newLike(body)
+        setLikes(likes + 1)
+        setIsLiked(true)
+
+        const { data: dataTwoUsers } = await getTwoUsers({ postId: props.idPost })
+        
+       
+            if(dataTwoUsers.length === 0){
+                dataTwoUsers.push({name: "You"})
+            } else {
+                if(dataTwoUsers.length === 1){
+                    dataTwoUsers.unshift({name: "You"}) 
+                } else {
+                    dataTwoUsers[0].name = "You"
+                }   
+            }
+       
+        switch (likes + 1) {
+            case 2:
+                setListLikes(dataTwoUsers.map(u => u.name).join(', '))
+                break;
+            case 1:
+                setListLikes('You')
+                break;
+            case 0:
+                setListLikes('')
+                break;
+            default:
+                setListLikes(dataTwoUsers.map(u => u.name).join(', ') + ' and other ' + (Number(likes + 1) - 2) + ' people')
+                break;
+        }
     };
 
     return (
@@ -165,12 +123,12 @@ export function LikeButton(props) {
             {isLiked ? <AiFillHeart
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={listLikes}
-                onClick={handleLikeClick} style={{color:'#AC0000'}} />
+                onClick={removeLikeButton} style={{ color: '#AC0000' }} />
                 :
                 <AiOutlineHeart
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={listLikes}
-                    onClick={handleLikeClick} style={{color:'white'}}/>} 
+                    onClick={addLikeButton} style={{ color: 'white' }} />}
         </>
 
     );

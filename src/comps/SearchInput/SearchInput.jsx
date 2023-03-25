@@ -4,10 +4,10 @@ import { StyledSearchInput, StyledSearchList } from "./StyledSearchInput";
 import { searchApi } from "../../services/search";
 import { Link } from "react-router-dom";
 
-export const SearchInput = ({ search, setSearch }) => {
+export const SearchInput = ({ search, setSearch, WindowWidth }) => {
   const [userList, setUserList] = useState([]);
   return (
-    <StyledSearchInput>
+    <StyledSearchInput WindowWidth={WindowWidth}>
       {userList[0] && (
         <StyledSearchList>
           {userList.map((u) => {

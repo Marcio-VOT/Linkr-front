@@ -109,7 +109,7 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-  console.log(user_id, userId);
+
   return (
     <>
       <PostContainer data-test="post">
@@ -131,7 +131,7 @@ export default function Post(props) {
         <CustomerData>
           <ImageLike>
             <img src={profile_picture} />
-            <LikeButton idPost={id} idUser={user_id} />
+            <LikeButton idPost={id} idUser={userId} />
           </ImageLike>
           <Container>
             <div>
@@ -193,7 +193,7 @@ export default function Post(props) {
           </div>
         </StyledModal>
       </PostContainer>
-      <CommentContainer postId={id}/>
+      <CommentContainer postId={id} />
     </>
   );
 }

@@ -8,8 +8,8 @@ import { validToken } from "../../services/apiAuth.js";
 import Trendings from "../../comps/Hashtags/index.js";
 
 export default function Hashtag() {
-  const { hashtag } = useParams()
-  const [updatePost, setUpdatePost] = useState(false)
+  const { hashtag } = useParams();
+  const [updatePost, setUpdatePost] = useState(false);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
@@ -32,17 +32,19 @@ export default function Hashtag() {
         Authorization: `Bearer ${token}`,
       },
     };
-    const BASE_URL = process.env.REACT_APP_API_URL
-    const URL = `${BASE_URL}/trendding`
+    const BASE_URL = process.env.REACT_APP_API_URL;
+    const URL = `${BASE_URL}/trendding`;
     const promise = axios.get(URL, config);
 
     promise.then((res) => {
       const { data } = res;
-      setHashtagsList([...data])
+      setHashtagsList([...data]);
     });
 
     promise.catch((err) => {
-      alert("An error occured while trying to fetch the posts, please refresh the page");
+      alert(
+        "An error occured while trying to fetch the posts, please refresh the page"
+      );
     });
   }, []);
 
@@ -63,11 +65,10 @@ export default function Hashtag() {
     }
   }
 
-
   return (
     <>
+      <NavBar />
       <HomePageContainer>
-        <NavBar />
         <TimeLineContent>
           <h1># {hashtag}</h1>
           <ContainerTimeLineContent>
@@ -76,9 +77,7 @@ export default function Hashtag() {
               <Title>
                 <h1>trending</h1>
               </Title>
-              <Container>
-                  {buildTrendings()}
-              </Container>
+              <Container>{buildTrendings()}</Container>
             </TrendingsContainer>
           </ContainerTimeLineContent>
         </TimeLineContent>
@@ -102,7 +101,7 @@ const HomePageContainer = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #ffffff;
-    @media (max-width: 600px){
+    @media (max-width: 600px) {
       margin-bottom: 19px;
       margin-top: 27px;
       padding-left: 16px;
@@ -110,56 +109,58 @@ const HomePageContainer = styled.div`
   }
 `;
 
-
 const TimeLineContent = styled.div`
-  margin-top: ${window.innerWidth <= 600 ? "50px" : "120px"};
+  margin-top: 120px;
+  @media (max-width: 600px) {
+    margin-top: 0;
+  }
 `;
 
 const ContainerTimeLineContent = styled.div`
   width: 100%;
   display: flex;
   gap: 25px;
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     flex-direction: column;
     gap: 25px;
   }
-`
+`;
 
 const TrendingsContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 301px;
-  @media (max-width: 600px){
+  @media (max-width: 600px) {
     max-width: none;
     width: 100%;
   }
-`
+`;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
-  height : 61px;
+  height: 61px;
   width: 301px;
   background-color: #171717;
   border-start-start-radius: 25px;
   border-start-end-radius: 25px;
   border-bottom: solid 1px #484848;
   h1 {
-    padding-left:16px;
+    padding-left: 16px;
   }
-  @media (max-width: 600px){
+  @media (max-width: 600px) {
     width: 100%;
     border-radius: 0;
   }
-`
+`;
 
 const Container = styled.div`
   background-color: #171717;
   border-end-start-radius: 25px;
   border-end-end-radius: 25px;
   padding: 10px;
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     width: 100%;
     border-radius: 0;
   }
-`
+`;
