@@ -4,25 +4,7 @@ import Post from "./Post";
 import styled from "styled-components";
 import { searchPosts } from "../../services/search";
 
-export default function PostsContainer({
-  updatePost,
-  setUpdatePostList,
-  updatePostList,
-  postsList,
-}) {
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    // setBoole(true);
-    // setPostsList([]);
-    // setDate(new Date().toISOString());
-    // setOffset((offset) => 0);
-  }, [updatePost]);
-
-  // useEffect(() => {
-  //   loadPosts();
-  // }, [updatePostList]);
-
+export default function PostsContainer({ postsList }) {
   return (
     <PostsList>
       {postsList.length > 0 ? (

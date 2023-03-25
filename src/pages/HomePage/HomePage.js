@@ -14,17 +14,15 @@ import { searchPosts } from "../../services/search.js";
 export default function HomePage() {
   const [updatePost, setUpdatePost] = useState(false);
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
-  const [WindowWidth, setWindowWidth] = useState(window.innerWidth);
   const token = localStorage.getItem("token");
   const [updatePostList, setUpdatePostList] = useState(true);
+  const [postsList, setPostsList] = useState([]);
   let date = new Date().toISOString();
   let offset = 0;
-  const offsetUpdater = 4;
-  const [postsList, setPostsList] = useState([]);
   let boole = false;
   let firstLoad = true;
+  const offsetUpdater = 4;
 
   useEffect(() => {
     async function validateToken() {
@@ -64,16 +62,11 @@ export default function HomePage() {
   }, [updatePost]);
 
   useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
-    }
     if (!firstLoad) loadPosts();
     else firstLoad = !firstLoad;
     const element = ref.current;
     element.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
       element.removeEventListener("scroll", handleScroll);
     };
   }, []);

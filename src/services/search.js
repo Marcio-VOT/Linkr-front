@@ -8,8 +8,11 @@ export function searchApi(search) {
   }});
 }
 
-export function searchUserPosts(id) {
-  return axios.get(`${BASE_URL}/posts/${id}`);
+export function searchUserPosts({ id, offset, date, config }) {
+  return axios.get(
+    `${BASE_URL}/posts/${id}/?offset=${offset}&date=${date}`,
+    config
+  );
 }
 export function searchUserData(id) {
   return axios.get(`${BASE_URL}/data/${id}`);
@@ -17,4 +20,15 @@ export function searchUserData(id) {
 
 export function searchPosts({ date, offset, config }) {
   return axios.get(`${BASE_URL}/posts/?offset=${offset}&date=${date}`, config);
+}
+
+export function postsFromHashtagId({ hashtag, date, offset, config }) {
+  return axios.get(
+    `${BASE_URL}/hashtag/${hashtag}/?offset=${offset}&date=${date}`,
+    config
+  );
+}
+
+export function trandingHashtags({ config }) {
+  return axios.get(`${BASE_URL}/trendding`, config);
 }
