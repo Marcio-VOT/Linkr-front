@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function CommentContainer(props) {
-  const { postId } = props;
+  const { postId, openComment, setTotalComments  } = props;
   const token = localStorage.getItem("token");
   const [commentsList, setCommentsList] = useState([]);
 
@@ -22,6 +22,7 @@ export default function CommentContainer(props) {
     promise.then((res) => {
       const { data } = res;
       setCommentsList([...data]);
+      setTotalComments(commentsList.length);
     });
 
     promise.catch((err) => {
@@ -54,7 +55,7 @@ export default function CommentContainer(props) {
   }
 
   return (
-    <CommentsList>
+    <CommentsList openComment={openComment}>
       <div data-test="comment-box">
         {buildCommentsList()}
         <CommentInput postId={postId} />
@@ -64,6 +65,7 @@ export default function CommentContainer(props) {
 }
 
 const CommentsList = styled.div`
+  display: ${props => props.openComment ? "block" : "none"};
   background-color: #1e1e1e;
   padding: 25px;
   margin-top: -40px;

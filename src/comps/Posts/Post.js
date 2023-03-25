@@ -7,8 +7,8 @@ import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { LikeButton } from "../Like/Like";
 import Modal from "react-modal";
-import Comment from "../CommentsComponents/Comment";
 import CommentContainer from "../CommentsComponents/CommentContainer";
+import { AiOutlineComment } from "react-icons/ai";
 
 const customStyles = {
   overlay: {
@@ -33,6 +33,8 @@ export default function Post(props) {
 
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
+  const [openComment, setOpenComment] = useState(false);
+  const [totalComments, setTotalComments] = useState(0);
   const navigate = useNavigate();
 
   const editTextRef = useRef(null);
@@ -133,6 +135,14 @@ export default function Post(props) {
             <img src={profile_picture} />
             <LikeButton idPost={id} idUser={userId} />
           </ImageLike>
+          <CommentIcon>
+            <AiOutlineComment
+              onClick={
+                openComment ? setOpenComment(false) : setOpenComment(true)
+              }
+            />
+            <p>{totalComments} comments</p>
+          </CommentIcon>
           <Container>
             <div>
               <p
@@ -193,7 +203,11 @@ export default function Post(props) {
           </div>
         </StyledModal>
       </PostContainer>
-      <CommentContainer postId={id} />
+      <CommentContainer
+        postId={id}
+        openComment={openComment}
+        setTotalComments={setTotalComments}
+      />
     </>
   );
 }
@@ -335,5 +349,18 @@ const StyledModal = styled(Modal)`
       border-radius: 5px;
       color: #1877f2;
     }
+  }
+`;
+
+const CommentIcon = styled.div`
+  color: white;
+
+  p {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
   }
 `;
