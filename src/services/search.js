@@ -11,3 +11,7 @@ export function searchUserPosts(id) {
 export function searchUserData(id) {
   return axios.get(`${BASE_URL}/data/${id}`);
 }
+
+export function searchPosts({ date, offset, config }) {
+  return axios.get(`${BASE_URL}/posts/?offset=${offset}&date=${date}`, config);
+}
