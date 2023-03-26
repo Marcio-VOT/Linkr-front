@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import { validToken } from "../../services/apiAuth.js";
@@ -6,22 +6,23 @@ import {
   TimeLineContent,
   HomePageContainer,
   Container,
-  ContainerHeader
+  ContainerHeader,
 } from "./StyledUserPosts.js";
 import { searchUserData, searchUserPosts } from "../../services/search.js";
-import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
-import PostsContainer from "../../comps/Posts/PostsContainer.js";
 import UserPostList from "../../comps/UserPostsList/UserPostsList.jsx";
 import FollowButton from "../../comps/FollowButton/FollowButton.js";
 
 export default function UserPosts() {
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
-
+  const followerId = localStorage.getItem("userid");
   let { id } = useParams();
-  const followerId = localStorage.getItem("userid")
+  const offsetUpdater = 4;
+  const date = new Date().toISOString();
+  let offset = 0;
+  let boole = true;
 
   const [posts, setPosts] = useState([]);
 
@@ -32,15 +33,6 @@ export default function UserPosts() {
         await validToken({ token });
       } catch (error) {
         navigate("/");
-      }
-    }
-    async function getUserPosts() {
-      try {
-        const { data } = await searchUserPosts(id);
-        data[0] ? setPosts(data) : setPosts([]);
-        console.log(data);
-      } catch (error) {
-        alert(error.response.data);
       }
     }
     async function getUserData() {
@@ -55,13 +47,55 @@ export default function UserPosts() {
 
     validateToken();
     getUserData();
-    getUserPosts();
+    loadPosts();
+
+    const element = ref.current;
+    element.addEventListener("scroll", handleScroll);
+    return () => {
+      element.removeEventListener("scroll", handleScroll);
+    };
   }, [useParams().id]);
+
+  function loadPosts() {
+    if (boole) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      searchUserPosts({ id, date, offset, config })
+        .then((res) => {
+          const { data } = res;
+          setPosts((posts) => [...posts, ...data]);
+          if (data.length < offsetUpdater) {
+            boole = !boole;
+          }
+        })
+        .catch((err) => {
+          alert(
+            "An error occured while trying to fetch the posts, please refresh the page"
+          );
+        });
+
+      offset += 4;
+    }
+  }
+
+  const handleScroll = (e) => {
+    const scrollHeight = e.target.scrollHeight;
+    const currentHeight = Math.ceil(e.target.scrollTop + window.innerHeight);
+
+    if (currentHeight + 1 >= scrollHeight) {
+      loadPosts();
+    }
+  };
+
+  const ref = useRef(null);
 
   return (
     <>
       <NavBar />
-      <HomePageContainer>
+      <HomePageContainer ref={ref}>
         <Container>
           <ContainerHeader>
             <img src={img} alt="profile picture" />
