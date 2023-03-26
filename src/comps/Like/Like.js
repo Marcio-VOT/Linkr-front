@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getLikes, getTwoUsers, youLike, removeLike, newLike } from '../../services/likeService'
+import likeService from '../../services/likeService'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
@@ -8,7 +8,8 @@ export function LikeButton(props) {
     const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [listLikes, setListLikes] = useState({})
-
+    const services = likeService()
+    const {getLikes, newLike, removeLike, youLike, getTwoUsers} = services
     useEffect(() => {
         async function handleLike() {
             const body = {

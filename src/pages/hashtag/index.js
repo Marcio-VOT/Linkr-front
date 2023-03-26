@@ -47,16 +47,12 @@ export default function Hashtag() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-
+      loadPosts();
     const element = ref.current;
     element.addEventListener("scroll", handleScroll);
     return () => {
       element.removeEventListener("scroll", handleScroll);
     };
-  }, []);
-
-  useEffect(() => {
-    loadPosts();
   }, [updatePost]);
 
   function buildTrendings() {
@@ -66,7 +62,7 @@ export default function Hashtag() {
           <Trendings
             updatePost={updatePost}
             setUpdatePost={setUpdatePost}
-            key={hashtag.id}
+            key={hashtag.hashtags}
             hashtag={hashtag.hashtags}
           />
         );

@@ -5,10 +5,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function CommentContainer(props) {
-  const { postId, openComment, setTotalComments  } = props;
+  const { postId, openComment, setTotalComments, updateComments, setUpdateComments } = props;
   const token = localStorage.getItem("token");
   const [commentsList, setCommentsList] = useState([]);
-  const [commentUpdate, setCommentUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const config = {
@@ -31,11 +31,12 @@ export default function CommentContainer(props) {
         "An error occured while trying to fetch the comments, please refresh the page"
       );
     });
-  }, [commentUpdate]);
+  }, [updateComments]);
 
-  function buildCommentsList() {
-    if (commentsList.length > 0) {
-      return commentsList.map((postComment, key) => {
+  return (
+    <CommentsList openComment={openComment}>
+      <div data-test="comment-box">
+        {commentsList.length > 0  ? (commentsList.map((postComment, key) => {
         const {
           comment,
           id,
@@ -51,17 +52,8 @@ export default function CommentContainer(props) {
             comment={comment}
           />
         );
-      });
-    } else {
-      return <p>there are no comments yet!</p>;
-    }
-  }
-
-  return (
-    <CommentsList openComment={openComment}>
-      <div data-test="comment-box">
-        {buildCommentsList()}
-        <CommentInput postId={postId} commentUpdate={commentUpdate} setCommentUpdate={setCommentUpdate} />
+      })): <p>there are no comments yet!</p>}
+        <CommentInput postId={postId} updateComments={updateComments} setUpdateComments={setUpdateComments}/>
       </div>
     </CommentsList>
   );

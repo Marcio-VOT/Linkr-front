@@ -59,9 +59,6 @@ export default function HomePage() {
     date = new Date().toISOString();
     offset = 0;
     loadPosts(true);
-  }, [updatePost]);
-
-  useEffect(() => {
     if (!firstLoad) loadPosts();
     else firstLoad = !firstLoad;
     const element = ref.current;
@@ -69,7 +66,7 @@ export default function HomePage() {
     return () => {
       element.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [updatePost]);
 
   const handleScroll = (e) => {
     const scrollHeight = e.target.scrollHeight;

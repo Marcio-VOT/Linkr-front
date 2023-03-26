@@ -28,6 +28,7 @@ const customStyles = {
 export default function Post(props) {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userid");
+  const [updateComments, setUpdateComments] = useState(false);
   const { id, description, external_link, name, profile_picture, user_id } =
     props;
 
@@ -134,15 +135,16 @@ export default function Post(props) {
           <ImageLike>
             <img src={profile_picture} />
             <LikeButton idPost={id} idUser={userId} />
-          </ImageLike>
-          <CommentIcon>
-            <AiOutlineComment
-              onClick={
+            <CommentIcon onClick={() => {
                 openComment ? setOpenComment(false) : setOpenComment(true)
+                setUpdateComments(!updateComments)
               }
+              }>
+            <AiOutlineComment
             />
             <p>{totalComments} comments</p>
           </CommentIcon>
+          </ImageLike>
           <Container>
             <div>
               <p
@@ -207,6 +209,8 @@ export default function Post(props) {
         postId={id}
         openComment={openComment}
         setTotalComments={setTotalComments}
+        updateComments={updateComments}
+        setUpdateComments={setUpdateComments}
       />
     </>
   );
@@ -224,6 +228,7 @@ const ImageLike = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 40px;
+  gap: 15px;
 `;
 
 const Container = styled.div`
@@ -354,12 +359,18 @@ const StyledModal = styled(Modal)`
 
 const CommentIcon = styled.div`
   color: white;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  cursor: pointer;
   p {
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 7px;
     line-height: 13px;
     text-align: center;
   }
