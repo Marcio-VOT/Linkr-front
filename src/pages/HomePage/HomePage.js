@@ -18,6 +18,7 @@ export default function HomePage() {
   const token = localStorage.getItem("token");
   const [updatePostList, setUpdatePostList] = useState(true);
   const [postsList, setPostsList] = useState([]);
+  const [loading, setLoading] = useState(false);
   let date = new Date().toISOString();
   let offset = 0;
   let boole = false;
@@ -84,6 +85,9 @@ export default function HomePage() {
           Authorization: `Bearer ${token}`,
         },
       };
+
+      setLoading(true);
+
       searchPosts({ date, offset, config })
         .then((res) => {
           const { data } = res;
@@ -91,6 +95,7 @@ export default function HomePage() {
           if (data.posts.length < offsetUpdater || force) {
             boole = !boole;
           }
+          setLoading(false);
         })
         .catch(() => {
           alert(
@@ -126,6 +131,7 @@ export default function HomePage() {
               updatePost={updatePost}
               setUpdatePostList={setUpdatePostList}
               updatePostList={updatePostList}
+              loading={loading}
             />
           </Feed>
           <TrendingsContainer>
