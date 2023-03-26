@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { verifyFollow } from "../../services/followService";
+import followService from "../../services/followService";
 
 export default function UserSearch({id, profile_picture, name, setSearch, setUserList}) {
     const [follow, setFollow] = useState(false)
+    const {verifyFollow} = followService()
 
     useEffect(() => {
         async function following(){
