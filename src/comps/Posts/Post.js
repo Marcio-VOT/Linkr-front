@@ -7,32 +7,35 @@ import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { LikeButton } from "../Like/Like";
 import Modal from "react-modal";
+import CommentContainer from "../CommentsComponents/CommentContainer";
+import { AiOutlineComment } from "react-icons/ai";
 
 const customStyles = {
-
   overlay: {
-    zIndex: 11
+    zIndex: 11,
   },
 
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
   },
 };
 
-
 export default function Post(props) {
-
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userid");
-  const { id, description, external_link, name, profile_picture, user_id } = props;
+  const [updateComments, setUpdateComments] = useState(false);
+  const { id, description, external_link, name, profile_picture, user_id } =
+    props;
 
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
+  const [openComment, setOpenComment] = useState(false);
+  const [totalComments, setTotalComments] = useState(0);
   const navigate = useNavigate();
 
   const editTextRef = useRef(null);
@@ -80,7 +83,7 @@ export default function Post(props) {
     }
   };
 
-  //Delete 
+  //Delete
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -109,71 +112,114 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-  
+
   return (
-    <PostContainer data-test="post">
-      {Number(userId) === user_id ? (<ButtonsContainer>
-        <button data-test="edit-btn" onClick={editing ? handleCancelEdit : handleEditClick}><BsFillPencilFill /></button>
-        <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
-      </ButtonsContainer>) : ""
-      }
-      <CustomerData>
-        <ImageLike>
-          <img src={profile_picture} />
-          <LikeButton idPost={id} idUser={userId} />
-        </ImageLike>
-        <Container>
-          <div>
-            <p
-              className="user-name"
-              data-test="username"
-              onClick={() => navigate(`/user/${user_id}`)}
+    <>
+      <PostContainer data-test="post">
+        {Number(userId) === user_id ? (
+          <ButtonsContainer>
+            <button
+              data-test="edit-btn"
+              onClick={editing ? handleCancelEdit : handleEditClick}
             >
-              {name}
-            </p>
-            {editing ? (
-              <textarea
-                data-test="edit-description"
-                ref={editTextRef}
-                value={editedText}
-                onChange={(e) => setEditedText(e.target.value)}
-                onKeyDown={handleEditKeyDown}
-              />
-            ) : (
-              <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
-                navigate(`/hashtag/${tag.replace('#', '')}`)
-              }}>
-                <p className="user-description" data-test="description">
-                  {description}
-                </p>
-              </ReactTagify>
-            )}
+              <BsFillPencilFill />
+            </button>
+            <button data-test="delete-btn" onClick={handleDeleteClick}>
+              <BsFillTrashFill />
+            </button>
+          </ButtonsContainer>
+        ) : (
+          ""
+        )}
+        <CustomerData>
+          <ImageLike>
+            <img src={profile_picture} />
+            <LikeButton idPost={id} idUser={userId} />
+            <CommentIcon onClick={() => {
+                openComment ? setOpenComment(false) : setOpenComment(true)
+                setUpdateComments(!updateComments)
+              }
+              }>
+            <AiOutlineComment
+            />
+            <p>{totalComments} comments</p>
+          </CommentIcon>
+          </ImageLike>
+          <Container>
+            <div>
+              <p
+                className="user-name"
+                data-test="username"
+                onClick={() => navigate(`/user/${user_id}`)}
+              >
+                {name}
+              </p>
+              {editing ? (
+                <textarea
+                  data-test="edit-description"
+                  ref={editTextRef}
+                  value={editedText}
+                  onChange={(e) => setEditedText(e.target.value)}
+                  onKeyDown={handleEditKeyDown}
+                />
+              ) : (
+                <ReactTagify
+                  tagStyle={tagStyle}
+                  tagClicked={(tag) => {
+                    navigate(`/hashtag/${tag.replace("#", "")}`);
+                  }}
+                >
+                  <p className="user-description" data-test="description">
+                    {description}
+                  </p>
+                </ReactTagify>
+              )}
+            </div>
+            <LinkPreview url={external_link} />
+          </Container>
+        </CustomerData>
+        <StyledModal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          contentLabel="Confirmar deleção"
+          style={customStyles}
+        >
+          <div className="modal-content">
+            <h2>Tem certeza que deseja deletar esse post?</h2>
+            <div>
+              <button
+                data-test="confirm"
+                className="btn-cancel"
+                onClick={() => setModalIsOpen(false)}
+              >
+                No, go back
+              </button>
+              <button
+                data-test="cancel"
+                className="btn-confirm"
+                onClick={handleDeleteConfirm}
+              >
+                Yes, delete it
+              </button>
+            </div>
           </div>
-          <LinkPreview url={external_link} />
-        </Container>
-      </CustomerData>
-      <StyledModal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        contentLabel="Confirmar deleção"
-        style={customStyles}
-      >
-        <div className="modal-content">
-          <h2>Tem certeza que deseja deletar esse post?</h2>
-          <div>
-            <button data-test="confirm" className="btn-cancel" onClick={() => setModalIsOpen(false)}>No, go back</button>
-            <button data-test="cancel" className="btn-confirm" onClick={handleDeleteConfirm}>Yes, delete it</button>
-          </div>
-        </div>
-      </StyledModal>
-    </PostContainer>
+        </StyledModal>
+      </PostContainer>
+      <CommentContainer
+        postId={id}
+        openComment={openComment}
+        setTotalComments={setTotalComments}
+        updateComments={updateComments}
+        setUpdateComments={setUpdateComments}
+      />
+    </>
   );
 }
 
 const tagStyle = {
   fontWeight: "bold",
   cursor: "pointer",
-  display: "inline"
+  display: "inline",
 };
 
 const ImageLike = styled.div`
@@ -182,7 +228,8 @@ const ImageLike = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 40px;
-`
+  gap: 15px;
+`;
 
 const Container = styled.div`
   flex: 1;
@@ -196,7 +243,7 @@ const Container = styled.div`
     align-items: flex-start;
     width: 100%;
   }
-`
+`;
 
 const PostContainer = styled.div`
   display: flex;
@@ -206,40 +253,40 @@ const PostContainer = styled.div`
   background: #171717;
   border-radius: 16px;
   position: relative;
-  @media (max-width: 600px){
+  @media (max-width: 600px) {
     border-radius: 0;
   }
 `;
 
 const CustomerData = styled.div`
-    width: 100%;
-    display: flex;
-    gap: 18px;
+  width: 100%;
+  display: flex;
+  gap: 18px;
 
-    img{
-        width: 50px;
-        height: 50px;
-        border-radius: 26.5px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-    }
-    .user-name{
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19px;
-        line-height: 23px;
-        color: #FFFFFF;
-        cursor: pointer;
-    }
-    .user-description{
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 17px;
-        line-height: 20px;
-        color: #B7B7B7;
-    }
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 26.5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  .user-name {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 23px;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .user-description {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
+    color: #b7b7b7;
+  }
 `;
 
 const ButtonsContainer = styled.div`
@@ -247,14 +294,14 @@ const ButtonsContainer = styled.div`
   right: 0px;
   top: 10px;
 
-  button{
+  button {
     margin-right: 10px;
     cursor: pointer;
     color: white;
     background: none;
     border: none;
   }
-`
+`;
 const StyledModal = styled(Modal)`
   display: flex;
   align-items: center;
@@ -271,41 +318,60 @@ const StyledModal = styled(Modal)`
     background: #333333;
     border-radius: 50px;
 
-  h2 {
-    font-family: 'Lato';
+    h2 {
+      font-family: "Lato";
+      font-style: normal;
+      font-weight: 700;
+      font-size: 34px;
+      line-height: 41px;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    button {
+      margin-right: 10px;
+      border: none;
+      font-family: "Lato";
+      font-style: normal;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+    }
+
+    .btn-confirm {
+      width: 134px;
+      height: 37px;
+      background: #1877f2;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .btn-cancel {
+      width: 134px;
+      height: 37px;
+      background: #ffffff;
+      border-radius: 5px;
+      color: #1877f2;
+    }
+  }
+`;
+
+const CommentIcon = styled.div`
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  cursor: pointer;
+  p {
+    font-family: "Lato";
     font-style: normal;
-    font-weight: 700;
-    font-size: 34px;
-    line-height: 41px;
+    font-weight: 400;
+    font-size: 7px;
+    line-height: 13px;
     text-align: center;
-    color: #FFFFFF;
-    margin-bottom: 20px;
-  }
-
-  button {
-    margin-right: 10px;
-    border: none;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 22px;
-  }
-
-  .btn-confirm{
-    width: 134px;
-    height: 37px;
-    background: #1877F2;
-    border-radius: 5px;
-    color: white;
-  }
-
-  .btn-cancel{
-    width: 134px;
-    height: 37px;
-    background: #FFFFFF;
-    border-radius: 5px;
-    color: #1877F2;
-  }
   }
 `;
