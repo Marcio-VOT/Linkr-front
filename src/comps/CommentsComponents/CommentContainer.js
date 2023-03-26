@@ -8,6 +8,7 @@ export default function CommentContainer(props) {
   const { postId, openComment, setTotalComments  } = props;
   const token = localStorage.getItem("token");
   const [commentsList, setCommentsList] = useState([]);
+  const [commentUpdate, setCommentUpdate] = useState(false);
 
   useEffect(() => {
     const config = {
@@ -30,19 +31,21 @@ export default function CommentContainer(props) {
         "An error occured while trying to fetch the comments, please refresh the page"
       );
     });
-  }, [commentsList]);
+  }, [commentUpdate]);
 
   function buildCommentsList() {
     if (commentsList.length > 0) {
       return commentsList.map((postComment, key) => {
         const {
           comment,
+          id,
           name,
           profile_picture
         } = postComment;
         return (
           <Comment
             key={key}
+            userId={id}
             name={name}
             profile_picture={profile_picture}
             comment={comment}
@@ -58,7 +61,7 @@ export default function CommentContainer(props) {
     <CommentsList openComment={openComment}>
       <div data-test="comment-box">
         {buildCommentsList()}
-        <CommentInput postId={postId} />
+        <CommentInput postId={postId} commentUpdate={commentUpdate} setCommentUpdate={setCommentUpdate} />
       </div>
     </CommentsList>
   );

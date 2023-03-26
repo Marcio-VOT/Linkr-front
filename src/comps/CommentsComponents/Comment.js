@@ -1,13 +1,14 @@
 import styled from "styled-components"
+import { verifyFollow } from "../../services/followService";
 
 export default function Comment(props){
-    const {name, profile_picture, comment} = props;
+    const {userId, name, profile_picture, comment} = props;
     return(
         <CommentContainer>
             <div className="comment" data-test="comment">
                 <img src={profile_picture} />
                 <div className="comment-data">
-                    <p className="user-name">{name}</p>
+                    <p className="user-name">{name} {verifyFollow(userId)}</p>
                     <p className="user-comment">{comment}</p>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function CommentInput(props) {
-  const { postId } = props;
+  const { postId, commentUpdate, setCommentUpdate} = props;
   const token = localStorage.getItem("token");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [commentData, setCommentData] = useState({
@@ -26,6 +26,7 @@ export default function CommentInput(props) {
     setIsSubmitting(true);
     promise.then((result) => {
       setIsSubmitting(false);
+      setCommentUpdate(!commentUpdate);
       alert("commented with sucessfull");
     });
 
