@@ -9,7 +9,7 @@ import { validToken } from "../../services/apiAuth.js";
 import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
 import InfiniteScroll from "react-infinite-scroller";
-import { searchPosts } from "../../services/search.js";
+import searchService from "../../services/search.js";
 
 export default function HomePage() {
   const [updatePost, setUpdatePost] = useState(false);
@@ -19,6 +19,7 @@ export default function HomePage() {
   const [updatePostList, setUpdatePostList] = useState(true);
   const [postsList, setPostsList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const {searchPosts, trandingHashtags} = searchService()
   let date = new Date().toISOString();
   let offset = 0;
   let boole = false;

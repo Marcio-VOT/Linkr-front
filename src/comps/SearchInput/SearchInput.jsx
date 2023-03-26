@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { StyledSearchInput, StyledSearchList } from "./StyledSearchInput";
-import { searchApi } from "../../services/search";
+import searchServices from "../../services/search";
 import UserSearch from "../UserSearch/UserSearch";
 
 export const SearchInput = ({ search, setSearch, WindowWidth }) => {
   const [userList, setUserList] = useState([]);
+  const {searchApi} = searchServices()
   return (
     <StyledSearchInput WindowWidth={WindowWidth}>
       {userList[0] && (

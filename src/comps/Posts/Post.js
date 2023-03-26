@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import LinkPreview from "../LinkPreview/LinkPreview";
 import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
@@ -39,6 +39,22 @@ export default function Post(props) {
   const navigate = useNavigate();
 
   const editTextRef = useRef(null);
+
+  useEffect(() => {
+    async function getTotalComments(){
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      axios.get(`${process.env.REACT_APP_API_URL}/comments/post/${id}`, config)
+      .then(res => {
+        setTotalComments(res.data.quantitycomments)
+      })
+    }
+    getTotalComments()
+  })
 
   const handleEditClick = () => {
     setEditing(true);
@@ -140,7 +156,7 @@ export default function Post(props) {
                 setUpdateComments(!updateComments)
               }
               }>
-            <AiOutlineComment
+            <AiOutlineComment size={20}
             />
             <p>{totalComments} comments</p>
           </CommentIcon>
@@ -227,8 +243,8 @@ const ImageLike = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 40px;
-  gap: 15px;
+  width: 49px;
+  gap: 10px;
 `;
 
 const Container = styled.div`
@@ -261,7 +277,7 @@ const PostContainer = styled.div`
 const CustomerData = styled.div`
   width: 100%;
   display: flex;
-  gap: 18px;
+  gap: 15px;
 
   img {
     width: 50px;
@@ -363,14 +379,14 @@ const CommentIcon = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
   width: 100%;
   cursor: pointer;
   p {
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
-    font-size: 7px;
+    font-size: 9px;
     line-height: 13px;
     text-align: center;
   }
