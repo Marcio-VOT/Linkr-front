@@ -92,6 +92,7 @@ export default function HomePage() {
         .then((res) => {
           const { data } = res;
           setPostsList((postsList) => [...postsList, ...data.posts]);
+          console.log(data)
           if (data.posts.length < offsetUpdater || force) {
             boole = !boole;
           }
