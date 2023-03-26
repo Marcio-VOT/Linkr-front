@@ -37,9 +37,12 @@ export default function followService() {
 
 
         async verifyFollow({ userId }) {
-            return api.get(`/follow/${userId}`)
+            return await api.get(`/follow/${userId}`)
         },
-        
+
+        async quantityFollowing(){
+            return await api.get("/follow")
+        }
     }
 
 

@@ -1,14 +1,28 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components"
-import { verifyFollow } from "../../services/followService";
+import followService from "../../services/followService";
 
 export default function Comment(props){
     const {userId, name, profile_picture, comment} = props;
+    const {verifyFollow} = followService()
+    const [following, setFollowing] = useState(false)
+
+    useEffect(() => {
+     async function getFollowing(){
+        const result = await verifyFollow({userId})
+        if(result.data.length > 0){
+            setFollowing(true)
+        }
+     }
+     getFollowing()
+    })
+
     return(
         <CommentContainer>
             <div className="comment" data-test="comment">
                 <img src={profile_picture} />
                 <div className="comment-data">
-                    <p className="user-name">{name} {verifyFollow(userId)}</p>
+                    <p className="user-name">{name} {following && <span> • following</span>}</p>
                     <p className="user-comment">{comment}</p>
                 </div>
             </div>
@@ -36,6 +50,11 @@ const CommentContainer=styled.div`
                 font-weight: 700;
                 font-size: 14px;
                 color: #F3F3F3;
+            }
+            span {
+                color: #565656;
+                font-family: Lato;
+                font-size: 14px;
             }
 
             .user-comment{

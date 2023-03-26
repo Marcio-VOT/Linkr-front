@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
+import followService from "../../services/followService";
 
 export default function PostsContainer({ postsList, loading }) {
+  const {quantityFollowing} = followService()
+  const [following, setFollowing] = useState(false)
+  
+  useEffect(() => {
+    async function getQuantityFollowing(){
+      const result = await quantityFollowing()
+      console.log(result)
+      if(Number(result.data.quantityfollowing) > 0){
+        setFollowing(true)
+      }
+    }
+    getQuantityFollowing()
+    
+  }, [])
+
   return (
     <PostsList>
       {postsList.length > 0 ? (
@@ -44,7 +60,7 @@ export default function PostsContainer({ postsList, loading }) {
         </div>
       ) : (
         <div className="message-container">
-          <p>there are no posts yet!</p>
+          {following ? <p>No posts found for your friends.</p> : <p>you don't follow anyone yet! Search for new friends</p>}
         </div>
       )}
     </PostsList>
