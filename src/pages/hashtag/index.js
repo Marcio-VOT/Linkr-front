@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
 import axios from "axios";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 import PostsContainer from "./PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
 import Trendings from "../../comps/Hashtags/index.js";
+import { postsFromHashtagId, trandingHashtags } from "../../services/search.js";
 
 export default function Hashtag() {
   const { hashtag } = useParams();
@@ -14,6 +15,17 @@ export default function Hashtag() {
   const [search, setSearch] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
   const token = localStorage.getItem("token");
+  const offsetUpdater = 4;
+  const date = new Date().toISOString();
+  let offset = 0;
+  let boole = true;
+  const [postsList, setPostsList] = useState([]);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   useEffect(() => {
     async function validateToken() {
       try {
@@ -24,29 +36,24 @@ export default function Hashtag() {
     }
 
     validateToken();
-  }, []);
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    trandingHashtags({ config })
+      .then((res) => {
+        const { data } = res;
+        setHashtagsList([...data]);
+      })
+      .catch(() => {
+        alert(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
+      });
+      loadPosts();
+    const element = ref.current;
+    element.addEventListener("scroll", handleScroll);
+    return () => {
+      element.removeEventListener("scroll", handleScroll);
     };
-    const BASE_URL = process.env.REACT_APP_API_URL;
-    const URL = `${BASE_URL}/trendding`;
-    const promise = axios.get(URL, config);
-
-    promise.then((res) => {
-      const { data } = res;
-      setHashtagsList([...data]);
-    });
-
-    promise.catch((err) => {
-      alert(
-        "An error occured while trying to fetch the posts, please refresh the page"
-      );
-    });
-  }, []);
+  }, [updatePost]);
 
   function buildTrendings() {
     if (hashtagsList.length > 0) {
@@ -55,7 +62,7 @@ export default function Hashtag() {
           <Trendings
             updatePost={updatePost}
             setUpdatePost={setUpdatePost}
-            key={hashtag.id}
+            key={hashtag.hashtags}
             hashtag={hashtag.hashtags}
           />
         );
@@ -65,14 +72,45 @@ export default function Hashtag() {
     }
   }
 
+  function loadPosts() {
+    if (boole) {
+      postsFromHashtagId({ hashtag, date, offset, config })
+        .then((res) => {
+          const { data } = res;
+          setPostsList((postsList) => [...postsList, ...data]);
+          if (data.length < offsetUpdater) {
+            boole = !boole;
+          }
+        })
+        .catch((err) => {
+          alert(
+            "An error occured while trying to fetch the posts, please refresh the page"
+          );
+        });
+
+      offset += 4;
+    }
+  }
+
+  const handleScroll = (e) => {
+    const scrollHeight = e.target.scrollHeight;
+    const currentHeight = Math.ceil(e.target.scrollTop + window.innerHeight);
+
+    if (currentHeight + 1 >= scrollHeight) {
+      loadPosts();
+    }
+  };
+
+  const ref = useRef(null);
+
   return (
     <>
       <NavBar />
-      <HomePageContainer>
+      <HomePageContainer ref={ref}>
         <TimeLineContent>
           <h1># {hashtag}</h1>
           <ContainerTimeLineContent>
-            <PostsContainer hashtag={hashtag} updatePost={updatePost} />
+            <PostsContainer postsList={postsList} />
             <TrendingsContainer>
               <Title>
                 <h1>trending</h1>
@@ -89,10 +127,13 @@ export default function Hashtag() {
 const HomePageContainer = styled.div`
   justify-content: center;
   width: 100%;
-  min-height: 100vh;
-  height: auto;
+  height: 100vh;
   display: flex;
   background-color: #333333;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   h1 {
     font-family: "Oswald";

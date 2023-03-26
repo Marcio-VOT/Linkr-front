@@ -2,14 +2,18 @@ import styled from "styled-components";
 
 export const HomePageContainer = styled.div`
   width: 100%;
+  height: 100vh;
   padding-top: 125px;
-  min-height: 100vh;
   background-color: #333333;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   gap: 19px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   h1 {
     font-family: "Oswald";
     font-style: normal;
@@ -23,6 +27,18 @@ export const HomePageContainer = styled.div`
   }
 `;
 
+export const ContainerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #151515;
+  }
+`;
+
 export const TimeLineContent = styled.div`
   width: 100%;
   display: flex;
@@ -32,17 +48,16 @@ export const TimeLineContent = styled.div`
 `;
 
 export const Container = styled.div`
-  display: flex;
-  align-items: center;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   max-width: 611px;
   padding-left: 16px;
-  gap: 16px;
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #151515;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
   }
 `;
 
