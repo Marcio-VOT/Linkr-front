@@ -6,7 +6,7 @@ import followService from "../../services/followService"
 
 export default function FollowButton() {
 
-    const [follower, setFollower] = useState(false)
+    const [follower, setFollower] = useState()
     const [disabled, setDisabled] = useState(false)
     const followerId = localStorage.getItem("userid")
     const { id: userId } = useParams()
@@ -17,6 +17,8 @@ export default function FollowButton() {
             const result = await verifyFollow({ userId })
             if (result.data.length > 0) {
                 setFollower(true)
+            } else {
+                setFollower(false)
             }
         }
         handleFollow()
@@ -49,12 +51,12 @@ export default function FollowButton() {
         <>
             {follower ? (
                 <UnfollowButtonContainer disabled={disabled} onClick={unfollowClick} data-test="follow-btn">
-                    unfollow
+                    Unfollow
                 </UnfollowButtonContainer>
 
             ) : (
                 <FollowButtonContainer disabled={disabled} onClick={followClick} data-test="follow-btn">
-                    follow
+                    Follow
                 </FollowButtonContainer>
             )
             }
