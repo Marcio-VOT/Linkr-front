@@ -6,9 +6,9 @@ import styled from "styled-components";
 import PostForm from "../../comps/PostForm.js";
 import PostsContainer from "../../comps/Posts/PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
-import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
-import InfiniteScroll from "react-infinite-scroller";
+import { searchPosts } from "../../services/search.js";
+import { UpdateButton } from "../../comps/UpdateButton/UpdateButton.jsx";
 import searchService from "../../services/search.js";
 
 export default function HomePage() {
@@ -19,7 +19,7 @@ export default function HomePage() {
   const [updatePostList, setUpdatePostList] = useState(true);
   const [postsList, setPostsList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {searchPosts, trandingHashtags} = searchService()
+  const { searchPosts, trandingHashtags } = searchService();
   let date = new Date().toISOString();
   let offset = 0;
   let boole = false;
@@ -93,7 +93,7 @@ export default function HomePage() {
         .then((res) => {
           const { data } = res;
           setPostsList((postsList) => [...postsList, ...data.posts]);
-          console.log(data)
+          console.log(data);
           if (data.posts.length < offsetUpdater || force) {
             boole = !boole;
           }
@@ -128,6 +128,16 @@ export default function HomePage() {
           <Feed>
             <h1>timeline</h1>
             <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost} />
+            <UpdateButton
+              setUpdate={setUpdatePost}
+              update={updatePost}
+              date={date}
+              config={{
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }}
+            />
             <PostsContainer
               postsList={postsList}
               updatePost={updatePost}
