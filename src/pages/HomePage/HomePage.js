@@ -141,9 +141,11 @@ export default function HomePage() {
             <PostsContainer
               postsList={postsList}
               updatePost={updatePost}
+              setUpdatePost={setUpdatePost}
               setUpdatePostList={setUpdatePostList}
               updatePostList={updatePostList}
               loading={loading}
+              setPostsList={setPostsList}
             />
           </Feed>
           <TrendingsContainer data-test="trending">

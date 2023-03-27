@@ -9,7 +9,13 @@ export default function FormSignup(){
 
     async function submitSignup(values){
         try {
-            await singUp({name: values.username, email: values.email, password: values.password, profileUrl: values.pictureUrl})
+            if(values.username & values.email & values.password & values.pictureUrl){
+                await singUp({name: values.username, email: values.email, password: values.password, profileUrl: values.pictureUrl})
+            }
+            else {
+                alert("todos os campos são obrigatórios.")
+                return
+            }
             navigate("/")
         } catch (error) {
             switch (error.response.status) {

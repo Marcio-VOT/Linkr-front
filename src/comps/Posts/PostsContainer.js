@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 import followService from "../../services/followService";
 
-export default function PostsContainer({ postsList, loading }) {
-  const { quantityFollowing } = followService()
+export default function PostsContainer({ postsList, loading, updatePost, setUpdatePost, setPostsList }) {
+  const {quantityFollowing} = followService()
   const [following, setFollowing] = useState(false)
 
   useEffect(() => {
@@ -34,32 +34,22 @@ export default function PostsContainer({ postsList, loading }) {
             user_id,
             repost_user_id
           }) => {
-            if (repost_user_id) {
-              return (
-                <Repost
-                  key={`${id}$-{description}-$published_by`}
-                  id={id}
-                  description={description}
-                  external_link={external_link}
-                  name={name}
-                  profile_picture={profile_picture}
-                  user_id={user_id}
-                  published_by={repost_user_id}
-                />)
-            }
-            else {
-              return (
-                <Post
-                  key={id}
-                  id={id}
-                  description={description}
-                  external_link={external_link}
-                  name={name}
-                  profile_picture={profile_picture}
-                  user_id={user_id}
-                />
-              );
-            }
+
+            return (
+              <Post
+                key={id}
+                id={id}
+                description={description}
+                external_link={external_link}
+                name={name}
+                profile_picture={profile_picture}
+                user_id={user_id}
+                updatePost={updatePost}
+                setUpdatePost={setUpdatePost}
+                setPostsList={setPostsList}
+              />
+            );
+
           }
         )
       ) : loading ? (
