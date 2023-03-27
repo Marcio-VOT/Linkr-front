@@ -1,11 +1,13 @@
 import axios from "axios";
 import { BASE_URL } from "../constants/constants.js";
-const token = localStorage.getItem("token")
+const token = localStorage.getItem("token");
 
 export function searchApi(search) {
-  return axios.get(`${BASE_URL}/search/${search}`, {headers: {
-    Authorization: `Bearer ${token}`
-  }});
+  return axios.get(`${BASE_URL}/search/${search}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
 
 export function searchUserPosts({ id, offset, date, config }) {
@@ -31,4 +33,8 @@ export function postsFromHashtagId({ hashtag, date, offset, config }) {
 
 export function trandingHashtags({ config }) {
   return axios.get(`${BASE_URL}/trendding`, config);
+}
+
+export function newPostsCount({ date, config }) {
+  return axios.get(`${BASE_URL}/posts/count/?date=${date}`, config);
 }

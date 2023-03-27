@@ -10,6 +10,7 @@ import { SearchInput } from "../../comps/SearchInput/SearchInput.jsx";
 import Trendings from "../../comps/Hashtags/index.js";
 import InfiniteScroll from "react-infinite-scroller";
 import { searchPosts } from "../../services/search.js";
+import { UpdateButton } from "../../comps/UpdateButton/UpdateButton.jsx";
 
 export default function HomePage() {
   const [updatePost, setUpdatePost] = useState(false);
@@ -124,6 +125,16 @@ export default function HomePage() {
           <Feed>
             <h1>timeline</h1>
             <PostForm updatePost={updatePost} setUpdatePost={setUpdatePost} />
+            <UpdateButton
+              setUpdate={setUpdatePost}
+              update={updatePost}
+              date={date}
+              config={{
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }}
+            />
             <PostsContainer
               postsList={postsList}
               updatePost={updatePost}
