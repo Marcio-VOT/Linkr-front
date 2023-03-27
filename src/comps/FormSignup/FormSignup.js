@@ -27,6 +27,7 @@ export default function FormSignup(){
                     values.username=""
                     values.pictureUrl=""
                 default:
+                    alert("Houve um problema no servidor. Tente novamente.")
                     break;
             }
         }
