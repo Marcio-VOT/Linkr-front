@@ -27,7 +27,7 @@ export const UpdateButton = ({ setUpdate, update, date, config }) => {
   return (
     count > 0 && (
       <>
-        <ReloadeButton onClick={handleReload}>
+        <ReloadeButton onClick={handleReload} data-test="load-btn">
           {" "}
           {count} new post{count > 1 && "s"}, load more!{" "}
           <img src={sync} alt="sync" />
