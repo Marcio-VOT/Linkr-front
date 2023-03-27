@@ -19,8 +19,8 @@ export default function UserSearch({id, profile_picture, name, setSearch, setUse
     })
 
     return (
-        <UserSearchContainer>
-        <Link to={`/user/${id}`} key={id} data-test="user-search">
+        <UserSearchContainer data-test="user-search">
+        <Link to={`/user/${id}`} key={id} >
             <div
                 onClick={() => {
                     setSearch("");

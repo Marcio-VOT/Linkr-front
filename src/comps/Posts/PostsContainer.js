@@ -60,7 +60,7 @@ export default function PostsContainer({ postsList, loading }) {
         </div>
       ) : (
         <div className="message-container">
-          {following ? <p>No posts found for your friends.</p> : <p>you don't follow anyone yet! Search for new friends</p>}
+          {following ? <p data-test="message">No posts found for your friends.</p> : <p data-test="message">you don't follow anyone yet. Search for new friends!</p>}
         </div>
       )}
     </PostsList>

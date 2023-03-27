@@ -136,7 +136,7 @@ export default function HomePage() {
               loading={loading}
             />
           </Feed>
-          <TrendingsContainer>
+          <TrendingsContainer data-test="trending">
             <Title>
               <h1>trending</h1>
             </Title>

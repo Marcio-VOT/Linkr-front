@@ -48,12 +48,12 @@ export default function FollowButton() {
     return (
         <>
             {follower ? (
-                <UnfollowButtonContainer disabled={disabled} onClick={unfollowClick}>
+                <UnfollowButtonContainer disabled={disabled} onClick={unfollowClick} data-test="follow-btn">
                     unfollow
                 </UnfollowButtonContainer>
 
             ) : (
-                <FollowButtonContainer disabled={disabled} onClick={followClick}>
+                <FollowButtonContainer disabled={disabled} onClick={followClick} data-test="follow-btn">
                     follow
                 </FollowButtonContainer>
             )
