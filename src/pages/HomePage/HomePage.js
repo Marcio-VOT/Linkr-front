@@ -105,7 +105,7 @@ export default function HomePage() {
           );
         });
 
-      offset += 4;
+      offset += 10;
     }
   }
   function buildTrendings() {
