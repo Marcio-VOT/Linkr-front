@@ -116,19 +116,18 @@ export default function Repost(props) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }
     };
 
-    const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
+    const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`;
     axios
-      .post(URL, config)
+      .post(URL, {}, config)
       .then((res) => {
         setModalIsOpen(false);
         window.location.reload();
       })
       .catch((err) => {
-        console.error("Erro ao excluir post:", err.message);
-        alert("Only the creator of the post can delete it.");
+        console.error("Erro ao fazer repost:", err.message);
         setModalIsOpen(false);
       });
   };
