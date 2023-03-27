@@ -58,7 +58,7 @@ export default function FormLogin() {
                                 ) : null
                             }
                         </ContainerInputForm>
-                        <button type="submit" data-test="login-btn">Log In</button>
+                        {formik.isSubmitting ?<button disabled type="submit" data-test="login-btn">Log In</button> : <button type="submit" data-test="login-btn">Log In</button>}
                         <Link data-test="sign-up-link" to="/sign-up">First time? Create an account!</Link>
                     </ContainerForm>
                 )
