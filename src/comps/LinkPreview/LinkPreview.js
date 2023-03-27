@@ -29,7 +29,7 @@ export default function LinkPreview({url}){
         )
     }
     return(
-        <LinkDirect href={url} target='_blank'>
+        <LinkDirect href={url} target='_blank' data-test="link">
         <ContainerLinkData>
             <LinkData>
             <h2>{metadata.meta.title}</h2>

@@ -12,7 +12,7 @@ function Trendings(props) {
   }
 
   return (
-    <Container onClick={handlePost}>
+    <Container onClick={handlePost} data-test="hashtag">
       <span> {hashtag} </span>
     </Container>
   )

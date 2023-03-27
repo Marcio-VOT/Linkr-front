@@ -21,7 +21,7 @@ export const NavUser = ({ log, setLog }) => {
           src={arrow}
           alt="arrow"
         />
-        <StyledProfilePicture src={localStorage.getItem("avatar")} alt="arrow" />
+        <StyledProfilePicture src={localStorage.getItem("avatar")} alt="arrow" data-test="avatar"/>
       </StyledNavUser>
       {!log && <LogOutButton />}
       {!log && <Overlay log={log} setLog={setLog}/>}

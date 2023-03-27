@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
-import { follow, unfollow, verifyFollow } from "../../services/followService"
+import followService from "../../services/followService"
 
 
 export default function FollowButton() {
@@ -10,6 +10,7 @@ export default function FollowButton() {
     const [disabled, setDisabled] = useState(false)
     const followerId = localStorage.getItem("userid")
     const { id: userId } = useParams()
+    const { unfollow, follow, verifyFollow} = followService()
 
     useEffect(() => {
         async function handleFollow() {
@@ -47,12 +48,12 @@ export default function FollowButton() {
     return (
         <>
             {follower ? (
-                <UnfollowButtonContainer disabled={disabled} onClick={unfollowClick}>
+                <UnfollowButtonContainer disabled={disabled} onClick={unfollowClick} data-test="follow-btn">
                     unfollow
                 </UnfollowButtonContainer>
 
             ) : (
-                <FollowButtonContainer disabled={disabled} onClick={followClick}>
+                <FollowButtonContainer disabled={disabled} onClick={followClick} data-test="follow-btn">
                     follow
                 </FollowButtonContainer>
             )

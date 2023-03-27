@@ -8,7 +8,7 @@ import {
   Container,
   ContainerHeader,
 } from "./StyledUserPosts.js";
-import { searchUserData, searchUserPosts } from "../../services/search.js";
+import searchService from "../../services/search.js";
 import UserPostList from "../../comps/UserPostsList/UserPostsList.jsx";
 import FollowButton from "../../comps/FollowButton/FollowButton.js";
 
@@ -23,6 +23,7 @@ export default function UserPosts() {
   const date = new Date().toISOString();
   let offset = 0;
   let boole = true;
+  const {searchUserData, searchUserPosts} = searchService()
 
   const [posts, setPosts] = useState([]);
 
