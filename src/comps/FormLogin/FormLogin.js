@@ -59,7 +59,7 @@ export default function FormLogin() {
                             }
                         </ContainerInputForm>
                         <button type="submit" data-test="login-btn">Log In</button>
-                        <Link data-test="sign-up-link" to="/signup">First time? Create an account!</Link>
+                        <Link data-test="sign-up-link" to="/sign-up">First time? Create an account!</Link>
                     </ContainerForm>
                 )
             }
