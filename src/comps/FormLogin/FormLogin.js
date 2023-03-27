@@ -7,12 +7,18 @@ import { ContainerForm, ContainerInputForm } from "../../styles/FormStyle"
 export default function FormLogin() {
     const navigate = useNavigate()
 
-    async function submitLogin(values){
+    async function submitLogin(values) {
         try {
-            const result = await signIn({email: values.email, password: values.password})
-            localStorage.setItem("token", result.data.token)
-            localStorage.setItem("avatar", result.data.avatar)
-            localStorage.setItem("userid", result.data.userId)
+            if (values.email && values.password) {
+                const result = await signIn({ email: values.email, password: values.password })
+                localStorage.setItem("token", result.data.token)
+                localStorage.setItem("avatar", result.data.avatar)
+                localStorage.setItem("userid", result.data.userId)
+            } else {
+                alert("preencha todos os campos obrigatórios")
+                return
+            }
+
             navigate("/timeline")
         } catch (error) {
             switch (error.response.status) {
@@ -43,7 +49,7 @@ export default function FormLogin() {
                 formik => (
                     <ContainerForm onSubmit={formik.handleSubmit}>
                         <ContainerInputForm>
-                            <Field type="text" placeholder="e-mail" name="email" data-test="email"/>
+                            <Field type="text" placeholder="e-mail" name="email" data-test="email" />
                             {
                                 formik.touched.email && formik.errors.email ? (
                                     <span>{formik.errors.email}</span>
@@ -51,14 +57,14 @@ export default function FormLogin() {
                             }
                         </ContainerInputForm>
                         <ContainerInputForm>
-                            <Field type="password" placeholder="password" name="password" data-test="password"/>
+                            <Field type="password" placeholder="password" name="password" data-test="password" />
                             {
                                 formik.touched.password && formik.errors.password ? (
                                     <span>{formik.errors.password}</span>
                                 ) : null
                             }
                         </ContainerInputForm>
-                        <button type="submit" data-test="login-btn">Log In</button>
+                        {formik.isSubmitting ? <button disabled type="submit" data-test="login-btn">Log In</button> : <button type="submit" data-test="login-btn">Log In</button>}
                         <Link data-test="sign-up-link" to="/sign-up">First time? Create an account!</Link>
                     </ContainerForm>
                 )

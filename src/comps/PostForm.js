@@ -27,7 +27,7 @@ export default function PostForm({updatePost, setUpdatePost}) {
     });
 
     promise.catch(() => {
-      alert("There was an error publishing your link.");
+      alert("There was an error publishing your link");
       setIsSubmitting(false)
     });
   }

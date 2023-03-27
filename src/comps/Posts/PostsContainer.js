@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Post from "./Post";
+import Repost from "./Repost";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 import followService from "../../services/followService";
 
-export default function PostsContainer({ postsList, loading }) {
+export default function PostsContainer({ postsList, loading, updatePost, setUpdatePost, setPostsList }) {
   const {quantityFollowing} = followService()
   const [following, setFollowing] = useState(false)
-  
+
   useEffect(() => {
-    async function getQuantityFollowing(){
+    async function getQuantityFollowing() {
       const result = await quantityFollowing()
       console.log(result)
-      if(Number(result.data.quantityfollowing) > 0){
+      if (Number(result.data.quantityfollowing) > 0) {
         setFollowing(true)
       }
     }
     getQuantityFollowing()
-    
+
   }, [])
 
   return (
@@ -31,7 +32,9 @@ export default function PostsContainer({ postsList, loading }) {
             name,
             profile_picture,
             user_id,
+            repost_user_id
           }) => {
+
             return (
               <Post
                 key={id}
@@ -41,8 +44,12 @@ export default function PostsContainer({ postsList, loading }) {
                 name={name}
                 profile_picture={profile_picture}
                 user_id={user_id}
+                updatePost={updatePost}
+                setUpdatePost={setUpdatePost}
+                setPostsList={setPostsList}
               />
             );
+
           }
         )
       ) : loading ? (

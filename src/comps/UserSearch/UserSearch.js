@@ -28,7 +28,7 @@ export default function UserSearch({id, profile_picture, name, setSearch, setUse
                 }}
             >
                 <img src={profile_picture} alt={name} />
-                <h1>{name} </h1>
+                <h1>{name}</h1>
             </div>
             {follow ? <ContainerFollowing><span>• following</span></ContainerFollowing> : ""}
         </Link>

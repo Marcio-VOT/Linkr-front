@@ -17,7 +17,8 @@ export default function followService() {
                     setDisabled(false)
                 }
             )
-                .catch(() => {
+                .catch((error) => {
+                    alert("Ocorreu um erro ao tentar seguir")
                     setDisabled(false)
                 })
         },
@@ -31,6 +32,7 @@ export default function followService() {
                 }
             )
                 .catch(() => {
+                    console.log("Ocorreu um erro ao tentar deixar de seguir")
                     setDisabled(false)
                 })
         },
