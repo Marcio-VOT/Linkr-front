@@ -1,8 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../constants/constants.js";
 
-const token = localStorage.getItem("token");
-
 export default function searchService() {
   const token = localStorage.getItem("token");
   const api = axios.create({
