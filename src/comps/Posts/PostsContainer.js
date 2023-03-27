@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from "react";
-=======
-import React, { useEffect, useState } from "react";
->>>>>>> main
 import Post from "./Post";
 import Repost from "./Repost";
 import styled from "styled-components";
@@ -10,19 +6,19 @@ import { TailSpin } from "react-loader-spinner";
 import followService from "../../services/followService";
 
 export default function PostsContainer({ postsList, loading }) {
-  const {quantityFollowing} = followService()
+  const { quantityFollowing } = followService()
   const [following, setFollowing] = useState(false)
-  
+
   useEffect(() => {
-    async function getQuantityFollowing(){
+    async function getQuantityFollowing() {
       const result = await quantityFollowing()
       console.log(result)
-      if(Number(result.data.quantityfollowing) > 0){
+      if (Number(result.data.quantityfollowing) > 0) {
         setFollowing(true)
       }
     }
     getQuantityFollowing()
-    
+
   }, [])
 
   return (
@@ -36,37 +32,34 @@ export default function PostsContainer({ postsList, loading }) {
             name,
             profile_picture,
             user_id,
-            is_repost,
-            published_by
+            repost_user_id
           }) => {
-            if(is_repost){
-            return (
-              <Repost 
-                key={id}
-                id={id}
-                description={description}
-                external_link={external_link}
-                name={name}
-                profile_picture={profile_picture}
-                user_id={user_id}
-                published_by={ published_by}
-                />)}
-            else return (
-              <Post
-                key={id}
-                id={id}
-                description={description}
-                external_link={external_link}
-                name={name}
-                profile_picture={profile_picture}
-                user_id={user_id}
-<<<<<<< HEAD
-            />)
-          })) : (
-        <p>there are no posts yet!</p>
-=======
-              />
-            );
+            if (repost_user_id) {
+              return (
+                <Repost
+                  key={`${id}$-{description}-$published_by`}
+                  id={id}
+                  description={description}
+                  external_link={external_link}
+                  name={name}
+                  profile_picture={profile_picture}
+                  user_id={user_id}
+                  published_by={repost_user_id}
+                />)
+            }
+            else {
+              return (
+                <Post
+                  key={id}
+                  id={id}
+                  description={description}
+                  external_link={external_link}
+                  name={name}
+                  profile_picture={profile_picture}
+                  user_id={user_id}
+                />
+              );
+            }
           }
         )
       ) : loading ? (
@@ -86,7 +79,6 @@ export default function PostsContainer({ postsList, loading }) {
         <div className="message-container">
           {following ? <p data-test="message">No posts found for your friends.</p> : <p data-test="message">you don't follow anyone yet. Search for new friends!</p>}
         </div>
->>>>>>> main
       )}
     </PostsList>
   );

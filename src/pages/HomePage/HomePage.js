@@ -24,7 +24,7 @@ export default function HomePage() {
   let offset = 0;
   let boole = false;
   let firstLoad = true;
-  const offsetUpdater = 4;
+  const offsetUpdater = 10;
 
   useEffect(() => {
     async function validateToken() {
@@ -105,7 +105,7 @@ export default function HomePage() {
           );
         });
 
-      offset += 4;
+      offset += 10;
     }
   }
   function buildTrendings() {

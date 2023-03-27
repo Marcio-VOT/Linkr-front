@@ -30,7 +30,7 @@ export default function Post(props) {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userid");
   const [updateComments, setUpdateComments] = useState(false);
-  const { id, description, external_link, name, profile_picture, user_id} =
+  const { id, description, external_link, name, profile_picture, user_id } =
     props;
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(description);
@@ -59,12 +59,12 @@ export default function Post(props) {
   });
 
   useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     async function getTotalComments() {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
 
       axios
         .get(`${process.env.REACT_APP_API_URL}/comments/post/${id}`, config)
@@ -72,23 +72,19 @@ export default function Post(props) {
           setTotalComments(res.data.quantitycomments);
         });
     }
+    async function getTotalShare() {
+      const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`
+      axios.get(URL, config)
+        .then(res => setCount(res.data.count))
+        .catch((err) => {
+          console.error("Erro ao pegar total de re-repost:", err.message);
+          alert("Erro interno");
+        });
+    }
+    getTotalShare()
     getTotalComments();
   });
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`
-    axios.get(URL, config)
-      .then(res => setCount(res.data.count))
-      .catch((err) => {
-        console.error("Erro ao pegar total de re-repost:", err.message);
-        alert("Erro interno");
-      });
-  }, [])
   const handleEditClick = () => {
     setEditing(true);
   };
@@ -161,17 +157,17 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-  console.log(token)
+
   const handleRepostConfirm = () => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }
     };
 
     const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`;
     axios
-      .post(URL, config)
+      .post(URL, {}, config)
       .then((res) => {
         setModalIsOpen(false);
         window.location.reload();
@@ -192,7 +188,7 @@ export default function Post(props) {
     <>
       <PostContainer data-test="post">
         {Number(userId) === user_id ? (
-      
+
           <ButtonsContainer>
             <button
               data-test="edit-btn"
@@ -209,12 +205,12 @@ export default function Post(props) {
         )}
         <CustomerData>
           <ImageLike>
-            <img src={profile_picture} alt=''/>
+            <img src={profile_picture} alt='' />
             <LikeButton idPost={id} idUser={userId} />
-          <div className="icon" onClick={handleRepostClick}>
-          <div><IoMdRepeat/></div>
-          <div><span>{count}</span> <span>re-posts</span></div> 
-          </div>
+            <div className="icon" onClick={handleRepostClick}>
+              <div><IoMdRepeat /></div>
+              <div><span>{count}</span> <span>re-posts</span></div>
+            </div>
             <CommentIcon
               data-test="comment-btn"
               onClick={() => {
@@ -285,20 +281,20 @@ export default function Post(props) {
             </div>
           </div>
         </StyledModal>
-      <StyledModal
-        isOpen={modalIsOpenRepost}
-        onRequestClose={() => setModalIsOpenRepost(false)}
-        contentLabel="Confirmar re-post"
-        style={customStyles}
-      >
-        <div className="modal-content">
-          <h2>Do you want to re-post this link?</h2>
-          <div>
-            <button data-test="confirm" className="btn-cancel" onClick={() => setModalIsOpenRepost(false)}>No, cancel</button>
-            <button data-test="cancel" className="btn-confirm" onClick={handleRepostConfirm}>Yes, share!</button>
+        <StyledModal
+          isOpen={modalIsOpenRepost}
+          onRequestClose={() => setModalIsOpenRepost(false)}
+          contentLabel="Confirmar re-post"
+          style={customStyles}
+        >
+          <div className="modal-content">
+            <h2>Do you want to re-post this link?</h2>
+            <div>
+              <button data-test="cancel" className="btn-cancel" onClick={() => setModalIsOpenRepost(false)}>No, cancel</button>
+              <button data-test="confirm" className="btn-confirm" onClick={handleRepostConfirm}>Yes, share!</button>
+            </div>
           </div>
-        </div>
-      </StyledModal>
+        </StyledModal>
       </PostContainer>
       <CommentContainer
         postId={id}

@@ -144,9 +144,10 @@ export default function Repost(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-    const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`
+    const URL = `${process.env.REACT_APP_API_URL}/re-posts/${published_by}`
     axios.get(URL, config)
       .then(res => {
+        console.log("repost ", res)
         setCount(res.data.count)
         setPublished(res.data.name)
       })
@@ -157,7 +158,6 @@ export default function Repost(props) {
   }, [])
 
   if (published === name ) setPublished('you')
-  
   return (
     <ContainerRepost>
       <RepostContainer>
