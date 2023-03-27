@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavBar } from "../../comps/NavBar/NavBar.jsx";
-import axios from "axios";
 import styled from "styled-components";
 import PostsContainer from "./PostsContainer.js";
 import { validToken } from "../../services/apiAuth.js";
 import Trendings from "../../comps/Hashtags/index.js";
-import { postsFromHashtagId, trandingHashtags } from "../../services/search.js";
+import searchService from "../../services/search.js";
 
 export default function Hashtag() {
   const { hashtag } = useParams();
   const [updatePost, setUpdatePost] = useState(false);
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
   const token = localStorage.getItem("token");
   const offsetUpdater = 4;
@@ -20,11 +18,7 @@ export default function Hashtag() {
   let offset = 0;
   let boole = true;
   const [postsList, setPostsList] = useState([]);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const {postsFromHashtagId, trandingHashtags } = searchService()
 
   useEffect(() => {
     async function validateToken() {
@@ -36,8 +30,8 @@ export default function Hashtag() {
     }
 
     validateToken();
-
-    trandingHashtags({ config })
+    setPostsList([])
+    trandingHashtags()
       .then((res) => {
         const { data } = res;
         setHashtagsList([...data]);
@@ -47,16 +41,12 @@ export default function Hashtag() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-
+      loadPosts();
     const element = ref.current;
     element.addEventListener("scroll", handleScroll);
     return () => {
       element.removeEventListener("scroll", handleScroll);
     };
-  }, []);
-
-  useEffect(() => {
-    loadPosts();
   }, [updatePost]);
 
   function buildTrendings() {
@@ -66,7 +56,7 @@ export default function Hashtag() {
           <Trendings
             updatePost={updatePost}
             setUpdatePost={setUpdatePost}
-            key={hashtag.id}
+            key={hashtag.hashtags}
             hashtag={hashtag.hashtags}
           />
         );
@@ -78,7 +68,7 @@ export default function Hashtag() {
 
   function loadPosts() {
     if (boole) {
-      postsFromHashtagId({ hashtag, date, offset, config })
+      postsFromHashtagId({ hashtag, date, offset })
         .then((res) => {
           const { data } = res;
           setPostsList((postsList) => [...postsList, ...data]);

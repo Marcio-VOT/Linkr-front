@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Post from "../../comps/Posts/Post";
 import styled from "styled-components";
 

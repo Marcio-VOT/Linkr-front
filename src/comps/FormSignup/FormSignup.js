@@ -27,6 +27,7 @@ export default function FormSignup(){
                     values.username=""
                     values.pictureUrl=""
                 default:
+                    alert("Houve um problema no servidor. Tente novamente.")
                     break;
             }
         }
@@ -47,7 +48,7 @@ export default function FormSignup(){
                     formik => (
                         <ContainerForm onSubmit={formik.handleSubmit}>
                             <ContainerInputForm>
-                                <Field type="email" placeholder="e-mail" name="email"/>
+                                <Field type="email" placeholder="e-mail" name="email" data-test="email"/>
                                 {
                                     formik.touched.email && formik.errors.email ? (
                                         <span>{formik.errors.email}</span>
@@ -55,7 +56,7 @@ export default function FormSignup(){
                                 }
                             </ContainerInputForm>
                             <ContainerInputForm>
-                                <Field type="password" placeholder="password" name="password"/>
+                                <Field type="password" placeholder="password" name="password" data-test="password"/>
                                 {
                                     formik.touched.password && formik.errors.password ? (
                                         <span>{formik.errors.password}</span>
@@ -63,7 +64,7 @@ export default function FormSignup(){
                                 }
                             </ContainerInputForm>
                             <ContainerInputForm>
-                                <Field type="text" placeholder="username" name="username" />
+                                <Field type="text" placeholder="username" name="username" data-test="username"/>
                                 {
                                     formik.touched.username && formik.errors.username ? (
                                         <span>{formik.errors.username}</span>
@@ -71,7 +72,7 @@ export default function FormSignup(){
                                 }
                             </ContainerInputForm>
                             <ContainerInputForm>
-                                <Field type="text" placeholder="picture url" name="pictureUrl" />
+                                <Field type="text" placeholder="picture url" name="pictureUrl" data-test="picture-url"/>
                                 {
                                     formik.touched.pictureUrl && formik.errors.pictureUrl ? (
                                         <span>{formik.errors.pictureUrl}</span>
@@ -80,9 +81,9 @@ export default function FormSignup(){
                             </ContainerInputForm>
 
                             {
-                                formik.isSubmitting ? <button disabled type="submit" >Sign Up</button> : <button type="submit" >Sign Up</button>
+                                formik.isSubmitting ? <button disabled type="submit" data-test="sign-up-btn">Sign Up</button> : <button type="submit" data-test="sign-up-btn">Sign Up</button>
                             }
-                            <Link to="/">Switch back to log in</Link>
+                            <Link data-test="login-link" to="/">Switch back to log in</Link>
                         </ContainerForm>
                     )
                 }

@@ -1,34 +1,46 @@
 import axios from "axios";
 import { BASE_URL } from "../constants/constants.js";
-const token = localStorage.getItem("token")
 
-export function searchApi(search) {
-  return axios.get(`${BASE_URL}/search/${search}`, {headers: {
-    Authorization: `Bearer ${token}`
-  }});
-}
+const token = localStorage.getItem("token");
 
-export function searchUserPosts({ id, offset, date, config }) {
-  return axios.get(
-    `${BASE_URL}/posts/${id}/?offset=${offset}&date=${date}`,
-    config
-  );
-}
-export function searchUserData(id) {
-  return axios.get(`${BASE_URL}/data/${id}`);
-}
+export default function searchService() {
+  const token = localStorage.getItem("token");
+  const api = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-export function searchPosts({ date, offset, config }) {
-  return axios.get(`${BASE_URL}/posts/?offset=${offset}&date=${date}`, config);
-}
+  const servises = {
+    async searchApi(search) {
+      return await api.get(`/search/${search}`);
+    },
 
-export function postsFromHashtagId({ hashtag, date, offset, config }) {
-  return axios.get(
-    `${BASE_URL}/hashtag/${hashtag}/?offset=${offset}&date=${date}`,
-    config
-  );
-}
+    async searchUserPosts({ id, offset, date }) {
+      return await api.get(`/posts/${id}/?offset=${offset}&date=${date}`);
+    },
 
-export function trandingHashtags({ config }) {
-  return axios.get(`${BASE_URL}/trendding`, config);
+    async searchUserData(id) {
+      return await api.get(`/data/${id}`);
+    },
+
+    async searchPosts({ date, offset }) {
+      return await api.get(`/posts/?offset=${offset}&date=${date}`);
+    },
+
+    async postsFromHashtagId({ hashtag, date, offset }) {
+      return await api.get(
+        `/hashtag/${hashtag}/?offset=${offset}&date=${date}`
+      );
+    },
+
+    async trandingHashtags() {
+      return await api.get(`/trendding`);
+    },
+    async newPostsCount({ date, config }) {
+      return axios.get(`${BASE_URL}/posts/count/?date=${date}`, config);
+    },
+  };
+  return servises;
 }

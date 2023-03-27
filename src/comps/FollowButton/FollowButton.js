@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
-import { follow, unfollow, verifyFollow } from "../../services/followService"
+import followService from "../../services/followService"
 
 
 export default function FollowButton() {
 
-    const [follower, setFollower] = useState(false)
+    const [follower, setFollower] = useState()
     const [disabled, setDisabled] = useState(false)
     const followerId = localStorage.getItem("userid")
     const { id: userId } = useParams()
+    const { unfollow, follow, verifyFollow} = followService()
 
     useEffect(() => {
         async function handleFollow() {
             const result = await verifyFollow({ userId })
             if (result.data.length > 0) {
                 setFollower(true)
+            } else {
+                setFollower(false)
             }
         }
         handleFollow()
@@ -47,13 +50,13 @@ export default function FollowButton() {
     return (
         <>
             {follower ? (
-                <UnfollowButtonContainer disabled={disabled} onClick={unfollowClick}>
-                    unfollow
+                <UnfollowButtonContainer disabled={disabled} onClick={unfollowClick} data-test="follow-btn">
+                    Unfollow
                 </UnfollowButtonContainer>
 
             ) : (
-                <FollowButtonContainer disabled={disabled} onClick={followClick}>
-                    follow
+                <FollowButtonContainer disabled={disabled} onClick={followClick} data-test="follow-btn">
+                    Follow
                 </FollowButtonContainer>
             )
             }

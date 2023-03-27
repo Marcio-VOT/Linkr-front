@@ -15,8 +15,8 @@ export const LogOutButton = () => {
     navigate("/")
   }
   return (
-    <ContainerLogOutButton onClick={logout}>
-      <StyledLogOutButton>Logout</StyledLogOutButton>
+    <ContainerLogOutButton onClick={logout} data-test="menu">
+      <StyledLogOutButton data-test="logout">Logout</StyledLogOutButton>
     </ContainerLogOutButton>
   );
 };

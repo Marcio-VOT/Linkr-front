@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { getLikes, getTwoUsers, youLike, removeLike, newLike } from '../../services/likeService'
+import likeService from '../../services/likeService'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
+import styled from 'styled-components'
 
 export function LikeButton(props) {
     const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [listLikes, setListLikes] = useState({})
-
+    const services = likeService()
+    const { getLikes, newLike, removeLike, youLike, getTwoUsers } = services
     useEffect(() => {
         async function handleLike() {
             const body = {
@@ -23,18 +25,18 @@ export function LikeButton(props) {
 
             const { data: dataTwoUsers } = await getTwoUsers({ postId: props.idPost })
 
-            if(dataYouLike.status){
-                if(dataTwoUsers.length === 0){
-                    dataTwoUsers.push({name: "You"})
+            if (dataYouLike.status) {
+                if (dataTwoUsers.length === 0) {
+                    dataTwoUsers.push({ name: "You" })
                 } else {
-                    if(dataTwoUsers.length === 1){
-                        dataTwoUsers.unshift({name: "You"}) 
+                    if (dataTwoUsers.length === 1) {
+                        dataTwoUsers.unshift({ name: "You" })
                     } else {
                         dataTwoUsers[0].name = "You"
-                    }   
+                    }
                 }
             }
-            
+
             switch (dataGetLikes[0].count) {
                 case '2':
                     setListLikes(dataTwoUsers.map(u => u.name).join(', '))
@@ -89,18 +91,18 @@ export function LikeButton(props) {
         setIsLiked(true)
 
         const { data: dataTwoUsers } = await getTwoUsers({ postId: props.idPost })
-        
-       
-            if(dataTwoUsers.length === 0){
-                dataTwoUsers.push({name: "You"})
+
+
+        if (dataTwoUsers.length === 0) {
+            dataTwoUsers.push({ name: "You" })
+        } else {
+            if (dataTwoUsers.length === 1) {
+                dataTwoUsers.unshift({ name: "You" })
             } else {
-                if(dataTwoUsers.length === 1){
-                    dataTwoUsers.unshift({name: "You"}) 
-                } else {
-                    dataTwoUsers[0].name = "You"
-                }   
+                dataTwoUsers[0].name = "You"
             }
-       
+        }
+
         switch (likes + 1) {
             case 2:
                 setListLikes(dataTwoUsers.map(u => u.name).join(', '))
@@ -118,20 +120,43 @@ export function LikeButton(props) {
     };
 
     return (
-        <>
-            <Tooltip id="my-tooltip" />
+        <LikeContainer>
+            <Tooltip id="my-tooltip" data-test="tooltip"/>
             {isLiked ? <AiFillHeart
+                data-test="like-btn"
+                size={18}
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={listLikes}
                 onClick={removeLikeButton} style={{ color: '#AC0000' }} />
                 :
                 <AiOutlineHeart
+                    size={18}
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={listLikes}
                     onClick={addLikeButton} style={{ color: 'white' }} />}
-        </>
+            <p data-test="counter">{likes} likes</p>
+        </LikeContainer>
 
     );
 }
+
+const LikeContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    p {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 9px;
+    line-height: 13px;
+    text-align: center;
+    color: #ffffff;
+    }
+
+`
 
 

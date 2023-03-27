@@ -15,7 +15,7 @@ export default () => {
       <Routes>
         <Route path="/likes" element={<LikeButton />} />
         <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/sign-up" element={<Signup />} />
         <Route path="/timeline" element={<HomePage />} />
         <Route path="/user/:id" element={<UserPosts />} />
         <Route path="/hashtag/:hashtag" element={<Hashtag />} />
