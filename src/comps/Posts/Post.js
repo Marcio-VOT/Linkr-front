@@ -329,7 +329,7 @@ const ImageLike = styled.div`
     color: #ffffff;
     cursor: pointer;
     span {
-      font-size: 19px;
+      font-size: 12px;
   gap: 10px;
     }
   }
