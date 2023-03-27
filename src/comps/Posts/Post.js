@@ -113,7 +113,7 @@ export default function Post(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-
+    console.log(token)
     const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
     axios
       .delete(URL, config)
@@ -121,6 +121,7 @@ export default function Post(props) {
         alert(res.data);
         setModalIsOpen(false);
         setPostsList([])
+        console.log(updatePost)
         setUpdatePost(!updatePost)
       })
       .catch((err) => {

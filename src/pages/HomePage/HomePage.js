@@ -105,7 +105,7 @@ export default function HomePage() {
           );
         });
 
-      offset += 4;
+      offset += 10;
     }
   }
   function buildTrendings() {
@@ -141,6 +141,7 @@ export default function HomePage() {
             <PostsContainer
               postsList={postsList}
               updatePost={updatePost}
+              setUpdatePost={setUpdatePost}
               setUpdatePostList={setUpdatePostList}
               updatePostList={updatePostList}
               loading={loading}

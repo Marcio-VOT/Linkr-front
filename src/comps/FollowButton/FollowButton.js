@@ -46,7 +46,9 @@ export default function FollowButton() {
         }
 
     }
-
+    if(follower === undefined){
+        return;
+    }
     return (
         <>
             {follower ? (
