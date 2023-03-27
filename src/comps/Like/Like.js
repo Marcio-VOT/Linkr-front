@@ -121,8 +121,9 @@ export function LikeButton(props) {
 
     return (
         <LikeContainer>
-            <Tooltip id="my-tooltip" />
+            <Tooltip id="my-tooltip" data-test="tooltip"/>
             {isLiked ? <AiFillHeart
+                data-test="like-btn"
                 size={18}
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={listLikes}
@@ -133,7 +134,7 @@ export function LikeButton(props) {
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={listLikes}
                     onClick={addLikeButton} style={{ color: 'white' }} />}
-            <p>{likes} likes</p>
+            <p data-test="counter">{likes} likes</p>
         </LikeContainer>
 
     );

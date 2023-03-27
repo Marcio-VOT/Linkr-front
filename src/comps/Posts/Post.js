@@ -148,17 +148,17 @@ export default function Post(props) {
           ""
         )}
         <CustomerData>
-          <ImageLike>
+          <ImageLike>a-test="username"
             <img src={profile_picture} />
             <LikeButton idPost={id} idUser={userId} />
-            <CommentIcon onClick={() => {
+            <CommentIcon data-test="comment-btn" onClick={() => {
                 openComment ? setOpenComment(false) : setOpenComment(true)
                 setUpdateComments(!updateComments)
               }
               }>
             <AiOutlineComment size={20}
             />
-            <p>{totalComments} comments</p>
+            <p data-test="comment-counter">{totalComments} comments</p>
           </CommentIcon>
           </ImageLike>
           <Container>
@@ -172,7 +172,7 @@ export default function Post(props) {
               </p>
               {editing ? (
                 <textarea
-                  data-test="edit-description"
+                  data-test="edit-input"
                   ref={editTextRef}
                   value={editedText}
                   onChange={(e) => setEditedText(e.target.value)}

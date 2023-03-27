@@ -63,7 +63,7 @@ export default function CommentInput(props) {
             value={comment}
             disabled={isSubmitting}
           />
-          <button type="submit" data-test="publish-btn" disabled={isSubmitting}>
+          <button type="submit" data-test="comment-submit" disabled={isSubmitting}>
             <BsSend />
           </button>
         </div>
