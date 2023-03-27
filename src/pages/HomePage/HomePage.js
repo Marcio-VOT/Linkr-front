@@ -24,7 +24,7 @@ export default function HomePage() {
   let offset = 0;
   let boole = false;
   let firstLoad = true;
-  const offsetUpdater = 4;
+  const offsetUpdater = 10;
 
   useEffect(() => {
     async function validateToken() {
@@ -134,6 +134,7 @@ export default function HomePage() {
               setUpdatePostList={setUpdatePostList}
               updatePostList={updatePostList}
               loading={loading}
+              setPostsList={setPostsList}
             />
           </Feed>
           <TrendingsContainer data-test="trending">

@@ -29,7 +29,7 @@ export default function Post(props) {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userid");
   const [updateComments, setUpdateComments] = useState(false);
-  const { id, description, external_link, name, profile_picture, user_id } =
+  const { id, description, external_link, name, profile_picture, user_id, updatePost, setUpdatePost, setPostsList} =
     props;
 
   const [editing, setEditing] = useState(false);
@@ -81,7 +81,6 @@ export default function Post(props) {
       .put(URL, description, config)
       .then((res) => {
         alert(res.data);
-        window.location.reload();
       })
       .catch((err) => {
         console.error("Erro ao atualizar post:", err.message);
@@ -120,7 +119,8 @@ export default function Post(props) {
       .then((res) => {
         alert(res.data);
         setModalIsOpen(false);
-        window.location.reload();
+        setPostsList([])
+        setUpdatePost(!updatePost)
       })
       .catch((err) => {
         console.error("Erro ao excluir post:", err.message);
@@ -148,7 +148,7 @@ export default function Post(props) {
           ""
         )}
         <CustomerData>
-          <ImageLike>a-test="username"
+          <ImageLike>
             <img src={profile_picture} />
             <LikeButton idPost={id} idUser={userId} />
             <CommentIcon data-test="comment-btn" onClick={() => {
@@ -186,7 +186,7 @@ export default function Post(props) {
                   }}
                 >
                   <p className="user-description" data-test="description">
-                    {description}
+                    {editedText}
                   </p>
                 </ReactTagify>
               )}
