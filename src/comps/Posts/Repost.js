@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LinkPreview from "../LinkPreview/LinkPreview";
 import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
@@ -26,32 +26,19 @@ const customStyles = {
 };
 
 
-export default function Post(props) {
-
+export default function Repost(props) {
+  console.log(props)
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userid");
-  const { id, description, external_link, name, profile_picture, user_id} = props;
+  const { id, description, external_link, name, profile_picture, user_id, published_by} = props;
   const [editing, setEditing] = useState(false);
-  const [editedText, setEditedText] = useState(description);
   const [count, setCount] = useState(0)
+  const [published, setPublished] = useState(published_by)
+  const [editedText, setEditedText] = useState(description);
   const navigate = useNavigate();
   const [modalIsOpenRepost, setModalIsOpenRepost] = useState(false);
-  const editTextRef = useRef(null);
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`
-    axios.get(URL, config)
-      .then(res => setCount(res.data.count))
-      .catch((err) => {
-        console.error("Erro ao pegar total de re-repost:", err.message);
-        alert("Erro interno");
-      });
-  }, [])
+  const editTextRef = useRef(null);
   const handleEditClick = () => {
     setEditing(true);
   };
@@ -124,7 +111,7 @@ export default function Post(props) {
         setModalIsOpen(false);
       });
   };
-  console.log(token)
+
   const handleRepostConfirm = () => {
     const config = {
       headers: {
@@ -132,7 +119,7 @@ export default function Post(props) {
       },
     };
 
-    const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`;
+    const URL = `${process.env.REACT_APP_API_URL}/posts/${id}`;
     axios
       .post(URL, config)
       .then((res) => {
@@ -140,7 +127,8 @@ export default function Post(props) {
         window.location.reload();
       })
       .catch((err) => {
-        console.error("Erro ao fazer repost:", err.message);
+        console.error("Erro ao excluir post:", err.message);
+        alert("Only the creator of the post can delete it.");
         setModalIsOpen(false);
       });
   };
@@ -150,83 +138,107 @@ export default function Post(props) {
     setModalIsOpenRepost(true);
   };
 
-  const [published, setPublished] = useState('you')
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const URL = `${process.env.REACT_APP_API_URL}/re-posts/${id}`
+    axios.get(URL, config)
+      .then(res => {
+        setCount(res.data.count)
+        setPublished(res.data.name)
+      })
+      .catch((err) => {
+        console.error("Erro ao pegar total de re-repost:", err.message);
+        alert("Erro interno");
+      });
+  }, [])
+
+  if (published === name ) setPublished('you')
+  
   return (
-    <PostContainer data-test="post">
-      {Number(userId) === user_id ? (
-      <ButtonsContainer>
-        <button data-test="edit-btn" onClick={editing ? handleCancelEdit : handleEditClick}><BsFillPencilFill /></button>
-        <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
-      </ButtonsContainer>) : ""
-      }
-      <CustomerData>
-        <ImageLike>
-          <img src={profile_picture} alt=''/>
-          <LikeButton idPost={id} idUser={userId} />
-          <div className="icon" onClick={handleRepostClick}>
-          <div><IoMdRepeat/></div>
-          <div><span>{count}</span> <span>re-posts</span></div> 
+    <ContainerRepost>
+      <RepostContainer>
+        <span><IoMdRepeat/></span><span>Re-posted by</span> <span>{published}</span>
+      </RepostContainer>
+      <PostContainer data-test="post">
+        {Number(userId) === user_id ? (
+        <ButtonsContainer>
+          <button data-test="edit-btn" onClick={editing ? handleCancelEdit : handleEditClick}><BsFillPencilFill /></button>
+          <button data-test="delete-btn" onClick={handleDeleteClick}><BsFillTrashFill /></button>
+        </ButtonsContainer>) : ""
+        }
+        <CustomerData>
+          <ImageLike>
+            <img src={profile_picture} alt=''/>
+            <LikeButton idPost={id} idUser={userId} />
+            <div className="icon" onClick={handleRepostClick}>
+            <div><IoMdRepeat/></div>
+            <div><span>{count}</span> <span>re-posts</span></div> 
+            </div>
+          </ImageLike>
+          <Container>
+            <div>
+              <p
+                className="user-name"
+                data-test="username"
+                onClick={() => navigate(`/user/${user_id}`)}
+              >
+                {name}
+              </p>
+              {editing ? (
+                <textarea
+                  data-test="edit-description"
+                  ref={editTextRef}
+                  value={editedText}
+                  onChange={(e) => setEditedText(e.target.value)}
+                  onKeyDown={handleEditKeyDown}
+                />
+              ) : (
+                <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
+                  navigate(`/hashtag/${tag.replace('#', '')}`)
+                }}>
+                  <p className="user-description" data-test="description">
+                    {description}
+                  </p>
+                </ReactTagify>
+              )}
+            </div>
+            <LinkPreview url={external_link} />
+          </Container>
+        </CustomerData>
+        <StyledModal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          contentLabel="Confirmar deleção"
+          style={customStyles}
+        >
+          <div className="modal-content">
+            <h2>Tem certeza que deseja deletar esse post?</h2>
+            <div>
+              <button data-test="confirm" className="btn-cancel" onClick={() => setModalIsOpen(false)}>No, go back</button>
+              <button data-test="cancel" className="btn-confirm" onClick={handleDeleteConfirm}>Yes, delete it</button>
+            </div>
           </div>
-        </ImageLike>
-        <Container>
-          <div>
-            <p
-              className="user-name"
-              data-test="username"
-              onClick={() => navigate(`/user/${user_id}`)}
-            >
-              {name}
-            </p>
-            {editing ? (
-              <textarea
-                data-test="edit-description"
-                ref={editTextRef}
-                value={editedText}
-                onChange={(e) => setEditedText(e.target.value)}
-                onKeyDown={handleEditKeyDown}
-              />
-            ) : (
-              <ReactTagify tagStyle={tagStyle} tagClicked={(tag) => {
-                navigate(`/hashtag/${tag.replace('#', '')}`)
-              }}>
-                <p className="user-description" data-test="description">
-                  {description}
-                </p>
-              </ReactTagify>
-            )}
+        </StyledModal>
+        <StyledModal
+          isOpen={modalIsOpenRepost}
+          onRequestClose={() => setModalIsOpenRepost(false)}
+          contentLabel="Confirmar re-post"
+          style={customStyles}
+        >
+          <div className="modal-content">
+            <h2>Do you want to re-post this link?</h2>
+            <div>
+              <button data-test="confirm" className="btn-cancel" onClick={() => setModalIsOpenRepost(false)}>No, cancel</button>
+              <button data-test="cancel" className="btn-confirm" onClick={handleRepostConfirm}>Yes, share!</button>
+            </div>
           </div>
-          <LinkPreview url={external_link} />
-        </Container>
-      </CustomerData>
-      <StyledModal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        contentLabel="Confirmar deleção"
-        style={customStyles}
-      >
-        <div className="modal-content">
-          <h2>Tem certeza que deseja deletar esse post?</h2>
-          <div>
-            <button data-test="confirm" className="btn-cancel" onClick={() => setModalIsOpen(false)}>No, go back</button>
-            <button data-test="cancel" className="btn-confirm" onClick={handleDeleteConfirm}>Yes, delete it</button>
-          </div>
-        </div>
-      </StyledModal>
-      <StyledModal
-        isOpen={modalIsOpenRepost}
-        onRequestClose={() => setModalIsOpenRepost(false)}
-        contentLabel="Confirmar re-post"
-        style={customStyles}
-      >
-        <div className="modal-content">
-          <h2>Do you want to re-post this link?</h2>
-          <div>
-            <button data-test="confirm" className="btn-cancel" onClick={() => setModalIsOpenRepost(false)}>No, cancel</button>
-            <button data-test="cancel" className="btn-confirm" onClick={handleRepostConfirm}>Yes, share!</button>
-          </div>
-        </div>
-      </StyledModal>
-    </PostContainer>
+        </StyledModal>
+      </PostContainer>
+  </ContainerRepost>
   );
 }
 
@@ -255,8 +267,7 @@ const ImageLike = styled.div`
     }
   }
 `
-const ContainerRepost = styled.div`
-`
+
 const Container = styled.div`
   flex: 1;
   display: flex;
@@ -271,13 +282,17 @@ const Container = styled.div`
   }
 `
 
+const ContainerRepost = styled.div`
+`
+
 const PostContainer = styled.div`
   display: flex;
   width: 100vw;
   max-width: 611px;
   padding: 20px;
   background: #171717;
-  border-radius: 16px;
+  border-end-start-radius: 16px;
+  border-end-end-radius: 16px;
   position: relative;
   @media (max-width: 600px){
     border-radius: 0;
@@ -286,6 +301,7 @@ const PostContainer = styled.div`
 
 const RepostContainer = styled.div`
   display: flex;
+  gap: 2px;
   width: 100vw;
   max-width: 611px;
   padding: 10px;
@@ -298,6 +314,7 @@ const RepostContainer = styled.div`
     border-radius: 0;
   }
 `
+
 const CustomerData = styled.div`
     width: 100%;
     display: flex;
