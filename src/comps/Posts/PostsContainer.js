@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 import followService from "../../services/followService";
 
-export default function PostsContainer({ postsList, loading }) {
+export default function PostsContainer({ postsList, loading, updatePost, setUpdatePost, setPostsList }) {
   const {quantityFollowing} = followService()
   const [following, setFollowing] = useState(false)
   
@@ -41,6 +41,9 @@ export default function PostsContainer({ postsList, loading }) {
                 name={name}
                 profile_picture={profile_picture}
                 user_id={user_id}
+                updatePost={updatePost}
+                setUpdatePost={setUpdatePost}
+                setPostsList={setPostsList}
               />
             );
           }
