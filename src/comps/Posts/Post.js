@@ -41,20 +41,21 @@ export default function Post(props) {
   const editTextRef = useRef(null);
 
   useEffect(() => {
-    async function getTotalComments(){
+    async function getTotalComments() {
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-      axios.get(`${process.env.REACT_APP_API_URL}/comments/post/${id}`, config)
-      .then(res => {
-        setTotalComments(res.data.quantitycomments)
-      })
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/comments/post/${id}`, config)
+        .then((res) => {
+          setTotalComments(res.data.quantitycomments);
+        });
     }
-    getTotalComments()
-  })
+    getTotalComments();
+  });
 
   const handleEditClick = () => {
     setEditing(true);
@@ -152,15 +153,16 @@ export default function Post(props) {
           <ImageLike>
             <img src={profile_picture} />
             <LikeButton idPost={id} idUser={userId} />
-            <CommentIcon data-test="comment-btn" onClick={() => {
-                openComment ? setOpenComment(false) : setOpenComment(true)
-                setUpdateComments(!updateComments)
-              }
-              }>
-            <AiOutlineComment size={20}
-            />
-            <p data-test="comment-counter">{totalComments} comments</p>
-          </CommentIcon>
+            <CommentIcon
+              data-test="comment-btn"
+              onClick={() => {
+                openComment ? setOpenComment(false) : setOpenComment(true);
+                setUpdateComments(!updateComments);
+              }}
+            >
+              <AiOutlineComment size={20} />
+              <p data-test="comment-counter">{totalComments} comments</p>
+            </CommentIcon>
           </ImageLike>
           <Container>
             <div>
